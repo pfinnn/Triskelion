@@ -19,7 +19,11 @@
       "depth": 0,
       "source": "registry",
       "dependencies": {
+<<<<<<< HEAD
+        "com.unity.test-framework": "1.1.1"
+=======
         "com.unity.test-framework": "1.1.3"
+>>>>>>> 85fa72649976a75d566c223082c442a58ba9adbd
       },
       "url": "https://packages.unity.com"
     },
