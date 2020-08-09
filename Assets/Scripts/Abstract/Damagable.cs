@@ -8,27 +8,27 @@ public abstract class Damageable : MonoBehaviour
     private int maxHealth;
     private int health;
     // Start is called before the first frame update
-    void Start()
-    {   
+    public virtual void Start()
+    {
         health = maxHealth;
     }
 
-    public void dealDamage(int amount)
+    public void DealDamage(int amount)
     {
         health -= amount;
     }
 
-    public int getHealth()
+    public int GetHealth()
     {
         return health;
     }
 
-    public int getMaxHealth()
+    public int GetMaxHealth()
     {
         return maxHealth;
     }
 
-    public void setHealth(int _health)
+    public void SetHealth(int _health)
     {
         health = _health;
     }

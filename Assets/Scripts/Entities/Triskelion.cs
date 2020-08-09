@@ -9,7 +9,8 @@ public class Triskelion : Damageable
     // Start is called before the first frame update
     void Start()
     {
-
+        base.Start();
+        Debug.Log("Max Health: " + GetMaxHealth());
     }
 
     // Update is called once per frame
@@ -18,15 +19,21 @@ public class Triskelion : Damageable
         // catch button down to debug damage taken
 
         if (Input.GetKeyDown(KeyCode.Backspace)){
-            dealDamage(10);
+            DealDamage(10);
+            Debug.Log("Health: " + GetHealth());
+            Material m = GetComponent<MeshRenderer>().material;
+            if (GetHealth() <= GetMaxHealth()/2)
+            {
+                m.SetColor("_EmissionColor", Color.red);
+            }
             // play "damage taken animation"
 
             // notify UI Manager, should not be handled here
         }
 
-        if (this.getHealth()==0)
+        if (this.GetHealth()==0)
         {
-            GetComponent<GameStateEventManagerScript>().eventGameOver.Invoke();
+            //GetComponent<GameStateEventManagerScript>().eventGameOver.Invoke();
         }
     }
 }
