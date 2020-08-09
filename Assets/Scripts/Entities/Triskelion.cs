@@ -6,10 +6,12 @@ using UnityEngine.UI;
 
 public class Triskelion : Damageable
 {
+    private Material mat;
     // Start is called before the first frame update
     public override void Start()
     {
         base.Start();
+        mat = GetComponent<MeshRenderer>().material;
         Debug.Log("Max Health: " + GetMaxHealth());
     }
 
@@ -21,10 +23,9 @@ public class Triskelion : Damageable
         if (Input.GetKeyDown(KeyCode.Backspace)){
             DealDamage(10);
             Debug.Log("Health: " + GetHealth());
-            Material m = GetComponent<MeshRenderer>().material;
             if (GetHealth() <= GetMaxHealth()/2)
             {
-                m.SetColor("_EmissionColor", Color.red);
+                mat.SetColor("_EmissionColor", Color.red);
             }
             // play "damage taken animation"
 
