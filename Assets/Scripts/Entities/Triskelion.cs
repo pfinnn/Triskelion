@@ -7,7 +7,7 @@ using UnityEngine.UI;
 public class Triskelion : Damageable
 {
     // Start is called before the first frame update
-    void Start()
+    public override void Start()
     {
         base.Start();
         Debug.Log("Max Health: " + GetMaxHealth());
@@ -33,7 +33,7 @@ public class Triskelion : Damageable
 
         if (this.GetHealth()==0)
         {
-            //GetComponent<GameStateEventManagerScript>().eventGameOver.Invoke();
+            //TODO
         }
     }
 }
