@@ -15,7 +15,7 @@ public class Triskelion : Damagable
     {
         if(this.getHealth()==0)
         {
-            //Game Over Event
+            EventManager.current.eventGameOver.Invoke();
         }
     }
 }
