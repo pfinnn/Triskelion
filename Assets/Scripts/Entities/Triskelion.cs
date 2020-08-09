@@ -26,7 +26,7 @@ public class Triskelion : Damageable
 
         if (this.getHealth()==0)
         {
-            //Game Over Event
+            EventManager.current.eventGameOver.Invoke();
         }
     }
 }
