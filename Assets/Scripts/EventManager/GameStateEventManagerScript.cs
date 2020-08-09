@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class GameStateEventManager : EventManager
+public class GameStateEventManagerScript : EventManager
 {
     public UnityEvent eventGameOver;
     // Start is called before the first frame update
