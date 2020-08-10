@@ -16,7 +16,6 @@ public abstract class Enemy : Damageable
 
     // Enemies choose Targets only if they are close and in direction if Triskelion
     // if there is no target, current target will always be Triskelion
-    [SerializeField]
     Transform target;
 
     float movementSpeedScalar = 5f;
@@ -63,7 +62,7 @@ public abstract class Enemy : Damageable
     void ChooseTarget()
     {
         // Target in Range?
-
+        
         // Change current Target if closer
     }
 
