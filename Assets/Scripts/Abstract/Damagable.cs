@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -31,5 +32,15 @@ public abstract class Damageable : MonoBehaviour
     public void SetHealth(int _health)
     {
         health = _health;
+    }
+
+    public bool isDead()
+    {
+        return (health <= 0);
+    }
+
+    public void OnDestroyedEvent()
+    {
+        throw new NotImplementedException();
     }
 }
