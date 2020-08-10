@@ -16,7 +16,6 @@ public abstract class Enemy : Damageable
 
     // Enemies choose Targets only if they are close and in direction if Triskelion
     // if there is no target, current target will always be Triskelion
-    [SerializeField]
     Transform target;
 
     // how fast the enemy moves
