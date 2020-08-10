@@ -20,7 +20,7 @@ public class Triskelion : Damageable
     {
         // catch button down to debug damage taken
 
-        if (Input.GetKeyDown(KeyCode.Backspace)){
+        if (Input.GetKeyDown(KeyCode.F2)){
             DealDamage(10);
             Debug.Log("Health: " + GetHealth());
             if (GetHealth() <= GetMaxHealth()/2)
