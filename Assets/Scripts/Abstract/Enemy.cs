@@ -19,6 +19,9 @@ public abstract class Enemy : Damageable
     [SerializeField]
     Transform target;
 
+    // how fast the enemy moves
+    float movementSpeedScalar = 0.5f;
+
     // how far the targets can be away to attack
     float attackRange = 5f;
 
@@ -71,11 +74,10 @@ public abstract class Enemy : Damageable
         // Rotate towards Target
         Vector3 lookVector = target.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(lookVector); // rotate towards world center
-        float str = 0.5f;
-        str = Mathf.Min(str * Time.deltaTime, 1);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, str);
+        movementSpeedScalar = Mathf.Min(movementSpeedScalar * Time.deltaTime, 1);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, movementSpeedScalar);
         // Transform towards Target
-        transform.position = Vector3.MoveTowards(transform.position, target.position, str);
+        transform.position = Vector3.MoveTowards(transform.position, target.position, movementSpeedScalar);
     }
 
     void AttackTarget()
