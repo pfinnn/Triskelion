@@ -43,14 +43,15 @@ public class Tower : Damageable
         if (enemiesInRange.Count > 0)
         {
             Vector3 targetPosition = enemiesInRange[0].transform.position;
-            Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(targetPosition-transform.position));
+            Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(transform.position-targetPosition));
             currentState = State.Reloading;
         }
     }
 
-    void OnTriggerEnters(Collider other)
+    void OnTriggerEnter(Collider other)
     {
-        enemiesInRange.Add(other);
+       // if (other.gameObject.GetComponent<Bullet>()!=null)
+            enemiesInRange.Add(other);
     }
 
     void OnTriggerExit(Collider other)
