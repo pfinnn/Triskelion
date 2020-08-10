@@ -108,6 +108,7 @@ public class WaveManager : MonoBehaviour
                 Vector3 lookVector = worldCenter.position - enemyPosition;
                 Quaternion rotation = Quaternion.LookRotation(lookVector); // rotate towards world center
                 GameObject enemy = Instantiate(enemyPrefab, enemyPosition, rotation);
+                enemy.GetComponent<Legionaire>().SetTarget(worldCenter);
                 enemy.transform.SetParent(transform);
                 spawnedEnemies.Add(enemy);
                 ++placedEnemies;
