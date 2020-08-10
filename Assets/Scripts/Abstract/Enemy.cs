@@ -16,10 +16,10 @@ public abstract class Enemy : Damageable
 
     // Enemies choose Targets only if they are close and in direction if Triskelion
     // if there is no target, current target will always be Triskelion
+    [SerializeField]
     Transform target;
 
-    // how fast the enemy moves
-    float movementSpeedScalar = 0.5f;
+    float movementSpeedScalar = 5f;
 
     // how far the targets can be away to attack
     float attackRange = 5f;
@@ -73,10 +73,11 @@ public abstract class Enemy : Damageable
         // Rotate towards Target
         Vector3 lookVector = target.position - transform.position;
         Quaternion rotation = Quaternion.LookRotation(lookVector); // rotate towards world center
-        movementSpeedScalar = Mathf.Min(movementSpeedScalar * Time.deltaTime, 1);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, movementSpeedScalar);
+        float str = 0.5f;
+        str = Mathf.Min(movementSpeedScalar * Time.deltaTime, 1);
+        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, str);
         // Transform towards Target
-        transform.position = Vector3.MoveTowards(transform.position, target.position, movementSpeedScalar);
+        transform.position = Vector3.MoveTowards(transform.position, target.position, str);
     }
 
     void AttackTarget()
