@@ -5,7 +5,7 @@ using UnityEngine;
 public abstract class Damageable : MonoBehaviour
 {   
     [SerializeField]
-    private int maxHealth;
+    private int maxHealth = 100;
     private int health;
     // Start is called before the first frame update
     public virtual void Start()
