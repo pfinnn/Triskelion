@@ -434,7 +434,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1271883869}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 0, y: 18.56, z: 13.02}
+  m_LocalPosition: {x: 0, y: 41.23, z: 26.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1754769619}
@@ -530,7 +530,7 @@ Transform:
   m_GameObject: {fileID: 1553031101}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 3.2929, y: 3.2929, z: 3.2929}
+  m_LocalScale: {x: 14.532317, y: 14.532317, z: 14.532317}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 1
@@ -787,9 +787,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 2109476730059680549, guid: 2aee065123c9b4a45b0e9d1b3eb9c637,
     type: 3}
-  difficulty: 
-  worldCenter: {fileID: 1553031105}
-  radius: 10
+  worldCenter: {fileID: 1061821028}
+  radius: 50
+  baseWaveInterval: 3
 --- !u!4 &2020085781
 Transform:
   m_ObjectHideFlags: 0
