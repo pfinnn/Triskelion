@@ -790,7 +790,7 @@ MonoBehaviour:
   worldCenter: {fileID: 1061821028}
   radius: 50
   baseWaveInterval: 3
-  waveCounter: 0
+  waveCounter: 15
 --- !u!4 &2020085781
 Transform:
   m_ObjectHideFlags: 0
