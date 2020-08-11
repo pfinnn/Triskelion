@@ -94,7 +94,7 @@ public class WaveManager : MonoBehaviour
 
     void SpawnEnemies(int amountEnemies)
     {
-        int widthEnemy = 2;
+        int widthEnemy = 10;
         int placedEnemies = 0;
         int counterCircle = 0;
 

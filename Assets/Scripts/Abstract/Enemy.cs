@@ -86,6 +86,9 @@ public abstract class Enemy : Damageable
     // MoveToTarget should be triggered each update
     void MoveToTarget()
     {
+
+        Debug.DrawRay(transform.position, target.position);
+
         //agent.destination = target.position;
 
 
