@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public abstract class Enemy : Damageable
 {
@@ -22,6 +23,14 @@ public abstract class Enemy : Damageable
 
     // how far the targets can be away to attack
     float attackRange = 5f;
+
+    NavMeshAgent agent;
+
+    private void Start()
+    {
+        agent = GetComponent<NavMeshAgent>();
+        agent.SetDestination(target.position);
+    }
 
     // Update is called once per frame
     void Update()
@@ -66,17 +75,35 @@ public abstract class Enemy : Damageable
         // Change current Target if closer
     }
 
+    void calculateOrientationTerrainBased()
+    {
+        // Estimate future position by orientation + some distance
+
+        // Get terrain height
+
+        // calculate new orientation
+    }
+
     // MoveToTarget should be triggered each update
     void MoveToTarget()
     {
-        // Rotate towards Target
-        Vector3 lookVector = target.position - transform.position;
-        Quaternion rotation = Quaternion.LookRotation(lookVector); // rotate towards world center
-        float str = 0.5f;
-        str = Mathf.Min(movementSpeedScalar * Time.deltaTime, 1);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, str);
-        // Transform towards Target
-        transform.position = Vector3.MoveTowards(transform.position, target.position, str);
+        //agent.destination = target.position;
+
+
+        //// Rotate towards Target
+        //Vector3 lookVector = target.position - transform.position;
+        //Quaternion rotation = Quaternion.LookRotation(lookVector); // rotate towards world center
+        //float str = 0.5f;
+        //str = Mathf.Min(movementSpeedScalar * Time.deltaTime, 1);
+        //transform.rotation = Quaternion.Lerp(transform.rotation, rotation, str);
+        //// Transform towards Target
+
+        //Vector3 forwardVector = transform.forward;
+        //Vector3 extraDist = new Vector3(1, 0, 1);
+        //forwardVector = forwardVector + extraDist;
+
+
+        //transform.position = Vector3.MoveTowards(transform.position, target.position, str);
     }
 
     void AttackTarget()

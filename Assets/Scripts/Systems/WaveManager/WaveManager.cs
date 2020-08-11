@@ -25,6 +25,9 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     private Terrain terrain;
 
+    [SerializeField]
+    float heightDifferenceSpawning = 20f;
+
     private float timer = 0.0f;
     private float lastWaveTime;
     private List<GameObject> spawnedEnemies = new List<GameObject>();
@@ -91,7 +94,7 @@ public class WaveManager : MonoBehaviour
 
     void SpawnEnemies(int amountEnemies)
     {
-        int widthEnemy = 6;
+        int widthEnemy = 2;
         int placedEnemies = 0;
         int counterCircle = 0;
 
@@ -105,7 +108,7 @@ public class WaveManager : MonoBehaviour
             {
                 if (placedEnemies >= amountEnemies) break;
 
-                float height = terrain.transform.position.y+23;
+                float height = terrain.transform.position.y + heightDifferenceSpawning;
 
                 //Debug.Log("Spawning Enemy " + s + " out of " + segments + " in circle nr " + counterCircle);
                 var rad = Mathf.Deg2Rad * (s * 360f / segments);
