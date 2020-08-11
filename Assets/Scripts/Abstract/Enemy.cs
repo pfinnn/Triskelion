@@ -39,7 +39,6 @@ public abstract class Enemy : Damageable
         if (IsTargetInRange())
         {
             currentState = State.Attacking;
-            Debug.Log("Attack Target");
         }
 
         if (currentState == State.Moving)

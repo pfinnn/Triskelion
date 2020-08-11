@@ -4,11 +4,9 @@ using UnityEngine;
 
 public class Tower : Damageable
 {
+    private ShootingSystem shootingSystem;
 
-    [SerializeField]
-    private GameObject projectilePrefab;
-
-    private List<Collider> enemiesInRange = new List<Collider>();
+    private List<GameObject> enemiesInRange = new List<GameObject>();
     private float timer = 0.0f;
 
     enum State
@@ -25,13 +23,14 @@ public class Tower : Damageable
     public override void Start()
     {
         base.Start();
+        shootingSystem = GetComponent<ShootingSystem>();
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         timer += Time.deltaTime;
-        if(timer > 5)
+        if(timer > 1)
         {
             Shoot();
             timer = 0.0f;
@@ -42,20 +41,25 @@ public class Tower : Damageable
     {
         if (enemiesInRange.Count > 0)
         {
-            Vector3 targetPosition = enemiesInRange[0].transform.position;
-            Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(transform.position-targetPosition));
-            currentState = State.Reloading;
+            shootingSystem.LaunchProjectileWithArc(enemiesInRange[0].transform, 10);
         }
+    }
+
+    public List<GameObject> GetEnemiesInRange()
+    {
+        return enemiesInRange;
     }
 
     void OnTriggerEnter(Collider other)
     {
-       // if (other.gameObject.GetComponent<Bullet>()!=null)
-            enemiesInRange.Add(other);
+        if (other.GetComponentInParent<Enemy>())
+            enemiesInRange.Add(other.gameObject);
     }
 
     void OnTriggerExit(Collider other)
     {
-        enemiesInRange.Remove(other);
+        if (other.GetComponentInParent<Enemy>())
+            enemiesInRange.Remove(other.gameObject);
     }
+    
 }
