@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "com.qfsw.mop2": "https://github.com/QFSW/MasterObjectPooler2.git",
     "com.unity.collab-proxy": "1.2.16",
     "com.unity.ext.nunit": "1.0.0",
     "com.unity.ide.rider": "1.1.4",
