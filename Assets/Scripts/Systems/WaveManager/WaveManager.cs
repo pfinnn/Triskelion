@@ -1,4 +1,5 @@
-﻿using System;
+﻿using QFSW.MOP2;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -20,6 +21,9 @@ public class WaveManager : MonoBehaviour
 
     [SerializeField]
     private int waveCounter = 0;
+
+    [SerializeField]
+    private Terrain terrain;
 
     private float timer = 0.0f;
     private float lastWaveTime;
@@ -100,10 +104,12 @@ public class WaveManager : MonoBehaviour
             for (int s = 0; s < segments; s++)
             {
                 if (placedEnemies >= amountEnemies) break;
+
+                float height = terrain.transform.position.y+23;
+
                 //Debug.Log("Spawning Enemy " + s + " out of " + segments + " in circle nr " + counterCircle);
                 var rad = Mathf.Deg2Rad * (s * 360f / segments);
-                Vector3 enemyPosition = new Vector3((Mathf.Sin(rad) * (radius+extraDistance)), 0, (Mathf.Cos(rad) * (radius + extraDistance)));
-
+                Vector3 enemyPosition = new Vector3((Mathf.Sin(rad) * (radius+extraDistance)), height, (Mathf.Cos(rad) * (radius + extraDistance)));
                 // Calculate Rotation towards Triskelion and Spawn Enemies
                 Vector3 lookVector = worldCenter.position - enemyPosition;
                 Quaternion rotation = Quaternion.LookRotation(lookVector); // rotate towards world center
