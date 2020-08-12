@@ -1134,11 +1134,13 @@ MonoBehaviour:
   enemyPrefab: {fileID: 2365048723692999213, guid: 2aee065123c9b4a45b0e9d1b3eb9c637,
     type: 3}
   worldCenter: {fileID: 1061821028}
-  radius: 100
+  radius: 300
   baseWaveInterval: 1
-  waveCounter: 3
-  terrain: {fileID: 1907919901}
+  waveCounter: 222
+  terrainTransform: {fileID: 1907919902}
   heightDifferenceSpawning: 31
+  distanceBetweenAgents: 6
+  distanceBetweenCircles: 30
 --- !u!4 &2020085781
 Transform:
   m_ObjectHideFlags: 0
