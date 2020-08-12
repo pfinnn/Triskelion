@@ -23,10 +23,16 @@ public class WaveManager : MonoBehaviour
     private int waveCounter = 0;
 
     [SerializeField]
-    private Terrain terrain;
+    private Transform terrainTransform;
 
     [SerializeField]
     float heightDifferenceSpawning = 20f;
+
+    [SerializeField]
+    float distanceBetweenAgents = 10;
+
+    [SerializeField]
+    float distanceBetweenCircles = 10;
 
     private float timer = 0.0f;
     private float lastWaveTime;
@@ -94,21 +100,20 @@ public class WaveManager : MonoBehaviour
 
     void SpawnEnemies(int amountEnemies)
     {
-        int widthEnemy = 10;
         int placedEnemies = 0;
         int counterCircle = 0;
 
         while ( placedEnemies <= amountEnemies )
         {
             ++counterCircle;
-            int segments = Mathf.RoundToInt(360 / widthEnemy);
-            float extraDistance = counterCircle*5;
+            int segments = Mathf.RoundToInt(360 / distanceBetweenAgents);
+            float extraDistance = counterCircle* distanceBetweenCircles;
 
             for (int s = 0; s < segments; s++)
             {
                 if (placedEnemies >= amountEnemies) break;
 
-                float height = terrain.transform.position.y + heightDifferenceSpawning;
+                float height = terrainTransform.position.y + heightDifferenceSpawning;
 
                 //Debug.Log("Spawning Enemy " + s + " out of " + segments + " in circle nr " + counterCircle);
                 var rad = Mathf.Deg2Rad * (s * 360f / segments);
@@ -117,7 +122,7 @@ public class WaveManager : MonoBehaviour
                 Vector3 lookVector = worldCenter.position - enemyPosition;
                 Quaternion rotation = Quaternion.LookRotation(lookVector); // rotate towards world center
                 GameObject enemy = Instantiate(enemyPrefab, enemyPosition, rotation);
-                enemy.GetComponent<Legionaire>().SetTarget(worldCenter);
+                enemy.GetComponent<Enemy>().SetTarget(worldCenter);
                 enemy.transform.SetParent(transform);
                 spawnedEnemies.Add(enemy);
                 ++placedEnemies;
