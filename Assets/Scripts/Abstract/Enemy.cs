@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public abstract class Enemy : Damageable
+public class Enemy : Damageable
 {
 
     enum State
@@ -17,6 +17,7 @@ public abstract class Enemy : Damageable
 
     // Enemies choose Targets only if they are close and in direction if Triskelion
     // if there is no target, current target will always be Triskelion
+    [SerializeField]
     Transform target;
 
     float movementSpeedScalar = 5f;
@@ -24,12 +25,14 @@ public abstract class Enemy : Damageable
     // how far the targets can be away to attack
     float attackRange = 5f;
 
-    NavMeshAgent agent;
+
+    //NavMeshAgent agent;
 
     private void Start()
     {
-        agent = GetComponent<NavMeshAgent>();
-        agent.SetDestination(target.position);
+        //GetComponentInParent<ObstacleAvoidance>().SetTarget(target); // UNCOMMENT THISSS
+        //GetComponentInParent<ObstacleAvoidance>().SetDest(target); // UNCOMMENT THISSS
+
     }
 
     // Update is called once per frame
@@ -86,9 +89,6 @@ public abstract class Enemy : Damageable
     // MoveToTarget should be triggered each update
     void MoveToTarget()
     {
-
-        Debug.DrawRay(transform.position, target.position);
-
         //agent.destination = target.position;
 
 
