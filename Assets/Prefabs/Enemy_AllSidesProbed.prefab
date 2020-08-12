@@ -1,5 +1,35 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &1333720613431204131
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5731018337845032912}
+  m_Layer: 0
+  m_Name: NavProbe Right 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5731018337845032912
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1333720613431204131}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.311, y: 0.82, z: -2.876}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2365048723692999215}
+  m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1688954513407731298
 GameObject:
   m_ObjectHideFlags: 0
@@ -70,7 +100,7 @@ Transform:
   - {fileID: 2835277879305587094}
   - {fileID: 2835277879221694982}
   m_Father: {fileID: 2365048723692999215}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2101881232691888378
 GameObject:
@@ -82,7 +112,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4466393957645138491}
   m_Layer: 0
-  m_Name: NavProbe Front
+  m_Name: NavProbe Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96,7 +126,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2101881232691888378}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.02, y: 0.77, z: -2.29}
+  m_LocalPosition: {x: 0.37, y: 0.77, z: 1.17}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2365048723692999215}
@@ -115,7 +145,7 @@ GameObject:
   - component: {fileID: 8544904034135805904}
   - component: {fileID: 7617130564619439911}
   m_Layer: 0
-  m_Name: Enemy
+  m_Name: Enemy_AllSidesProbed
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133,8 +163,9 @@ Transform:
   m_LocalScale: {x: 3.0582, y: 3.0582, z: 3.0582}
   m_Children:
   - {fileID: 4466393957645138491}
-  - {fileID: 1476964977711074362}
-  - {fileID: 5253907392375483642}
+  - {fileID: 543363825554950735}
+  - {fileID: 5731018337845032912}
+  - {fileID: 8599758535152387324}
   - {fileID: 5292451084798337468}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -151,13 +182,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb84e8ecf739134458f57dbc8b73aa1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxHealth: 10
   target: {fileID: 0}
-  probeRange: 40
-  turnSpeed: 300
+  probeRange: 3
+  turnSpeed: 50
   probePoint: {fileID: 4466393957645138491}
-  leftR: {fileID: 1476964977711074362}
-  rightR: {fileID: 5253907392375483642}
+  leftTwo: {fileID: 543363825554950735}
+  rightTwo: {fileID: 5731018337845032912}
+  backTwo: {fileID: 8599758535152387324}
+  lastDirection: {x: 0, y: 0, z: 0}
 --- !u!65 &8544904034135805904
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -181,7 +213,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3
+  m_Speed: 5
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -193,7 +225,7 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!1 &5429150111787889838
+--- !u!1 &5044403326770599319
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -201,29 +233,29 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5253907392375483642}
+  - component: {fileID: 8599758535152387324}
   m_Layer: 0
-  m_Name: NavProbe Right
+  m_Name: NavProbe Back 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5253907392375483642
+--- !u!4 &8599758535152387324
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5429150111787889838}
+  m_GameObject: {fileID: 5044403326770599319}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 4.02, y: 0.82, z: -3.21}
+  m_LocalPosition: {x: 0.33, y: 0.82, z: -6.62}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2365048723692999215}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &7766308441770118372
+--- !u!1 &8347093881710408890
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -231,23 +263,23 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 1476964977711074362}
+  - component: {fileID: 543363825554950735}
   m_Layer: 0
-  m_Name: NavProbe Left
+  m_Name: NavProbe Left 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1476964977711074362
+--- !u!4 &543363825554950735
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7766308441770118372}
+  m_GameObject: {fileID: 8347093881710408890}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -4.48, y: 0.75, z: -3.21}
+  m_LocalPosition: {x: -2.62, y: 0.75, z: -2.45}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 2365048723692999215}
