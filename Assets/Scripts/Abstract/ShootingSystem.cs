@@ -6,6 +6,8 @@ public class ShootingSystem : MonoBehaviour
 {
     [SerializeField]
     private GameObject projectile;
+    [SerializeField]
+    private Transform shootingPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +27,7 @@ public class ShootingSystem : MonoBehaviour
     public void LaunchProjectileWithArc(Transform target, float speed)
     {
         Vector3 Vo = CalculateVelocity(LocateEstimatedPositionOfTargetWhileMoving(target, speed), transform.position, 2f);
-        GameObject obj = Instantiate(projectile, transform.position, Quaternion.identity);
+        GameObject obj = Instantiate(projectile, shootingPoint.position, Quaternion.identity);
         obj.GetComponent<Rigidbody>().velocity = Vo;
     }
 

@@ -41,6 +41,10 @@ public class Tower : Damageable
     {
         if (enemiesInRange.Count > 0)
         {
+            if(enemiesInRange[0]==null)
+            {
+                enemiesInRange.RemoveAt(0);
+            }
             shootingSystem.LaunchProjectileWithArc(enemiesInRange[0].transform, 10);
         }
     }

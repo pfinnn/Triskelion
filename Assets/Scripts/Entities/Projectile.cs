@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Projectile : MonoBehaviour
 {
+    [SerializeField]
+    private int damage;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,6 +21,11 @@ public class Projectile : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        Destroy(this);
+        Damageable damageable;
+        if (collision.gameObject.TryGetComponent<Damageable>(out damageable))
+        {
+            damageable.DealDamage(damage);
+        }
+        Destroy(this.gameObject);
     }
 }

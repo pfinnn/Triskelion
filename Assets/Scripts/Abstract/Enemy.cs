@@ -28,6 +28,7 @@ public abstract class Enemy : Damageable
 
     private void Start()
     {
+        base.Start();
         agent = GetComponent<NavMeshAgent>();
         agent.SetDestination(target.position);
     }
@@ -37,6 +38,8 @@ public abstract class Enemy : Damageable
     {
         if (isDead())
         {
+            Debug.Log("Gestorben!");
+            Destroy(this.gameObject);
             // play death animation
             // play death sound
             // notify wave manager, handles destruction
