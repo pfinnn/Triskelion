@@ -37,11 +37,6 @@ public class WaveManager : MonoBehaviour
     private float waveTimer = 0.0f;
     private float lastWaveTime;
 
-    //private float spawnTimer = 0.0f;
-    //private float lastSpawnTime;
-    //[SerializeField]
-    //private float spawnDelay = 0.5f;
-
     private List<GameObject> spawnedEnemies = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -97,11 +92,6 @@ public class WaveManager : MonoBehaviour
     {
         waveTimer = 0f;
     }
-
-    //void ResetSpawnTimer()
-    //{
-    //    spawnTimer = 0f;
-    //}
 
     void TriggerHornSound()
     {
