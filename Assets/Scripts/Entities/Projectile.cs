@@ -28,4 +28,14 @@ public class Projectile : MonoBehaviour
         }
         Destroy(this.gameObject);
     }
+
+    public int getDamage()
+    {
+        return damage;
+    }
+
+    public void setDamage(int damage)
+    {
+        this.damage = damage;
+    }
 }
