@@ -99,6 +99,8 @@ public class WaveManager : MonoBehaviour
     }
 
 
+    // TODO use Spawn Entities pre instantiated (or spawned by this loop) and place in the world handling the spawning locally
+
     void SpawnEnemies(int amountEnemies)
     {
         int placedEnemies = 0;

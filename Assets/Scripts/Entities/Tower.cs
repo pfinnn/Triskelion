@@ -56,13 +56,13 @@ public class Tower : Damageable
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponentInParent<Enemy>())
+        if (other.GetComponentInParent<UnitController>())
             enemiesInRange.Add(other.gameObject);
     }
 
     void OnTriggerExit(Collider other)
     {
-        if (other.GetComponentInParent<Enemy>())
+        if (other.GetComponentInParent<UnitController>())
             enemiesInRange.Remove(other.gameObject);
     }
     

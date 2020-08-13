@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SphereCollider))]
 public class UnitController : MonoBehaviour
 {
     [SerializeField]
@@ -22,6 +23,12 @@ public class UnitController : MonoBehaviour
     GameObject unitPrefab; // TODO, use different start animatin states on spawn, dont use sperate prefabs you maniac
 
     List<GameObject> soldiers;
+
+    List<GameObject> targetsInRange;
+
+    SphereCollider triggerVolume;
+
+    Vector3 triskelionPosition;
 
     public enum State
     {
@@ -45,9 +52,12 @@ public class UnitController : MonoBehaviour
         else
         {
             targetPosition = target.position;
+            triskelionPosition = target.position;
+            Debug.DrawLine(this.transform.position, triskelionPosition);
         }
 
         soldiers = new List<GameObject>();
+        targetsInRange = new List<GameObject>();
     }
 
     // Start is called before the first frame update
@@ -59,6 +69,8 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        DetermineCurrentState();
+
         switch (currentState)
         {
             case State.Idle:
@@ -66,7 +78,8 @@ public class UnitController : MonoBehaviour
                 IdlePositions();
                 break;
             case State.Attacking:
-                Debug.Log(this.name+" State: Attacking");
+                Debug.Log(this.name + " State: Attacking");
+                IdlePositions();
                 break;
             case State.Moving:
                 Debug.Log(this.name + " State: Moving");
@@ -74,12 +87,58 @@ public class UnitController : MonoBehaviour
                 break;
             case State.Fleeing:
                 Debug.Log(this.name + " State: Fleeing");
+                // run back to spawn area where unit will be deleted
                 break;
             case State.Death:
                 Debug.Log(this.name + " State: Death");
+                // Play animations
                 break;
         }
 
+
+    }
+
+    private bool CanAttackTarget()
+    {
+        float attackRange = 3f;
+        return Vector3.Distance(this.transform.position, targetPosition) <= attackRange;
+    }
+
+    private void DetermineCurrentState()
+    {
+        State _state = currentState;
+
+        DetermineNextTarget();
+
+        if (CanAttackTarget())
+        {
+            _state = State.Attacking;
+        }
+
+        // only overwrite if state is not equal
+        if (_state != currentState)
+        {
+            currentState = _state;
+        }
+    }
+
+    internal void DetermineNextTarget()
+    {
+        // eventually choose with probability and weight so the behavior is unpredictable but not random
+
+        if (targetsInRange.Count <= 0)
+        {
+            targetPosition = triskelionPosition;
+        }else
+        {
+            GameObject possibleTarget = targetsInRange[0];
+        }
+
+
+
+        
+
+        // also change target when under attack ?
 
     }
 
@@ -141,9 +200,14 @@ public class UnitController : MonoBehaviour
         targetPosition = _targetPosition;
     }
 
-    internal void DetermineNextTarget()
+    private void OnTriggerEnter(Collider other)
     {
+        targetsInRange.Add(other.gameObject);
+    }
 
+    private void OnTriggerExit(Collider other)
+    {
+        targetsInRange.Remove(other.gameObject);
     }
 
 }

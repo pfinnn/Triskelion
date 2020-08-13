@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7643097718891222652}
   - component: {fileID: 7643097718891222655}
+  - component: {fileID: 7029459252261344220}
   m_Layer: 0
   m_Name: Unit
   m_TagString: Untagged
@@ -48,3 +49,17 @@ MonoBehaviour:
   soldiersPerRow: 5
   unitPrefab: {fileID: 5769306334978632334, guid: e37b5ae9453658945bda25f545aeeb84,
     type: 3}
+  currentState: 0
+--- !u!135 &7029459252261344220
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7643097718891222653}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 5
+  m_Center: {x: 0, y: 0, z: 0}
