@@ -40,4 +40,9 @@ public class AgentMovement : MonoBehaviour
     {
         return transform.position;
     }
+
+    internal Quaternion GetCurrentRotation()
+    {
+        return transform.rotation;
+    }
 }
