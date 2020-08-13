@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.WebSockets;
+using System.Numerics;
 using UnityEngine;
-
+using Quaternion = UnityEngine.Quaternion;
+using Vector3 = UnityEngine.Vector3;
 
 public class BubbleHandler : MonoBehaviour
 {
@@ -13,6 +16,8 @@ public class BubbleHandler : MonoBehaviour
     Vector3 sensorRight;
     Vector3 sensorLeft;
     Vector3 sensorBack;
+
+    Transform target;
 
     internal bool HasObstacles()
     {
@@ -30,14 +35,18 @@ public class BubbleHandler : MonoBehaviour
         }
     }
 
-    
+    internal void SetTarget(Transform _target)
+    {
+        target = _target;
+    }
 
-    internal Vector3 GetBestDirection(Vector3 agentPosition)
+    internal Vector3 GetBestDirection(Vector3 agentPosition, Vector3 targetPostion, Vector3 currentDirection)
     {
         
 
-        
-
+        // check front higher weighted
+        var yes = currentDirection;
+        // shoot two rays of left and right side based width of the agents collider
 
         if ((obstaclesLeft.Count > 0 && obstaclesRight.Count == 0) || obstaclesLeft.Count < obstaclesRight.Count && obstaclesLeft.Count != 0)
         {
@@ -47,11 +56,11 @@ public class BubbleHandler : MonoBehaviour
             // get closest obstacle
 
             for (int i = 1; i < obstaclesLeft.Count; i++)
-            {
+            { 
+                // determine closest to player and target
                 Vector3 _obstacle = obstaclesLeft[i];
-                float _distance = Vector3.Distance(agentPosition, _obstacle);
-
-                if (distanceAgentObstacle > _distance)
+                float _distance = Vector3.Distance(agentPosition, _obstacle) + Vector3.Distance(targetPostion, _obstacle); //calcu weight var for dist to target
+                if (distanceAgentObstacle < _distance)
                 {
                     closestObstacle = _obstacle;
                     distanceAgentObstacle = _distance;
@@ -60,9 +69,11 @@ public class BubbleHandler : MonoBehaviour
 
             Debug.DrawLine(agentPosition, closestObstacle);
 
-            return closestObstacle;
+            float angle = Vector3.Angle(closestObstacle, targetPostion);
+            Vector3 dir = ApplyRotationToVector(targetPostion - closestObstacle, angle);
+            return dir;
             // determine angle left of it
-            
+
         }
         else
         {
@@ -73,48 +84,34 @@ public class BubbleHandler : MonoBehaviour
             // get closest obstacle
             for (int i = 1; i < obstaclesRight.Count; i++)
             {
-                Vector3 _obstacle = obstaclesRight[i];
-                float _distance = Vector3.Distance(agentPosition, _obstacle);
+                // determine closest to player and target
 
-                if (distanceAgentObstacle > _distance)
+                Vector3 _obstacle = obstaclesRight[i];
+                float _distance = Vector3.Distance(agentPosition, _obstacle) + Vector3.Distance(targetPostion, _obstacle); // MIN ?calc weight var for dist to target
+
+                if (distanceAgentObstacle < _distance)
                 {
                     closestObstacle = _obstacle;
                     distanceAgentObstacle = _distance;
                 }
             }
             Debug.DrawLine(agentPosition, closestObstacle);
-            return closestObstacle;
+
+            // calculate smart guess based on angles
+            float angle = Vector3.Angle(closestObstacle, targetPostion);
+            Vector3 dir = ApplyRotationToVector(targetPostion - closestObstacle, angle);
+            return dir;
+            
         }
     }
 
-    //List<Collider> obstacles = new List<Collider>();
-
-    // Start is called before the first frame update
-    void Start()
+    private Vector3 ApplyRotationToVector(Vector3 vec, float angle)
     {
-        //bubble = GetComponent<Collider>();
-        //Debug.Log(bubble.name + " " + bubble.bounds);
+        return Quaternion.Euler(0, 0, angle) * vec;
     }
 
-    // Update is called once per frame
-    void Update()
+    internal void HandleCollisionStay(Collider other, Bubble bubble)
     {
-        sensorFront = new Vector3(transform.position.x, transform.position.y, transform.position.z + 10);
-        sensorRight = new Vector3(transform.position.x + 10, transform.position.y, transform.position.z);
-        sensorLeft = new Vector3(transform.position.x - 10, transform.position.y, transform.position.z);
-        sensorBack = new Vector3(transform.position.x, transform.position.y, transform.position.z - 10);
-
-        Debug.DrawLine(transform.position, sensorFront, Color.yellow);
-        Debug.DrawLine(transform.position, sensorRight, Color.yellow);
-        Debug.DrawLine(transform.position, sensorLeft, Color.yellow);
-        Debug.DrawLine(transform.position, sensorBack, Color.yellow);
-    }
-
-
-    internal void HandleCollisionFromBubble(Collider other, Bubble bubble)
-    {
-        Debug.Log("Handling collision for " + bubble.name);
-
         Vector3 colliderPos = other.transform.position;
 
         switch (bubble.side)
@@ -136,6 +133,19 @@ public class BubbleHandler : MonoBehaviour
 
     }
 
+    internal void HandleCollisionExit(Collider other, Bubble bubble)
+    {
+        Vector3 colliderPos = other.transform.position;
 
+        switch (bubble.side)
+        {
+            case "right":
+                    obstaclesRight.Remove(colliderPos);
+                break;
+            case "left":
+                    obstaclesLeft.Remove(colliderPos);
+                break;
+        }
+    }
 
 }
