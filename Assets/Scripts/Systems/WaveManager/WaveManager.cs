@@ -34,8 +34,14 @@ public class WaveManager : MonoBehaviour
     [SerializeField]
     float distanceBetweenCircles = 10;
 
-    private float timer = 0.0f;
+    private float waveTimer = 0.0f;
     private float lastWaveTime;
+
+    //private float spawnTimer = 0.0f;
+    //private float lastSpawnTime;
+    //[SerializeField]
+    //private float spawnDelay = 0.5f;
+
     private List<GameObject> spawnedEnemies = new List<GameObject>();
 
     // Start is called before the first frame update
@@ -54,14 +60,14 @@ public class WaveManager : MonoBehaviour
  
         if (!WaveInProgress())
         {
-            timer += Time.deltaTime;
-            if (timer - lastWaveTime > baseWaveInterval)
+            waveTimer += Time.deltaTime;
+            if (waveTimer - lastWaveTime > baseWaveInterval)
             {
                 waveCounter += 1;
                 Debug.Log("asWave Number: " + waveCounter);
                 int amountEnemies = CalculateEnemiesAmount();
                 SpawnEnemies(amountEnemies);
-                ResetTimer();
+                ResetWaveTimer();
             }
         }
     }
@@ -87,10 +93,15 @@ public class WaveManager : MonoBehaviour
         return spawnedEnemies.Count != 0;
     }
 
-    void ResetTimer()
+    void ResetWaveTimer()
     {
-        timer = 0f;
+        waveTimer = 0f;
     }
+
+    //void ResetSpawnTimer()
+    //{
+    //    spawnTimer = 0f;
+    //}
 
     void TriggerHornSound()
     {
@@ -107,26 +118,24 @@ public class WaveManager : MonoBehaviour
         {
             ++counterCircle;
             int segments = Mathf.RoundToInt(360 / distanceBetweenAgents);
-            float extraDistance = counterCircle* distanceBetweenCircles;
+            float marginCircles = counterCircle* distanceBetweenCircles;
 
             for (int s = 0; s < segments; s++)
             {
                 if (placedEnemies >= amountEnemies) break;
 
                 float height = terrainTransform.position.y + heightDifferenceSpawning;
-
-                //Debug.Log("Spawning Enemy " + s + " out of " + segments + " in circle nr " + counterCircle);
-                var rad = Mathf.Deg2Rad * (s * 360f / segments);
-                Vector3 enemyPosition = new Vector3((Mathf.Sin(rad) * (radius+extraDistance)), height, (Mathf.Cos(rad) * (radius + extraDistance)));
-                // Calculate Rotation towards Triskelion and Spawn Enemies
+                var rad = Mathf.Deg2Rad * (s * 360f / segments - 1);
+                Vector3 enemyPosition = new Vector3((Mathf.Sin(rad) * (radius + marginCircles)), height, (Mathf.Cos(rad) * (radius + marginCircles)));
                 Vector3 lookVector = worldCenter.position - enemyPosition;
-                Quaternion rotation = Quaternion.LookRotation(lookVector); // rotate towards world center
+                Quaternion rotation = Quaternion.LookRotation(lookVector);
+
                 GameObject enemy = Instantiate(enemyPrefab, enemyPosition, rotation);
-                enemy.GetComponent<Enemy>().SetTarget(worldCenter);
+                enemy.GetComponent<UnitController>().SetTarget(worldCenter.position);
                 enemy.transform.SetParent(transform);
                 spawnedEnemies.Add(enemy);
-                ++placedEnemies;
 
+                ++placedEnemies;
             }
             if (placedEnemies >= amountEnemies) break;
         }
