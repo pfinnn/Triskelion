@@ -2292,12 +2292,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca0670e9badddf041959574456b15a00, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 2365048723692999213, guid: 2aee065123c9b4a45b0e9d1b3eb9c637,
+  enemyPrefab: {fileID: 7643097718891222653, guid: 9ce08509e36a01b4eb7692dabf7589c3,
     type: 3}
   worldCenter: {fileID: 1061821028}
-  radius: 300
+  radius: 200
   baseWaveInterval: 1
-  waveCounter: 222
+  waveCounter: 1
   terrainTransform: {fileID: 1907919902}
   heightDifferenceSpawning: 31
   distanceBetweenAgents: 6
