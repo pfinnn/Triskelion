@@ -1,33 +1,43 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
 public class AgentMovement : MonoBehaviour
 {
-    public Transform target;
+    UnitController uc;
 
-    private BubbleHandler bh;
+    Vector3 targetPosition;
 
-    // Start is called before the first frame update
-    void Start()
+    NavMeshAgent nma;
+
+    void Awake()
     {
-        bh = GetComponent<BubbleHandler>();
+        uc = GetComponentInParent<UnitController>();
+        targetPosition = this.transform.position;
+        nma = GetComponent<NavMeshAgent>();
+    }
+
+    private void Start()
+    {
+        nma.SetDestination(targetPosition);
+    }
+
+    public void SetTargetDestination(Vector3 _destination)
+    {
+        nma.SetDestination(_destination);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (bh.HasObstacles())
-        {
-            Vector3 dir = bh.GetBestDirection(this.transform.position);
-            Debug.Log("Agent avoiding obstacles");
-        }
-
-        Vector3 targetDirection = target.position - transform.position;
-        Quaternion targetRotation = Quaternion.LookRotation(new Vector3(targetDirection.x, 0, targetDirection.z));
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 3f);
-        transform.position += transform.forward * 3f * Time.deltaTime;
+        
     }
 
-
+    internal Vector3 GetCurrentPosition()
+    {
+        return transform.position;
+    }
 }
