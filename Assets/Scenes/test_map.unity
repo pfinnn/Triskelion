@@ -2297,7 +2297,7 @@ MonoBehaviour:
   worldCenter: {fileID: 1061821028}
   radius: 200
   baseWaveInterval: 1
-  waveCounter: 1
+  waveCounter: 3
   terrainTransform: {fileID: 1907919902}
   heightDifferenceSpawning: 31
   distanceBetweenAgents: 6

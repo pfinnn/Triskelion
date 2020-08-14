@@ -6,10 +6,9 @@ using UnityEngine;
 [RequireComponent(typeof(SphereCollider))]
 public class UnitController : MonoBehaviour
 {
-    [SerializeField]
-    Transform target;    
-    
+   
     Vector3 targetPosition;
+    Vector3 triskelionPosition; // remember triskelion position to always be able to go back there without searching for the GO
 
     //List<Formations> formations;
 
@@ -26,9 +25,6 @@ public class UnitController : MonoBehaviour
 
     List<GameObject> targetsInRange;
 
-    SphereCollider triggerVolume;
-
-    Vector3 triskelionPosition;
 
     public enum State
     {
@@ -45,19 +41,11 @@ public class UnitController : MonoBehaviour
     {
         currentState = State.Idle;
 
-        if (target == null)
-        {
-            targetPosition = this.transform.position;
-        }
-        else
-        {
-            targetPosition = target.position;
-            triskelionPosition = target.position;
-            Debug.DrawLine(this.transform.position, triskelionPosition);
-        }
-
         soldiers = new List<GameObject>();
         targetsInRange = new List<GameObject>();
+
+        targetPosition = GameObject.Find("Triskelion").transform.position;
+        triskelionPosition = targetPosition;
     }
 
     // Start is called before the first frame update
@@ -83,7 +71,7 @@ public class UnitController : MonoBehaviour
                 break;
             case State.Moving:
                 Debug.Log(this.name + " State: Moving");
-                CalculateNewTargetPosition();
+                SetAgentsDestinations();
                 break;
             case State.Fleeing:
                 Debug.Log(this.name + " State: Fleeing");
@@ -106,8 +94,11 @@ public class UnitController : MonoBehaviour
 
     private void DetermineCurrentState()
     {
+        
         State _state = currentState;
 
+
+        
         DetermineNextTarget();
 
         if (CanAttackTarget())
@@ -132,11 +123,9 @@ public class UnitController : MonoBehaviour
         }else
         {
             GameObject possibleTarget = targetsInRange[0];
+            targetPosition = possibleTarget.transform.position;
         }
 
-
-
-        
 
         // also change target when under attack ?
 
@@ -181,7 +170,7 @@ public class UnitController : MonoBehaviour
         return total/soldiers.Count;
     }
 
-    internal void CalculateNewTargetPosition()
+    internal void SetAgentsDestinations()
     {
         Vector3 center = CalculateCenter();
 
@@ -202,6 +191,7 @@ public class UnitController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        Debug.Log(other.name + " has entered Unit Trigger " + this.name);
         targetsInRange.Add(other.gameObject);
     }
 
