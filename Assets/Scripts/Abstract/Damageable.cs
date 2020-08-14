@@ -16,7 +16,7 @@ public abstract class Damageable : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if(isDead())
+        if(IsDead())
         {
             Destroy(this);
         }
@@ -34,7 +34,7 @@ public abstract class Damageable : MonoBehaviour
             health = maxHealth;
     }
 
-    public bool isDead()
+    public bool IsDead()
     {
         return (health <= 0);
     }
@@ -45,22 +45,22 @@ public abstract class Damageable : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    public int getHealth()
+    public int GetHealth()
     {
         return health;
     }
 
-    public void setHealth(int health)
+    public void SetHealth(int health)
     {
         this.health = health;
     }
 
-    public int getMaxHealth()
+    public int GetMaxHealth()
     {
         return maxHealth;
     }
 
-    public void setMaxHealth(int maxHealth)
+    public void SetMaxHealth(int maxHealth)
     {
         this.maxHealth = maxHealth;
     }

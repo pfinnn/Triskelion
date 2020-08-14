@@ -30,7 +30,7 @@ public class Upgradeable : MonoBehaviour
         {
             case items.HEALTH:
                 if (inventory.Buy(resourceType, price))
-                    dmg.setHealth(dmg.getMaxHealth() + addAmount);
+                    dmg.SetHealth(dmg.GetMaxHealth() + addAmount);
                 break;
 
             case items.PROJECTILE:
