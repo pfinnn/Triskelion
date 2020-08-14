@@ -220,13 +220,12 @@ public class UnitController : MonoBehaviour
                 Vector3 currentSoldierPos = soldier.GetCurrentPosition() + new Vector3(i, 0, j);
                 Vector3 nextSoldierPos =  soldiers[0].transform.position + new Vector3(i, 0, j);
 
-                Debug.DrawLine(currentSoldierPos, nextSoldierPos, Color.white);
-                if (Vector3.Distance(currentSoldierPos, nextSoldierPos) > 1f)
+                Debug.DrawLine(formationStep + new Vector3(i, 0, j), nextSoldierPos, Color.white);
+                if (Vector3.Distance(formationStep + new Vector3(i, 0, j), nextSoldierPos) > 3f)
                 {
-                    Debug.Log("Soldier too far away from Position in Formation. Distance: " + Vector3.Distance(currentSoldierPos, nextSoldierPos));
+
                     soldierInFormation[i, j] = false;
                 }
-
             }
         }
     }
