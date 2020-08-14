@@ -39,7 +39,7 @@ public class UnitController : MonoBehaviour
 
     private void Awake()
     {
-        currentState = State.Idle;
+        currentState = State.Moving;
 
         soldiers = new List<GameObject>();
         targetsInRange = new List<GameObject>();
