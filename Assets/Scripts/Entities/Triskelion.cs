@@ -12,7 +12,6 @@ public class Triskelion : Damageable
     {
         base.Start();
         mat = GetComponent<MeshRenderer>().material;
-        Debug.Log("Max Health: " + GetMaxHealth());
     }
 
     // Update is called once per frame
