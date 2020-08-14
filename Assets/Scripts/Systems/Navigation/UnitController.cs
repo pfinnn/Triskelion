@@ -218,7 +218,7 @@ public class UnitController : MonoBehaviour
             {
                 AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
                 Vector3 currentSoldierPos = soldier.GetCurrentPosition() + new Vector3(i, 0, j);
-                Vector3 nextSoldierPos =  formationStep + new Vector3(i, 0, j);
+                Vector3 nextSoldierPos =  soldiers[0].transform.position + new Vector3(i, 0, j);
 
                 Debug.DrawLine(currentSoldierPos, nextSoldierPos, Color.white);
                 if (Vector3.Distance(currentSoldierPos, nextSoldierPos) > 1f)
@@ -260,7 +260,7 @@ public class UnitController : MonoBehaviour
         formationCenter = CalculateCenter();
         UpdateSoldiersInFormation();
         
-        Debug.DrawLine(formationCenter, formationStep, Color.blue);
+        Debug.DrawLine(soldiers[0].transform.position, formationStep, Color.blue);
 
         if (AllSoldiersInFormation() && STATE_MOVEMENT == State_Movement.Wait)
         {
