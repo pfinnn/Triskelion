@@ -11,9 +11,15 @@ public class Inventory : MonoBehaviour
     private Text woodUI;
     [SerializeField]
     private Text feidhUI;
-    private int foodAmount { get; set; }
-    private int woodAmount { get; set; }
-    private int feidhAmount { get; set; }
+    private int foodAmount = 0;
+    private int woodAmount = 0;
+    private int feidhAmount = 0;
+
+    public enum resourceType
+    {
+        FOOD, WOOD, FEIDH
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -25,11 +31,83 @@ public class Inventory : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        foodAmount++;
-        woodAmount++;
-        feidhAmount++;
         foodUI.text = foodAmount.ToString();
         woodUI.text = woodAmount.ToString();
         feidhUI.text = feidhAmount.ToString();
     }
+
+    public bool Buy(resourceType type, int price)
+    {
+        bool ableToBuy = price <= Get(type);
+        if(ableToBuy)
+        {
+            Set(type, Get(type) - price);
+        }
+        return ableToBuy;
+    }
+
+    public void AddResource(resourceType type, int amount)
+    {
+        Set(type, Get(type) + amount);
+    }
+
+    private void Set(resourceType type, int amount)
+    {
+        switch(type)
+        {
+            case resourceType.FOOD:
+                setFoodAmount(amount);
+                break;
+            case resourceType.WOOD:
+                setWoodAmount(amount);
+                break;
+            case resourceType.FEIDH:
+                setFeidhAmount(amount);
+                break;
+        }
+    }
+
+    private int Get(resourceType type)
+    {
+        switch(type)
+        {
+            case resourceType.FOOD:
+                return getFoodAmount();
+            case resourceType.WOOD:
+                return getWoodAmount();
+            case resourceType.FEIDH:
+                return getFeidhAmount();
+        }
+        return -1;
+    }
+    public int getFoodAmount()
+    {
+        return foodAmount;
+    }
+
+    public void setFoodAmount(int foodAmount)
+    {
+        this.foodAmount = foodAmount;
+    }
+
+    public int getWoodAmount()
+    {
+        return woodAmount;
+    }
+
+    public void setWoodAmount(int woodAmount)
+    {
+        this.woodAmount = woodAmount;
+    }
+
+    public int getFeidhAmount()
+    {
+        return feidhAmount;
+    }
+
+    public void setFeidhAmount(int feidhAmount)
+    {
+        this.feidhAmount = feidhAmount;
+    }
+
 }
