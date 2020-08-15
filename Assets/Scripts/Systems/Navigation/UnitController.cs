@@ -220,11 +220,13 @@ public class UnitController : MonoBehaviour
                 Vector3 currentSoldierPos = soldier.GetCurrentPosition() + new Vector3(i, 0, j);
                 Vector3 nextSoldierPos =  soldiers[0].transform.position + new Vector3(i, 0, j);
 
-                Debug.DrawLine(formationStep + new Vector3(i, 0, j), nextSoldierPos, Color.white);
+                Debug.DrawLine(formationStep + new Vector3(i, 0, j), nextSoldierPos, Color.green);
                 if (Vector3.Distance(formationStep + new Vector3(i, 0, j), nextSoldierPos) > 3f)
                 {
-
                     soldierInFormation[i, j] = false;
+                } else
+                {
+                    soldierInFormation[i, j] = true;
                 }
             }
         }
@@ -261,7 +263,7 @@ public class UnitController : MonoBehaviour
         
         Debug.DrawLine(soldiers[0].transform.position, formationStep, Color.blue);
 
-        if (AllSoldiersInFormation() && STATE_MOVEMENT == State_Movement.Wait)
+        if (AllSoldiersInFormation())
         {
             formationStep = CalculateFormationStep();
 
