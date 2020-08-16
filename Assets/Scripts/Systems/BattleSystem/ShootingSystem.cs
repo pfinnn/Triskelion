@@ -6,13 +6,6 @@ public class ShootingSystem : MonoBehaviour
 {
     [SerializeField]
     private GameObject projectile;
-    [SerializeField]
-    private Transform shootingPoint;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
 
     // Update is called once per frame
     void Update()
@@ -21,13 +14,15 @@ public class ShootingSystem : MonoBehaviour
 
     private Vector3 LocateEstimatedPositionOfTargetWhileMoving(Transform targetPosition, float targetSpeed)
     {
-        return targetPosition.position + (targetPosition.forward.normalized * targetSpeed);
+        return Vector3.MoveTowards(targetPosition.position, targetPosition.position, 10f);
+        //return targetPosition.position + (targetPosition.forward.normalized * targetSpeed);
     }
 
     public void LaunchProjectileWithArc(Transform target, float speed)
     {
         Vector3 Vo = CalculateVelocity(LocateEstimatedPositionOfTargetWhileMoving(target, speed), transform.position, 2f);
-        GameObject obj = Instantiate(projectile, shootingPoint.position, Quaternion.identity);
+        Vector3 shootingPoint = Vector3.MoveTowards(transform.position, target.position, 5f);
+        GameObject obj = Instantiate(projectile, shootingPoint, Quaternion.identity);
         obj.GetComponent<Rigidbody>().velocity = Vo;
     }
 
