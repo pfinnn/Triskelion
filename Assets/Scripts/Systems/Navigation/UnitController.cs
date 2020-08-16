@@ -14,6 +14,7 @@ public class UnitController : MonoBehaviour
 
     [SerializeField]
     int soldiersAmount;
+    int rows;
 
     [SerializeField]
     int soldiersPerRow;
@@ -24,14 +25,17 @@ public class UnitController : MonoBehaviour
     List<GameObject> soldiers;
 
     List<GameObject> targetsInRange;
+    float attackRange = 15f;
 
     GameObject[,] formationGrid;
     bool[,] soldierInFormation;
     Vector3 formationStep;
     Vector3 formationCenter;
+    float marginFormation = 0.5f;
+    float StepSizeFormation = 15f;
 
     float timer_Formation = 0f;
-    float timer_WaitInFormationSince = 0f;
+    float timestamp_Formation = 0f;
     float waitInFormationIntervall = 10f;
 
     public enum State_Unit
@@ -69,8 +73,9 @@ public class UnitController : MonoBehaviour
         STATE_MOVEMENT  = State_Movement.Moving;
         soldiers = new List<GameObject>();
         targetsInRange = new List<GameObject>();
-        formationGrid = new GameObject[soldiersAmount, soldiersAmount];
-        soldierInFormation = new bool[soldiersAmount, soldiersAmount];
+        rows = Mathf.RoundToInt(soldiersAmount / soldiersPerRow);
+        formationGrid = new GameObject[rows, soldiersPerRow];
+        soldierInFormation = new bool[rows, soldiersPerRow];
 
         targetPosition = GameObject.Find("Triskelion").transform.position;
         triskelionPosition = targetPosition;
@@ -85,6 +90,8 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Update all necessary values in one place and not inside functions
+
         DetermineCurrentState();
 
         switch (STATE_UNIT)
@@ -94,6 +101,7 @@ public class UnitController : MonoBehaviour
                 break;
             case State_Unit.Attacking:
                 IdlePositions();
+                // play attack animations 
                 break;
             case State_Unit.Moving:
                 HandleMovement();
@@ -116,8 +124,6 @@ public class UnitController : MonoBehaviour
         
         State_Unit _state = STATE_UNIT;
 
-
-        
         DetermineNextTarget();
 
         if (CanAttackTarget())
@@ -145,15 +151,14 @@ public class UnitController : MonoBehaviour
             targetPosition = possibleTarget.transform.position;
         }
 
-
         // also change target when under attack ?
 
     }
 
     private bool CanAttackTarget()
     {
-        float attackRange = 3f;
-        return Vector3.Distance(this.transform.position, targetPosition) <= attackRange;
+        float attackRange = 8f;
+        return Vector3.Distance(soldiers[0].transform.position, targetPosition) <= attackRange;
     }
 
     private void IdlePositions()
@@ -170,9 +175,6 @@ public class UnitController : MonoBehaviour
     {
         Vector3 corner = this.transform.position;
         
-
-        int rows = Mathf.RoundToInt(soldiersAmount / soldiersPerRow);
-
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < soldiersPerRow; j++)
@@ -202,7 +204,6 @@ public class UnitController : MonoBehaviour
 
     internal Vector3 CalculateFormationStep()
     {
-        float StepSizeFormation = 10f;
         //return Vector3.MoveTowards(CalculateCenter(), targetPosition, StepSizeFormation); // Center Based
         return Vector3.MoveTowards(soldiers[0].transform.position, targetPosition, StepSizeFormation); // Corner Based
 
@@ -210,22 +211,28 @@ public class UnitController : MonoBehaviour
 
     void UpdateSoldiersInFormation()
     {
-        int rows = Mathf.RoundToInt(soldiersAmount / soldiersPerRow);
-
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < soldiersPerRow; j++)
             {
-                AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
-                Vector3 currentSoldierPos = soldier.GetCurrentPosition() + new Vector3(i, 0, j);
-                Vector3 nextSoldierPos =  soldiers[0].transform.position + new Vector3(i, 0, j);
+                GameObject soldier = formationGrid[i, j];
 
-                Debug.DrawLine(formationStep + new Vector3(i, 0, j), nextSoldierPos, Color.green);
-                if (Vector3.Distance(formationStep + new Vector3(i, 0, j), nextSoldierPos) > 3f)
+                Vector3 gridOffset = new Vector3(i, 0, j);
+
+                Vector3 nextSoldierPos = formationStep + gridOffset;
+
+                Vector3 nextSoldierPosNoHeight = new Vector3(nextSoldierPos.x, 0, nextSoldierPos.z);
+
+                Vector3 soldierPos = new Vector3(soldier.transform.position.x, 0 , soldier.transform.position.z);
+
+                Debug.DrawLine(soldier.transform.position, nextSoldierPos, Color.blue);
+                          
+                if (Vector3.Distance(soldierPos, nextSoldierPosNoHeight) > marginFormation)
                 {
                     soldierInFormation[i, j] = false;
                 } else
                 {
+                    soldier.GetComponent<AgentMovement>().StopAgent();
                     soldierInFormation[i, j] = true;
                 }
             }
@@ -234,54 +241,64 @@ public class UnitController : MonoBehaviour
 
     bool AllSoldiersInFormation()
     {
-        bool AllSoldiersInFormation = true;
-
-        int rows = Mathf.RoundToInt(soldiersAmount / soldiersPerRow);
-
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < soldiersPerRow; j++)
             {
                 if (soldierInFormation[i, j] == false)
                 {
-                    Debug.Log("Not all soldiers in formation: " + STATE_FORMATION);
-                    Debug.Log("Current State: " + STATE_MOVEMENT);
                     return false;
                 }
             }
         }
         Debug.Log("All soldiers in formation: "+ STATE_FORMATION);
-        return AllSoldiersInFormation;
+        return true;
     }
 
     internal void HandleMovement()
     {
         timer_Formation += Time.deltaTime;
-
         formationCenter = CalculateCenter();
         UpdateSoldiersInFormation();
         
-        Debug.DrawLine(soldiers[0].transform.position, formationStep, Color.blue);
-
-        if (AllSoldiersInFormation())
+        if (AllSoldiersInFormation() || timer_Formation - timestamp_Formation >= waitInFormationIntervall)
         {
+            Debug.Log("Recalculating Formation Step and start moving again");
             formationStep = CalculateFormationStep();
-
-            STATE_MOVEMENT = State_Movement.Moving;
-        }
-
-        //if (timer_Formation - timer_WaitInFormationSince > waitInFormationIntervall)
-        //{
-        //    STATE_MOVEMENT = State_Movement.Moving;
-        //    timer_Formation = 0f;
-        //    timer_WaitInFormationSince = 0f;
-        //    formationStep = CalculateFormationStep();
-        //}
-
-        if (STATE_MOVEMENT == State_Movement.Moving){
+            timer_Formation = 0f;
+            timestamp_Formation = Time.deltaTime;
+            StartAllSoldiers();
+        } else
+        {
             MoveInFormation();
         }
 
+
+        
+    }
+
+    void StopAllSoldiers()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < soldiersPerRow; j++)
+            {
+                AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
+                soldier.StopAgent();
+            }
+        }
+    }
+
+    void StartAllSoldiers()
+    {
+        for (int i = 0; i < rows; i++)
+        {
+            for (int j = 0; j < soldiersPerRow; j++)
+            {
+                AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
+                soldier.StartAgent();
+            }
+        }
     }
 
     void MoveInFormation()
@@ -300,23 +317,12 @@ public class UnitController : MonoBehaviour
 
     void MoveInGridFormation()
     {
-        int rows = Mathf.RoundToInt(soldiersAmount / soldiersPerRow);
-
         for (int i = 0; i < rows; i++)
         {
             for (int j = 0; j < soldiersPerRow; j++)
             {
-                AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
-                Vector3 currentSoldierPosition = soldiers[0].transform.position + new Vector3(i, 0, j);
-
                 Vector3 nextSoldierPos = formationStep + new Vector3(i, 0, j);
-
-                //if (!soldierInFormation[i, j])
-                //{
-                    formationGrid[i, j].GetComponent<AgentMovement>().SetTargetDestination(nextSoldierPos);
-                //}
-
-
+                formationGrid[i, j].GetComponent<AgentMovement>().SetTargetDestination(nextSoldierPos);
             }
         }
     }
