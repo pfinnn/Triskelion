@@ -11,13 +11,14 @@ public class Inventory : MonoBehaviour
     private Text woodUI;
     [SerializeField]
     private Text feidhUI;
+
     private int foodAmount = 0;
     private int woodAmount = 0;
     private int feidhAmount = 0;
 
     public enum resourceType
     {
-        FOOD, WOOD, FEIDH
+        FOOD, WOOD, FEIDH, NONE
     }
 
     // Start is called before the first frame update
@@ -38,7 +39,7 @@ public class Inventory : MonoBehaviour
 
     public bool Buy(resourceType type, int price)
     {
-        bool ableToBuy = price <= Get(type);
+        bool ableToBuy = type != resourceType.NONE && price <= Get(type);
         if(ableToBuy)
         {
             Set(type, Get(type) - price);
@@ -109,5 +110,4 @@ public class Inventory : MonoBehaviour
     {
         this.feidhAmount = feidhAmount;
     }
-
 }
