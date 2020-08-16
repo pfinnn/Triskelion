@@ -5,13 +5,11 @@ using UnityEngine;
 public class FarmingStation : MonoBehaviour
 {
     [SerializeField]
-    private float addingIntervallInSeconds;
-    [SerializeField]
     private Inventory.resourceType resourceType;
     [SerializeField]
     private Inventory resourceSystem;
 
-    private float timer = 0f;
+    private List<Worker> workers = new List<Worker>();
     // Start is called before the first frame update
     void Start()
     {
@@ -21,11 +19,33 @@ public class FarmingStation : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime;
-        if (timer >= addingIntervallInSeconds)
+
+    }
+
+    public void addWorker(Worker worker)
+    {
+        this.workers.Add(worker);
+        worker.setWorkingPlace(this);
+    }
+
+    public void removeWorker(Worker worker)
+    {
+        this.workers.Remove(worker);
+        worker.setWorkingPlace(null);
+    }
+
+    private void OnDestroy()
+    {
+        this.workers.RemoveRange(0, this.workers.Count);
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Worker worker = other.GetComponentInParent<Worker>();
+        if (worker != null)
         {
-            resourceSystem.AddResource(resourceType, 1);
-            timer = 0f;
+            resourceSystem.AddResource(resourceType, worker.getCurrentStorage());
+            worker.setCurrentStorage(0);
         }
     }
 }
