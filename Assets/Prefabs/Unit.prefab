@@ -44,12 +44,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8ac7a1a79d458b2409796e12a4e96d7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
   soldiersAmount: 30
   soldiersPerRow: 5
   unitPrefab: {fileID: 5769306334978632334, guid: e37b5ae9453658945bda25f545aeeb84,
     type: 3}
-  currentState: 0
+  STATE_UNIT: 0
+  STATE_FORMATION: 0
+  STATE_MOVEMENT: 0
 --- !u!135 &7029459252261344220
 SphereCollider:
   m_ObjectHideFlags: 0
