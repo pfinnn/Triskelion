@@ -22,12 +22,25 @@ public class AgentMovement : MonoBehaviour
 
     private void Start()
     {
+        // set layer cost for water and ground
+
         nma.SetDestination(targetPosition);
     }
 
     public void SetTargetDestination(Vector3 _destination)
     {
         nma.SetDestination(_destination);
+    }
+
+    public void StopAgent()
+    {
+        //nma.velocity = Vector3.zero; // no sliding
+        nma.isStopped = true; 
+    }
+
+    public void StartAgent()
+    {
+        nma.isStopped = false;
     }
 
     // Update is called once per frame
