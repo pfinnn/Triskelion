@@ -10,7 +10,7 @@ public class Projectile : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+        this.gameObject.tag = "attackers";
     }
 
     // Update is called once per frame

@@ -123,6 +123,7 @@ public class WaveManager : MonoBehaviour
 
                 GameObject enemy = Instantiate(enemyPrefab, enemyPosition, rotation);
                 enemy.transform.SetParent(transform);
+                enemyPrefab.GetComponent<UnitController>().StartAllSoldiers(); // very sticky
                 spawnedEnemies.Add(enemy);
 
                 ++placedEnemies;

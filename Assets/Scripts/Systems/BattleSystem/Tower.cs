@@ -9,6 +9,8 @@ public class Tower : Damageable
     private List<GameObject> enemiesInRange = new List<GameObject>();
     private float timer = 0.0f;
 
+    
+
     enum State
     {
         Idle,
@@ -24,6 +26,8 @@ public class Tower : Damageable
     {
         base.Start();
         shootingSystem = GetComponent<ShootingSystem>();
+        this.gameObject.tag = "damageable";
+        this.gameObject.tag = "defenders";
     }
 
     // Update is called once per frame
