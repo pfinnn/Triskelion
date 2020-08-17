@@ -23,7 +23,7 @@ public class WorkerManager : MonoBehaviour
     [SerializeField]
     private List<GameObject> woodcutterHuts = new List<GameObject>();
     [SerializeField]
-    private List<GameObject> droidWorkplaces = new List<GameObject>();
+    private List<GameObject> druidWorkplaces = new List<GameObject>();
 
     // Start is called before the first frame update
     void Start()
@@ -84,7 +84,7 @@ public class WorkerManager : MonoBehaviour
         }
         return null;
     }
-    internal GameObject getOneDroidWorker()
+    internal GameObject getOneDruidWorker()
     {
         foreach  (GameObject worker in workers.Keys)
         {
@@ -128,9 +128,9 @@ public class WorkerManager : MonoBehaviour
     {
         return woodcutterHuts[UnityEngine.Random.Range(0, woodcutterHuts.Count)];
     }
-    public GameObject getDroidWorkplaces()
+    public GameObject getDruidWorkplaces()
     {
-        return droidWorkplaces[UnityEngine.Random.Range(0, droidWorkplaces.Count)];
+        return druidWorkplaces[UnityEngine.Random.Range(0, druidWorkplaces.Count)];
     }
 
     public Transform getWarehouseTransform()

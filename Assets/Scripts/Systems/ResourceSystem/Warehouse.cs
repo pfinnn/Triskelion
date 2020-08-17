@@ -1,16 +1,15 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-
+using TMPro;
 public class Warehouse : MonoBehaviour
 {
     [SerializeField]
-    private Text foodUI;
+    private TextMeshProUGUI foodUI;
     [SerializeField]
-    private Text woodUI;
+    private TextMeshProUGUI woodUI;
     [SerializeField]
-    private Text feidhUI;
+    private TextMeshProUGUI feidhUI;
 
     private int foodAmount = 0;
     private int woodAmount = 0;
