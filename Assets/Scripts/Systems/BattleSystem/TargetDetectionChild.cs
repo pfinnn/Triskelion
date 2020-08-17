@@ -14,7 +14,6 @@ public class TargetDetectionChild : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(other.name + " has entered Unit Trigger " + this.name + " Child Detector");
         parent.OnChildTriggerEnter(other);
     }
 

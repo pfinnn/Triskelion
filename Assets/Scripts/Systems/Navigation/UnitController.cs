@@ -343,7 +343,6 @@ public class UnitController : MonoBehaviour
         
         if (tag == "defenders")
         {
-            Debug.Log(other.name + " has entered Unit Trigger " + this.name);
             targetsInRange.Add(other.gameObject);
         }
 

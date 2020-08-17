@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
-public class WorkerGUIController : MonoBehaviour
+public class UIC_WorkerManager : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI inactiveTextField;
@@ -34,7 +34,7 @@ public class WorkerGUIController : MonoBehaviour
     private int inactiveWorkers;
     private int farmerWorkers;
     private int woodcutterWorkers;
-    private int droidsWorkers;
+    private int druidsWorkers;
     // Start is called before the first frame update
     void Start()
     {
@@ -56,7 +56,7 @@ public class WorkerGUIController : MonoBehaviour
         inactiveTextField.text = inactiveWorkers.ToString();
         farmerTextField.text = farmerWorkers.ToString();
         woodcutterTextField.text = woodcutterWorkers.ToString();
-        druidsTextField.text = droidsWorkers.ToString();
+        druidsTextField.text = druidsWorkers.ToString();
     }
 
     private void UpdateCounts()
@@ -65,7 +65,7 @@ public class WorkerGUIController : MonoBehaviour
         inactiveWorkers = counts[0];
         farmerWorkers = counts[1];
         woodcutterWorkers = counts[2];
-        droidsWorkers = counts[3];
+        druidsWorkers = counts[3];
     }
 
     public void AddFarmer()
@@ -102,7 +102,7 @@ public class WorkerGUIController : MonoBehaviour
             workerManager.AssignWorkerToFarmingStation(worker, null);
         }
     }
-    public void AddDroid()
+    public void AddDruid()
     {
         if (inactiveWorkers > 0)
         {
@@ -110,7 +110,7 @@ public class WorkerGUIController : MonoBehaviour
             workerManager.AssignWorkerToFarmingStation(worker, workerManager.getWoodCutterHut());
         }
     }
-    public void RemoveDroid()
+    public void RemoveDruid()
     {
         if (farmerWorkers > 0)
         {
