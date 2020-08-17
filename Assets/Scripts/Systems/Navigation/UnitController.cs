@@ -32,11 +32,11 @@ public class UnitController : MonoBehaviour
     Vector3 formationStep;
     Vector3 formationCenter;
     float marginFormation = 0.5f;
-    float StepSizeFormation = 15f;
+    float StepSizeFormation = 40f;
 
     float timer_Formation = 0f;
     float timestamp_Formation = 0f;
-    float waitInFormationIntervall = 10f;
+    float waitInFormationIntervall = 20f;
 
     public enum State_Unit
     {
@@ -204,6 +204,7 @@ public class UnitController : MonoBehaviour
 
     internal Vector3 CalculateFormationStep()
     {
+        //return targetPosition;
         //return Vector3.MoveTowards(CalculateCenter(), targetPosition, StepSizeFormation); // Center Based
         return Vector3.MoveTowards(soldiers[0].transform.position, targetPosition, StepSizeFormation); // Corner Based
 

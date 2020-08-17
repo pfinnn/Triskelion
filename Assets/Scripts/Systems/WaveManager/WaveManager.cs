@@ -122,7 +122,6 @@ public class WaveManager : MonoBehaviour
                 Quaternion rotation = Quaternion.LookRotation(lookVector);
 
                 GameObject enemy = Instantiate(enemyPrefab, enemyPosition, rotation);
-                //enemy.GetComponent<UnitController>().SetTarget(worldCenter.position);
                 enemy.transform.SetParent(transform);
                 spawnedEnemies.Add(enemy);
 
