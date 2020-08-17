@@ -66,6 +66,15 @@ public class UnitController : MonoBehaviour
 
     public State_Formation STATE_FORMATION;
 
+    public enum State_AttackFlow
+    {
+        Positioning,
+        Range,
+        Melee
+    }
+
+    public State_AttackFlow STATE_ATTACKFLOW;
+
     private void Awake()
     {
         STATE_UNIT = State_Unit.Moving;
@@ -102,12 +111,15 @@ public class UnitController : MonoBehaviour
                 IdlePositions();
                 break;
             case State_Unit.Attacking:
+                if (timestamp_Formation == 0f)
+                {
+                    timestamp_Formation = Time.deltaTime;
+                }
                 HandleAttackingFlow();
                 // play attack animations 
                 break;
             case State_Unit.Moving:
                 HandleMovement();
-                //MoveWithoutFormation();
                 break;
             case State_Unit.Fleeing:
                 // run back to spawn area where unit will be deleted
@@ -122,14 +134,28 @@ public class UnitController : MonoBehaviour
 
     private void HandleAttackingFlow()
     {
-        // first move to a position close to the target and go into Formation
-        if (!AllSoldiersInFormation())
+        timer_Formation += Time.deltaTime;
+        
+        switch (STATE_ATTACKFLOW)
         {
+            case State_AttackFlow.Positioning:
+                IdlePositions();
+                break;
+
+
+        }
+
+
+        // first move to a position close to the target and go into Formation
+        if (!AllSoldiersInFormation() || timer_Formation - timestamp_Formation >= waitInFormationIntervall)
+        {
+            timer_Formation = 0f;
             formationStep = Vector3.MoveTowards(targetPosition, formationCenter, 10f);
             // choose appropriate formation, handle function
             MoveInGridFormation();
         } else
         {
+            timestamp_Formation = Time.deltaTime;
             if (rangeAttackSalves < 3)
             {
                 rangeAttack();
@@ -139,6 +165,11 @@ public class UnitController : MonoBehaviour
 
 
 
+    }
+
+    private void rangeAttack()
+    {
+        throw new NotImplementedException();
     }
 
     private void DetermineCurrentState()
