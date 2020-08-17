@@ -7,15 +7,12 @@ using UnityEngine.AI;
 [RequireComponent(typeof(NavMeshAgent))]
 public class AgentMovement : MonoBehaviour
 {
-    UnitController uc;
-
     Vector3 targetPosition;
 
     NavMeshAgent nma;
 
     void Awake()
     {
-        uc = GetComponentInParent<UnitController>();
         targetPosition = this.transform.position;
         nma = GetComponent<NavMeshAgent>();
     }
@@ -41,6 +38,16 @@ public class AgentMovement : MonoBehaviour
     public void StartAgent()
     {
         nma.isStopped = false;
+    }
+
+    public bool IsMoving()
+    {
+        return !nma.isStopped;
+    }
+
+    public bool ReachedDestination(Vector3 destination)
+    {
+        return Vector3.Distance(this.transform.position, destination) <= 1;
     }
 
     // Update is called once per frame

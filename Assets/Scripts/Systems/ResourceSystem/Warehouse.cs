@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Inventory : MonoBehaviour
+public class Warehouse : MonoBehaviour
 {
     [SerializeField]
     private Text foodUI;
@@ -81,6 +81,20 @@ public class Inventory : MonoBehaviour
         }
         return -1;
     }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        Worker worker = other.GetComponent<Worker>();
+        if (worker != null)
+        {
+            worker.setState(Worker.State.WAITING);
+            AddResource(worker.getProfession(), worker.getCurrentStorage());
+            worker.setCurrentStorage(0);
+            worker.getAgent().SetTargetDestination(worker.getWorkingPlace().transform.position);
+            worker.setState(Worker.State.MOVING);
+        }
+    }
+
     public int getFoodAmount()
     {
         return foodAmount;
