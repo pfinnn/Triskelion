@@ -283,12 +283,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ad914018d4b0c28469a8fa3cabac26fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  amountOfSpawningWorkers: 10
+  amountOfSpawningWorkers: 1
   workerPrefab: {fileID: 2962089397597910015, guid: c8e580d777d7b1543945cca72192422f,
     type: 3}
   spawnPoint: {fileID: 654585744}
   warehouse: {fileID: 654585744}
-  fields: []
+  fields:
+  - {fileID: 1316843761}
   woodcutterHuts: []
   druidWorkplaces: []
 --- !u!4 &66446143
@@ -2664,6 +2665,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1aef743fdc5a19a46bb75e38172c3df0, type: 3}
+--- !u!1 &1316843761 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2636554310751333352, guid: 1aef743fdc5a19a46bb75e38172c3df0,
+    type: 3}
+  m_PrefabInstance: {fileID: 1316843760}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1356246675
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3452,7 +3459,7 @@ MonoBehaviour:
     type: 3}
   worldCenter: {fileID: 189609459}
   radius: 200
-  baseWaveInterval: 1
+  baseWaveInterval: 100
   waveCounter: 10
   terrainTransform: {fileID: 525637255}
   heightDifferenceSpawning: 10

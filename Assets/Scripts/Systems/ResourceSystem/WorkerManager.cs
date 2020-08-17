@@ -52,8 +52,10 @@ public class WorkerManager : MonoBehaviour
     public void AssignWorkerToFarmingStation(GameObject worker, GameObject station)
     {
         Worker workerComponent = worker.GetComponent<Worker>();
-        workerComponent.setProfession(station == null ? Warehouse.resourceType.NONE : station.GetComponent<FarmingStation>().GetResource());
+        workerComponent.setProfession(null == station ? Warehouse.resourceType.NONE : station.GetComponentInChildren<FarmingStation>().GetResource());
         workerComponent.setWorkingPlace(station);
+        workerComponent.getAgent().SetTargetDestination(station.transform.position);
+        workerComponent.setState(Worker.State.MOVING);
         workers[worker] = station;
     }
 
@@ -100,19 +102,33 @@ public class WorkerManager : MonoBehaviour
         int f = 0;
         int w = 0;
         int d = 0;
+        FarmingStation farming = null;
         foreach (GameObject worker in workers.Keys)
         {
             if (workers[worker] == null)
             {
                 i++;
-            } else if (workers[worker].GetComponent<FarmingStation>().GetResource().Equals(Warehouse.resourceType.FOOD)) {
-                f++;
-            } else if (workers[worker].GetComponent<FarmingStation>().GetResource().Equals(Warehouse.resourceType.WOOD)) {
-                w++;
-            } else if (workers[worker].GetComponent<FarmingStation>().GetResource().Equals(Warehouse.resourceType.FEIDH)) {
-                d++;
             }
+            else
+            {
+                farming = workers[worker].GetComponentInChildren<FarmingStation>();
+                if (null != farming)
+                {
+                    if (farming.GetResource() == Warehouse.resourceType.FOOD)
+                    {
+                        f++;
+                    }
+                    else if (farming.GetResource() == Warehouse.resourceType.WOOD)
+                    {
+                        w++;
+                    }
+                    else if (farming.GetResource() == Warehouse.resourceType.FEIDH)
+                    {
+                        d++;
+                    }
 
+                }
+            }
         }
 
         int[] result = {i, f, w, d};
