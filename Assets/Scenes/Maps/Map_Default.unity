@@ -290,7 +290,7 @@ MonoBehaviour:
   warehouse: {fileID: 654585744}
   fields: []
   woodcutterHuts: []
-  droidWorkplaces: []
+  druidWorkplaces: []
 --- !u!4 &66446143
 Transform:
   m_ObjectHideFlags: 0
@@ -3134,17 +3134,17 @@ PrefabInstance:
         type: 3}
       propertyPath: foodUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 470223528}
     - target: {fileID: 2264123219154114348, guid: 237b8e3b2e6316c40a46617bfe5873f0,
         type: 3}
       propertyPath: woodUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 531934808}
     - target: {fileID: 2264123219154114348, guid: 237b8e3b2e6316c40a46617bfe5873f0,
         type: 3}
       propertyPath: feidhUI
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 304019189}
     - target: {fileID: 8971484661083220195, guid: 237b8e3b2e6316c40a46617bfe5873f0,
         type: 3}
       propertyPath: m_Name
@@ -3334,8 +3334,6 @@ MonoBehaviour:
   farmerTextField: {fileID: 1782566085}
   woodcutterTextField: {fileID: 154705438}
   druidsTextField: {fileID: 1994962113}
-  addFarmerButton: {fileID: 909184154}
-  removeFarmerButton: {fileID: 2005296054}
 --- !u!1 &1679963847
 GameObject:
   m_ObjectHideFlags: 0

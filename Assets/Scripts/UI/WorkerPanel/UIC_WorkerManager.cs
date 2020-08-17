@@ -14,21 +14,6 @@ public class UIC_WorkerManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI druidsTextField;
 
-    [SerializeField]
-    private UnityEngine.UI.Button addFarmerButton;
-    [SerializeField]
-    private UnityEngine.UI.Button removeFarmerButton;
-        /**
-    [SerializeField]
-    private Button addWoodcutterButton;
-    [SerializeField]
-    private Button removeWoodcutterButton;
-    [SerializeField]
-    private Button addDroidButton;
-    [SerializeField]
-    private Button removeDroidButton;
-    */
-
     private WorkerManager workerManager;
 
     private int inactiveWorkers;
