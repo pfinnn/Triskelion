@@ -9,7 +9,9 @@ public class Worker : Damageable
     [SerializeField]
     private Warehouse.resourceType profession = Warehouse.resourceType.NONE;
     [SerializeField]
+    private GameObject warehouseObject;
     private Warehouse warehouse;
+    [SerializeField]
     private FarmingStation workingPlace;
 
     [SerializeField]
@@ -37,6 +39,7 @@ public class Worker : Damageable
     {
         base.Start();
         agent = GetComponent<AgentMovement>();
+        warehouse = warehouseObject.GetComponent<Warehouse>();
     }
 
     // Update is called once per frame
@@ -123,6 +126,7 @@ public class Worker : Damageable
             if (currentStorage >= maxStorage)
             {
                 agent.SetTargetDestination(warehouse.transform.position);
+                agent.StartAgent();
                 currentState = State.MOVING;
                 collectingTimer = 0f;
             }
