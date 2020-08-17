@@ -158,7 +158,7 @@ public class UnitController : MonoBehaviour
             timestamp_Formation = Time.deltaTime;
             if (rangeAttackSalves < 3)
             {
-                rangeAttack();
+                //rangeAttack();
             }
         }
 
