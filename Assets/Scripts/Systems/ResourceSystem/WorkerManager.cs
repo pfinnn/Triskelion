@@ -54,8 +54,8 @@ public class WorkerManager : MonoBehaviour
         Worker workerComponent = worker.GetComponent<Worker>();
         workerComponent.setProfession(null == station ? Warehouse.resourceType.NONE : station.GetComponentInChildren<FarmingStation>().GetResource());
         workerComponent.setWorkingPlace(station);
-        workerComponent.getAgent().SetTargetDestination(station.transform.position);
-        workerComponent.setState(Worker.State.MOVING);
+        workerComponent.getAgent().SetTargetDestination(station == null ? spawnPoint.position : station.transform.position);
+        workerComponent.setState(station == null ? Worker.State.WAITING : Worker.State.MOVING);
         workers[worker] = station;
     }
 
