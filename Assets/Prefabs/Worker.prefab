@@ -107,7 +107,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 3.5
+  m_Speed: 8
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -133,8 +133,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   profession: 3
-  warehouseObject: {fileID: 8971484661083220195, guid: 237b8e3b2e6316c40a46617bfe5873f0,
-    type: 3}
+  warehouseTransform: {fileID: 0}
+  workingPlace: {fileID: 0}
   maxStorage: 10
   timeToAddResInSeconds: 3
   currentState: 0

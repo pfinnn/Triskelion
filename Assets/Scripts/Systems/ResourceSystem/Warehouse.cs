@@ -90,7 +90,7 @@ public class Warehouse : MonoBehaviour
             worker.setState(Worker.State.WAITING);
             AddResource(worker.getProfession(), worker.getCurrentStorage());
             worker.setCurrentStorage(0);
-            worker.getAgent().SetTargetDestination(worker.getWorkingPlace().transform.position);
+            worker.getAgent().SetTargetDestination(worker.getWorkingPlace().gameObject.transform.position);
             worker.setState(Worker.State.MOVING);
         }
     }
