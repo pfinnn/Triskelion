@@ -3,7 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SphereCollider))]
 public class UnitController : MonoBehaviour
 {
    
@@ -26,13 +25,14 @@ public class UnitController : MonoBehaviour
 
     List<GameObject> targetsInRange;
     float attackRange = 15f;
+    SphereCollider triggerVolume;
 
     GameObject[,] formationGrid;
     bool[,] soldierInFormation;
     Vector3 formationStep;
     Vector3 formationCenter;
     float marginFormation = 0.5f;
-    float StepSizeFormation = 15f;
+    float StepSizeFormation = 40f;
 
     float timer_Formation = 0f;
     float timestamp_Formation = 0f;
@@ -57,20 +57,10 @@ public class UnitController : MonoBehaviour
 
     public State_Formation STATE_FORMATION;
 
-    public enum State_Movement
-    {
-        Wait,
-        Moving,
-    }
-
-    public State_Movement STATE_MOVEMENT;
-
-
     private void Awake()
     {
         STATE_UNIT = State_Unit.Moving;
         STATE_FORMATION = State_Formation.Grid;
-        STATE_MOVEMENT  = State_Movement.Moving;
         soldiers = new List<GameObject>();
         targetsInRange = new List<GameObject>();
         rows = Mathf.RoundToInt(soldiersAmount / soldiersPerRow);
@@ -84,6 +74,7 @@ public class UnitController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        triggerVolume = GetComponentInChildren<SphereCollider>();
         SpawnUnitsInFormation();
     }
 
@@ -91,6 +82,8 @@ public class UnitController : MonoBehaviour
     void Update()
     {
         // Update all necessary values in one place and not inside functions
+
+        triggerVolume.transform.position = CalculateCenter();
 
         DetermineCurrentState();
 
@@ -289,7 +282,7 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    void StartAllSoldiers()
+    public void StartAllSoldiers()
     {
         for (int i = 0; i < rows; i++)
         {
@@ -344,13 +337,19 @@ public class UnitController : MonoBehaviour
         targetPosition = _targetPosition;
     }
 
-    private void OnTriggerEnter(Collider other)
+    internal void OnChildTriggerEnter(Collider other)
     {
-        Debug.Log(other.name + " has entered Unit Trigger " + this.name);
-        targetsInRange.Add(other.gameObject);
+        String tag = other.gameObject.tag;
+        
+        if (tag == "defenders")
+        {
+            Debug.Log(other.name + " has entered Unit Trigger " + this.name);
+            targetsInRange.Add(other.gameObject);
+        }
+
     }
 
-    private void OnTriggerExit(Collider other)
+    internal void OnChildTriggerExit(Collider other)
     {
         targetsInRange.Remove(other.gameObject);
     }

@@ -1,5 +1,4 @@
-﻿using QFSW.MOP2;
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -123,8 +122,8 @@ public class WaveManager : MonoBehaviour
                 Quaternion rotation = Quaternion.LookRotation(lookVector);
 
                 GameObject enemy = Instantiate(enemyPrefab, enemyPosition, rotation);
-                //enemy.GetComponent<UnitController>().SetTarget(worldCenter.position);
                 enemy.transform.SetParent(transform);
+                enemyPrefab.GetComponent<UnitController>().StartAllSoldiers(); // very sticky
                 spawnedEnemies.Add(enemy);
 
                 ++placedEnemies;

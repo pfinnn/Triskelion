@@ -4,8 +4,9 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Triskelion
-  - Events
+  - defenders
+  - attackers
+  - damageable
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - UI
   - 
   - 
-  - 
+  - PostProcessing
   - 
   - 
   - 
