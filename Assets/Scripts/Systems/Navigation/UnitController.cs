@@ -23,17 +23,26 @@ public class UnitController : MonoBehaviour
 
     List<GameObject> soldiers;
 
+    // Target Detection
     List<GameObject> targetsInRange;
     float attackRange = 15f;
     SphereCollider triggerVolume;
 
+    // Attacking
+    float rangeAttackSalves = 0;
+    float rangeAttackMaxSalves = 3;
+    float missProbabilityFactorMelee = 1.5f;
+    float missProbabilityFactorRange = 4f;
+    float damageRange = 5f;
+    float damageMelee = 1f;
+
+    // Formation
     GameObject[,] formationGrid;
     bool[,] soldierInFormation;
     Vector3 formationStep;
     Vector3 formationCenter;
     float marginFormation = 0.5f;
     float StepSizeFormation = 40f;
-
     float timer_Formation = 0f;
     float timestamp_Formation = 0f;
     float waitInFormationIntervall = 10f;
@@ -93,7 +102,7 @@ public class UnitController : MonoBehaviour
                 IdlePositions();
                 break;
             case State_Unit.Attacking:
-                IdlePositions();
+                HandleAttackingFlow();
                 // play attack animations 
                 break;
             case State_Unit.Moving:
@@ -111,6 +120,26 @@ public class UnitController : MonoBehaviour
 
     }
 
+    private void HandleAttackingFlow()
+    {
+        // first move to a position close to the target and go into Formation
+        if (!AllSoldiersInFormation())
+        {
+            formationStep = Vector3.MoveTowards(targetPosition, formationCenter, 10f);
+            // choose appropriate formation, handle function
+            MoveInGridFormation();
+        } else
+        {
+            if (rangeAttackSalves < 3)
+            {
+                rangeAttack();
+            }
+        }
+
+
+
+
+    }
 
     private void DetermineCurrentState()
     {
@@ -266,8 +295,6 @@ public class UnitController : MonoBehaviour
             MoveInFormation();
         }
 
-
-        
     }
 
     void StopAllSoldiers()
@@ -299,7 +326,7 @@ public class UnitController : MonoBehaviour
         switch (STATE_FORMATION)
         {
             case State_Formation.Loose:
-                //MoveInLooseFormation();
+                MoveInLooseFormation();
                 break;
             case State_Formation.Grid:
                 MoveInGridFormation();

@@ -26,6 +26,11 @@ public class AgentMovement : MonoBehaviour
 
     public void SetTargetDestination(Vector3 _destination)
     {
+        if (nma.isStopped)
+        {
+            nma.isStopped = false;
+        }
+
         nma.SetDestination(_destination);
     }
 
