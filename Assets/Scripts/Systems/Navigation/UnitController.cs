@@ -2,10 +2,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class UnitController : MonoBehaviour
 {
-   
+
+    Damageable target;
     Vector3 targetPosition;
     Vector3 triskelionPosition; // remember triskelion position to always be able to go back there without searching for the GO
 
@@ -19,25 +21,29 @@ public class UnitController : MonoBehaviour
     int soldiersPerRow;
 
     [SerializeField]
-    GameObject unitPrefab; // TODO, use different start animatin states on spawn, dont use sperate prefabs you maniac
+    GameObject unitPrefab;
+
+    ShootingSystem shootingSystem;
 
     List<GameObject> soldiers;
 
     // Target Detection
-    List<GameObject> targetsInRange;
+    List<Damageable> targetsInRange;
     float attackRange = 15f;
     SphereCollider triggerVolume;
 
     // Attacking
     float rangeAttackSalves = 0;
     float rangeAttackMaxSalves = 3;
-    float missProbabilityFactorMelee = 1.5f;
-    float missProbabilityFactorRange = 4f;
-    float damageRange = 5f;
-    float damageMelee = 1f;
+    float meleeAttackIntervall = 2;
+    float missProbabilityFactorMelee = 0.95f;
+    float missProbabilityFactorRange = 0.5f;
+    float damageRangeAttack = 0.5f;
+    float damageMeleeAttack = 0.1f;
     float timestamp_lastAttack = 0f;
     float timer_lastAttack = 0f;
     float rangeAttackIntervall = 3f;
+    float keepDistanceToTarget = 15f;
 
     // Formation
     GameObject[,] formationGrid;
@@ -84,11 +90,14 @@ public class UnitController : MonoBehaviour
         STATE_UNIT = State_Unit.Moving;
         STATE_FORMATION = State_Formation.Grid;
         soldiers = new List<GameObject>();
-        targetsInRange = new List<GameObject>();
+        targetsInRange = new List<Damageable>();
         rows = Mathf.RoundToInt(soldiersAmount / soldiersPerRow);
         formationGrid = new GameObject[rows, soldiersPerRow];
         soldierInFormation = new bool[rows, soldiersPerRow];
 
+        shootingSystem = this.GetComponent<ShootingSystem>();
+
+        //target = ;
         targetPosition = GameObject.Find("Triskelion").transform.position;
         triskelionPosition = targetPosition;
     }
@@ -103,8 +112,6 @@ public class UnitController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Update all necessary values in one place and not inside functions
-
         triggerVolume.transform.position = CalculateCenter();
 
         DetermineCurrentUnitState();
@@ -141,13 +148,14 @@ public class UnitController : MonoBehaviour
                 bool timerFormationExceeded = timer_Formation - timestamp_Formation >= (waitInFormationIntervall);
                 if (timerFormationExceeded || AllSoldiersInFormation())
                 {
+                    timer_Formation = 0f;
                     STATE_ATTACKFLOW = State_AttackFlow.ValidFormation;
                     return;
                 }
 
-                formationStep = Vector3.MoveTowards(targetPosition, formationCenter, 10f);
-                // choose appropriate formation, handle function
-                MoveInGridFormation();
+                formationStep = Vector3.MoveTowards(targetPosition, formationCenter, keepDistanceToTarget);
+
+                MoveInCurrentFormation();
                 break;
 
             case State_AttackFlow.ValidFormation:
@@ -156,6 +164,7 @@ public class UnitController : MonoBehaviour
                     STATE_ATTACKFLOW = State_AttackFlow.Range;
                 } else
                 {
+                    timer_lastAttack = 0f;
                     STATE_ATTACKFLOW = State_AttackFlow.Melee;
                 }
                 break;
@@ -165,6 +174,12 @@ public class UnitController : MonoBehaviour
                 if (rangeAttackSalves >= rangeAttackMaxSalves)
                 {
                     STATE_ATTACKFLOW = State_AttackFlow.Melee;
+
+                    STATE_FORMATION = State_Formation.Loose;
+                    keepDistanceToTarget = 1f;
+                    formationStep = Vector3.MoveTowards(formationCenter, targetPosition, keepDistanceToTarget);
+                    MoveInCurrentFormation();
+                    timestamp_Formation = Time.deltaTime;
                 }
                 else if (timer_lastAttack - timestamp_lastAttack >= rangeAttackIntervall )
                 {
@@ -173,7 +188,11 @@ public class UnitController : MonoBehaviour
                 break;
 
             case State_AttackFlow.Melee:
-                meleeAttack();
+                timer_lastAttack += Time.deltaTime;
+                if (rangeAttackSalves >= rangeAttackMaxSalves)
+                {
+                    meleeAttack();
+                }
                 break;
 
         }
@@ -183,14 +202,52 @@ public class UnitController : MonoBehaviour
 
     private void meleeAttack()
     {
-        Debug.Log("Melee Attacking");
+        // attack based on timer
+        timer_lastAttack = 0f;
+        timestamp_lastAttack = Time.deltaTime;
+
+        // play melee animation
+
+        // play sound
+
+        // calculcate hits and dmg
+        float dmg = 0;
+        // calculcate hits and dmg
+        for (int i = 0; i < soldiersAmount; i++)
+        {
+            if (Random.value < 1 - missProbabilityFactorMelee)
+            {
+                dmg += damageMeleeAttack;
+            }
+        }
+
+        // Deal damage to target
+        
+        target.DealDamage(dmg);
+
     }
 
     private void rangeAttack()
     {
         Debug.Log("Throwing Salves of Spears");
+        // attack based on timer
         timer_lastAttack = 0f;
         timestamp_lastAttack = Time.deltaTime;
+
+        // play spear animation
+
+        // play sound
+        float dmg = 0;
+        // calculcate hits and dmg
+        for (int i = 0; i < soldiersAmount; i++)
+        {
+            if (Random.value < 1 - missProbabilityFactorRange)
+            {
+                dmg += damageRangeAttack;
+            }
+        }
+        // Deal damage to target
+        target.DealDamage(dmg);
         ++rangeAttackSalves;
     }
 
@@ -223,8 +280,10 @@ public class UnitController : MonoBehaviour
             targetPosition = triskelionPosition;
         }else
         {
-            GameObject possibleTarget = targetsInRange[0];
+            Damageable possibleTarget = targetsInRange[0];
+            target = possibleTarget;
             targetPosition = possibleTarget.transform.position;
+            keepDistanceToTarget = 15f;
         }
 
         // also change target when under attack ?
@@ -276,7 +335,6 @@ public class UnitController : MonoBehaviour
 
         return total/soldiers.Count;
     }
-
 
     internal Vector3 CalculateFormationStep()
     {
@@ -331,7 +389,6 @@ public class UnitController : MonoBehaviour
         return true;
     }
 
-    // duplicating this handler, it should be default
     internal void HandleMovement()
     {
         timer_Formation += Time.deltaTime;
@@ -419,20 +476,20 @@ public class UnitController : MonoBehaviour
         targetPosition = _targetPosition;
     }
 
-    internal void OnChildTriggerEnter(Collider other)
+    internal void OnChildTriggerEnter(Damageable other)
     {
         String tag = other.gameObject.tag;
         
         if (tag == "defenders")
         {
-            targetsInRange.Add(other.gameObject);
+            targetsInRange.Add(other);
         }
 
     }
 
-    internal void OnChildTriggerExit(Collider other)
+    internal void OnChildTriggerExit(Damageable other)
     {
-        targetsInRange.Remove(other.gameObject);
+        targetsInRange.Remove(other);
     }
 
 }
