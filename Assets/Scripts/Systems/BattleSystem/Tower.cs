@@ -8,7 +8,7 @@ public class Tower : Damageable
 
     private List<GameObject> enemiesInRange = new List<GameObject>();
     private float timer = 0.0f;
-    private float health = 3000;
+    private float _health = 3000;
 
     enum State
     {
@@ -27,8 +27,8 @@ public class Tower : Damageable
         shootingSystem = GetComponent<ShootingSystem>();
         this.gameObject.tag = "damageable";
         this.gameObject.tag = "defenders";
-        SetMaxHealth(health);
-        SetHealth(health);
+        SetMaxHealth(_health);
+        SetHealth(_health);
     }
 
     // Update is called once per frame
