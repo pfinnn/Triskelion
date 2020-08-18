@@ -18,10 +18,18 @@ public class ShootingSystem : MonoBehaviour
         //return targetPosition.position + (targetPosition.forward.normalized * targetSpeed);
     }
 
-    public void LaunchProjectileWithArc(Transform target, float speed)
+    public void LaunchProjectileWithArcMovingTarget(Transform target, float targetSpeed)
     {
-        Vector3 Vo = CalculateVelocity(LocateEstimatedPositionOfTargetWhileMoving(target, speed), transform.position, 2f);
+        Vector3 Vo = CalculateVelocity(LocateEstimatedPositionOfTargetWhileMoving(target, targetSpeed), transform.position, 2f);
         Vector3 shootingPoint = Vector3.MoveTowards(transform.position, target.position, 5f);
+        GameObject obj = Instantiate(projectile, shootingPoint, Quaternion.identity);
+        obj.GetComponent<Rigidbody>().velocity = Vo;
+    }
+
+    public void LaunchProjectileWithArcStaticTarget(Transform origin, Transform target)
+    {
+        Vector3 Vo = CalculateVelocity(target.position, origin.position, 5f);
+        Vector3 shootingPoint = origin.position + new Vector3 (0,1,0);
         GameObject obj = Instantiate(projectile, shootingPoint, Quaternion.identity);
         obj.GetComponent<Rigidbody>().velocity = Vo;
     }
