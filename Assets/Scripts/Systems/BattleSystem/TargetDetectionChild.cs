@@ -14,12 +14,22 @@ public class TargetDetectionChild : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        parent.OnChildTriggerEnter(other);
+        Damageable damageable;
+        if (other.gameObject.TryGetComponent<Damageable>(out damageable))
+        {
+            parent.OnChildTriggerEnter(damageable);
+        }
+
     }
 
     private void OnTriggerExit(Collider other)
     {
-        parent.OnChildTriggerExit(other);
+        Damageable damageable;
+        if (other.gameObject.TryGetComponent<Damageable>(out damageable))
+        {
+            parent.OnChildTriggerExit(damageable);
+        }
+
     }
 
 
