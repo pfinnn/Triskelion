@@ -6,8 +6,10 @@ using UnityEngine;
 public abstract class Damageable : MonoBehaviour
 {
     [SerializeField]
-    private int maxHealth = 100;
-    private int health;
+    private float maxHealth = 1000;
+    [SerializeField]
+    private float health;
+
     // Start is called before the first frame update
     public virtual void Start()
     {
@@ -22,12 +24,13 @@ public abstract class Damageable : MonoBehaviour
         }
     }
 
-    public void DealDamage(int amount)
+    public void DealDamage(float amount)
     {
+        Debug.Log(this.name + " received Damage " + amount);
         health -= amount;
     }
 
-    public void Repair(int amount)
+    public void Repair(float amount)
     {
         health += amount;
         if (health > maxHealth)
@@ -45,22 +48,22 @@ public abstract class Damageable : MonoBehaviour
         throw new NotImplementedException();
     }
 
-    public int GetHealth()
+    public float GetHealth()
     {
         return health;
     }
 
-    public void SetHealth(int health)
+    public void SetHealth(float health)
     {
         this.health = health;
     }
 
-    public int GetMaxHealth()
+    public float GetMaxHealth()
     {
         return maxHealth;
     }
 
-    public void SetMaxHealth(int maxHealth)
+    public void SetMaxHealth(float maxHealth)
     {
         this.maxHealth = maxHealth;
     }
