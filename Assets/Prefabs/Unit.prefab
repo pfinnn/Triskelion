@@ -107,4 +107,4 @@ MonoBehaviour:
     type: 3}
   STATE_UNIT: 0
   STATE_FORMATION: 0
-  STATE_MOVEMENT: 0
+  STATE_ATTACKFLOW: 0

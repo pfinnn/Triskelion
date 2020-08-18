@@ -35,6 +35,9 @@ public class UnitController : MonoBehaviour
     float missProbabilityFactorRange = 4f;
     float damageRange = 5f;
     float damageMelee = 1f;
+    float timestamp_lastAttack = 0f;
+    float timer_lastAttack = 0f;
+    float rangeAttackIntervall = 3f;
 
     // Formation
     GameObject[,] formationGrid;
@@ -69,11 +72,12 @@ public class UnitController : MonoBehaviour
     public enum State_AttackFlow
     {
         Positioning,
+        ValidFormation,
         Range,
         Melee
     }
 
-    public State_AttackFlow STATE_ATTACKFLOW;
+    public State_AttackFlow STATE_ATTACKFLOW = State_AttackFlow.Positioning;
 
     private void Awake()
     {
@@ -103,7 +107,7 @@ public class UnitController : MonoBehaviour
 
         triggerVolume.transform.position = CalculateCenter();
 
-        DetermineCurrentState();
+        DetermineCurrentUnitState();
 
         switch (STATE_UNIT)
         {
@@ -111,10 +115,6 @@ public class UnitController : MonoBehaviour
                 IdlePositions();
                 break;
             case State_Unit.Attacking:
-                if (timestamp_Formation == 0f)
-                {
-                    timestamp_Formation = Time.deltaTime;
-                }
                 HandleAttackingFlow();
                 // play attack animations 
                 break;
@@ -129,50 +129,72 @@ public class UnitController : MonoBehaviour
                 break;
         }
 
-
     }
 
     private void HandleAttackingFlow()
     {
-        timer_Formation += Time.deltaTime;
         
         switch (STATE_ATTACKFLOW)
         {
             case State_AttackFlow.Positioning:
-                IdlePositions();
+                timer_Formation += Time.deltaTime;
+                bool timerFormationExceeded = timer_Formation - timestamp_Formation >= (waitInFormationIntervall);
+                if (timerFormationExceeded || AllSoldiersInFormation())
+                {
+                    STATE_ATTACKFLOW = State_AttackFlow.ValidFormation;
+                    return;
+                }
+
+                formationStep = Vector3.MoveTowards(targetPosition, formationCenter, 10f);
+                // choose appropriate formation, handle function
+                MoveInGridFormation();
                 break;
 
+            case State_AttackFlow.ValidFormation:
+                if (rangeAttackSalves < rangeAttackMaxSalves)
+                {
+                    STATE_ATTACKFLOW = State_AttackFlow.Range;
+                } else
+                {
+                    STATE_ATTACKFLOW = State_AttackFlow.Melee;
+                }
+                break;
+
+            case State_AttackFlow.Range:
+                timer_lastAttack += Time.deltaTime;
+                if (rangeAttackSalves >= rangeAttackMaxSalves)
+                {
+                    STATE_ATTACKFLOW = State_AttackFlow.Melee;
+                }
+                else if (timer_lastAttack - timestamp_lastAttack >= rangeAttackIntervall )
+                {
+                    rangeAttack();
+                }
+                break;
+
+            case State_AttackFlow.Melee:
+                meleeAttack();
+                break;
 
         }
 
-
-        // first move to a position close to the target and go into Formation
-        if (!AllSoldiersInFormation() || timer_Formation - timestamp_Formation >= waitInFormationIntervall)
-        {
-            timer_Formation = 0f;
-            formationStep = Vector3.MoveTowards(targetPosition, formationCenter, 10f);
-            // choose appropriate formation, handle function
-            MoveInGridFormation();
-        } else
-        {
-            timestamp_Formation = Time.deltaTime;
-            if (rangeAttackSalves < 3)
-            {
-                //rangeAttack();
-            }
-        }
+    }
 
 
-
-
+    private void meleeAttack()
+    {
+        Debug.Log("Melee Attacking");
     }
 
     private void rangeAttack()
     {
-        throw new NotImplementedException();
+        Debug.Log("Throwing Salves of Spears");
+        timer_lastAttack = 0f;
+        timestamp_lastAttack = Time.deltaTime;
+        ++rangeAttackSalves;
     }
 
-    private void DetermineCurrentState()
+    private void DetermineCurrentUnitState()
     {
         
         State_Unit _state = STATE_UNIT;
@@ -182,6 +204,7 @@ public class UnitController : MonoBehaviour
         if (CanAttackTarget())
         {
             _state = State_Unit.Attacking;
+            timestamp_Formation = Time.deltaTime;
         }
 
         // only overwrite if state is not equal
@@ -308,6 +331,7 @@ public class UnitController : MonoBehaviour
         return true;
     }
 
+    // duplicating this handler, it should be default
     internal void HandleMovement()
     {
         timer_Formation += Time.deltaTime;
@@ -323,7 +347,7 @@ public class UnitController : MonoBehaviour
             StartAllSoldiers();
         } else
         {
-            MoveInFormation();
+            MoveInCurrentFormation();
         }
 
     }
@@ -352,7 +376,7 @@ public class UnitController : MonoBehaviour
         }
     }
 
-    void MoveInFormation()
+    void MoveInCurrentFormation()
     {
         switch (STATE_FORMATION)
         {
