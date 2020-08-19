@@ -1,16 +1,20 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Tower : Damageable
 {
     private ShootingSystem shootingSystem;
 
     private List<GameObject> enemiesInRange = new List<GameObject>();
-    private float timer = 0.0f;
+    private float reloadTimer = 0.0f;
     private float _health = 3000;
 
-    enum State
+    private GameObject currentTarget;
+
+    public enum State
     {
         Idle,
         Attacking,
@@ -18,7 +22,7 @@ public class Tower : Damageable
         Reloading
     }
 
-    State currentState = State.Idle;
+    public State currentState = State.Idle;
 
     // Start is called before the first frame update
     public override void Start()
@@ -34,23 +38,70 @@ public class Tower : Damageable
     // Update is called once per frame
     void FixedUpdate()
     {
-        timer += Time.deltaTime;
-        if(timer > 1)
+        if (TargetsInRage())
         {
-            Shoot();
-            timer = 0.0f;
+            UpdateTargets();
+            currentState = State.Attacking;
+        }
+        else
+        {
+            currentState = State.Idle;
+        }
+
+        if(currentState == State.Attacking)
+        {
+            reloadTimer += Time.deltaTime;
+            if (reloadTimer > 1)
+            {
+                Shoot();
+                reloadTimer = 0.0f;
+            }
         }
     }
 
     private void Shoot()
     {
+        Transform randomSoldier = GetRandomSoldierPosition();
+        float soldierSpeed = 10f;
+        //soldierSpeed = currentTarget.GetComponent<UnitController>().GetSoldierSpeed();
+        shootingSystem.ShootSoldierInUnit(randomSoldier, soldierSpeed);
+    }
+
+    private Transform GetRandomSoldierPosition()
+    {
+        if(enemiesInRange.Count < 1)
+        {
+            throw new NullReferenceException();
+        }
+        List<GameObject> soldiers = enemiesInRange[0].GetComponentInParent<UnitController>().GetSoldiers();
+        currentTarget = soldiers[Random.Range(0, soldiers.Count - 1)];
+        return currentTarget.transform;
+    }
+
+ 
+
+    private bool TargetsInRage()
+    {
+        return enemiesInRange.Count > 0;
+    }
+
+    public void UpdateTargets()
+    {
         if (enemiesInRange.Count > 0)
         {
-            if(enemiesInRange[0]==null)
+            List<GameObject> deadEnemies = new List<GameObject>();
+            foreach (GameObject enemy in enemiesInRange)
             {
-                enemiesInRange.RemoveAt(0);
+                if (enemy == null)
+                {
+                    deadEnemies.Add(enemy);
+                }
             }
-            //shootingSystem.LaunchProjectileWithArcMovingTarget(enemiesInRange[0].transform, 10);
+            // is this loop redundant ??
+            foreach (GameObject deadEnemy in deadEnemies)
+            {
+                    enemiesInRange.Remove(deadEnemy);
+            }
         }
     }
 
@@ -61,14 +112,33 @@ public class Tower : Damageable
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.GetComponentInParent<UnitController>())
-            enemiesInRange.Add(other.gameObject);
+        if (other.gameObject.tag == "attackers")
+        {
+            if (other.GetComponentInParent<UnitController>())
+            {
+                Debug.Log(other.name + " with attackers-tag has been added to targets in range of tower");
+                enemiesInRange.Add(other.gameObject);
+            }
+
+
+        }
+    
+            
     }
+
+
 
     void OnTriggerExit(Collider other)
     {
-        if (other.GetComponentInParent<UnitController>())
-            enemiesInRange.Remove(other.gameObject);
+        if (other.gameObject.tag == "attackers")
+        {
+            if (other.GetComponentInParent<UnitController>())
+            {
+                enemiesInRange.Remove(other.gameObject);
+            }
+
+        }
+            
     }
     
 }
