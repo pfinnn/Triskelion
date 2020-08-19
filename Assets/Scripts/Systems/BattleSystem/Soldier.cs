@@ -4,9 +4,18 @@ using UnityEngine;
 
 public class Soldier : Damageable
 {
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-        
+        if (IsDead())
+        {
+            HandleDeath();
+        }
+    }
+
+    void HandleDeath()
+    {
+        Debug.Log(this.name + "dying");
+        this.GetComponentInParent<UnitController>().OnSoldierDying(this.gameObject);
+        Destroy(this.gameObject);
     }
 }
