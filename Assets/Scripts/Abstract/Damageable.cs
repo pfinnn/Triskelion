@@ -20,13 +20,18 @@ public abstract class Damageable : MonoBehaviour
     {
         if(IsDead())
         {
-            Destroy(this);
+            HandleDeath();
         }
+    }
+
+    void HandleDeath()
+    {
+        Destroy(this);
     }
 
     public void DealDamage(float amount)
     {
-        Debug.Log(this.name + " received Damage " + amount);
+        //Debug.Log(this.name + " received Damage " + amount);
         health -= amount;
     }
 
