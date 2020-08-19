@@ -6,7 +6,7 @@ using UnityEngine;
 public abstract class Damageable : MonoBehaviour
 {
     [SerializeField]
-    private float maxHealth = 1000;
+    private float maxHealth = 100;
     [SerializeField]
     private float health;
 

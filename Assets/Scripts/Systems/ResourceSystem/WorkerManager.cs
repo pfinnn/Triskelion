@@ -42,7 +42,7 @@ public class WorkerManager : MonoBehaviour
         for (int i = 0; i < amount; i++)
         {
             NavMeshHit hit;
-            NavMesh.SamplePosition(spawnPoint.position, out hit, 500f, NavMesh.AllAreas);
+            NavMesh.SamplePosition(spawnPoint.position, out hit, 10f, NavMesh.AllAreas); // very expensive
             GameObject worker = Instantiate(workerPrefab, hit.position, Quaternion.identity);
             worker.transform.SetParent(this.transform);
             workers.Add(worker, null);
@@ -54,6 +54,10 @@ public class WorkerManager : MonoBehaviour
         Worker workerComponent = worker.GetComponent<Worker>();
         workerComponent.setProfession(null == station ? Warehouse.resourceType.NONE : station.GetComponentInChildren<FarmingStation>().GetResource());
         workerComponent.setWorkingPlace(station);
+        if (station == null)
+        {
+            Debug.Log("What the fuck ");
+        }
         workerComponent.getAgent().SetTargetDestination(station == null ? spawnPoint.position : station.transform.position);
         workerComponent.setState(station == null ? Worker.State.WAITING : Worker.State.MOVING);
         workers[worker] = station;

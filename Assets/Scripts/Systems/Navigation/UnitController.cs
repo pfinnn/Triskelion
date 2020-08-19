@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using Random = UnityEngine.Random;
 
 public class UnitController : MonoBehaviour
@@ -336,11 +337,11 @@ public class UnitController : MonoBehaviour
         return total/soldiers.Count;
     }
 
-    internal Vector3 CalculateFormationStep()
-    {
-        //return Vector3.MoveTowards(CalculateCenter(), targetPosition, StepSizeFormation); // Center Based
-        return Vector3.MoveTowards(soldiers[0].transform.position, targetPosition, StepSizeFormation); // Corner Based
-
+    internal Vector3 CalculateFormationStep() { 
+        Vector3 destination = Vector3.MoveTowards(soldiers[0].transform.position, targetPosition, StepSizeFormation);
+        NavMeshHit hit;
+        NavMesh.SamplePosition(destination, out hit, 100f, NavMesh.AllAreas);
+        return hit.position;
     }
 
     void UpdateSoldiersInFormation()

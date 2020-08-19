@@ -522,6 +522,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 100
+  health: 0
 --- !u!65 &189609456
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -2681,7 +2682,7 @@ PrefabInstance:
     - target: {fileID: 7643097718891222652, guid: 9ce08509e36a01b4eb7692dabf7589c3,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 137.80096
+      value: 188.7
       objectReference: {fileID: 0}
     - target: {fileID: 7643097718891222652, guid: 9ce08509e36a01b4eb7692dabf7589c3,
         type: 3}
@@ -2807,7 +2808,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 0}
   m_SourcePrefab: {fileID: 100100000, guid: c0eadbb79c1ca494c8d19b266b916ad6, type: 3}
 --- !u!1 &1434763148
 GameObject:
@@ -3459,8 +3461,8 @@ MonoBehaviour:
     type: 3}
   worldCenter: {fileID: 189609459}
   radius: 200
-  baseWaveInterval: 100
-  waveCounter: 10
+  baseWaveInterval: 1
+  waveCounter: 100
   terrainTransform: {fileID: 525637255}
   heightDifferenceSpawning: 10
   distanceBetweenAgents: 10
