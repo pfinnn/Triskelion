@@ -7,26 +7,20 @@ using Random = UnityEngine.Random;
 
 public class UnitController : MonoBehaviour
 {
+    [SerializeField]
+    GameObject unitPrefab;
+    [SerializeField]
+    int soldiersAmount = 30;
+    [SerializeField]
+    int soldiersPerRow = 5;
+    int rows;
 
     Damageable target;
     Vector3 targetPosition;
     Vector3 triskelionPosition; // remember triskelion position to always be able to go back there without searching for the GO
-
-    //List<Formations> formations;
-
-    [SerializeField]
-    int soldiersAmount;
-    int rows;
-
-    [SerializeField]
-    int soldiersPerRow;
-
-    [SerializeField]
-    GameObject unitPrefab;
-
     ShootingSystem shootingSystem;
-
     List<GameObject> soldiers;
+    float soldierSpeed;
 
     // Target Detection
     List<Damageable> targetsInRange;
@@ -48,7 +42,7 @@ public class UnitController : MonoBehaviour
 
     // Formation
     GameObject[,] formationGrid;
-    bool[,] soldierInFormation;
+    bool[,] soldiersInFormation;
     Vector3 formationStep;
     Vector3 formationCenter;
     float marginFormation = 0.5f;
@@ -94,11 +88,8 @@ public class UnitController : MonoBehaviour
         targetsInRange = new List<Damageable>();
         rows = Mathf.RoundToInt(soldiersAmount / soldiersPerRow);
         formationGrid = new GameObject[rows, soldiersPerRow];
-        soldierInFormation = new bool[rows, soldiersPerRow];
-
+        soldiersInFormation = new bool[rows, soldiersPerRow];
         shootingSystem = this.GetComponent<ShootingSystem>();
-
-        //target = ;
         targetPosition = GameObject.Find("Triskelion").transform.position;
         triskelionPosition = targetPosition;
     }
@@ -106,13 +97,17 @@ public class UnitController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        this.gameObject.tag = "attackers";
         triggerVolume = GetComponentInChildren<SphereCollider>();
+        triggerVolume.tag = "attackers";
         SpawnUnitsInFormation();
     }
 
     // Update is called once per frame
     void Update()
     {
+        Debug.DrawLine(soldiers[0].transform.position, formationStep, Color.blue);
+
         triggerVolume.transform.position = CalculateCenter();
 
         DetermineCurrentUnitState();
@@ -230,7 +225,6 @@ public class UnitController : MonoBehaviour
 
     private void rangeAttack()
     {
-        Debug.Log("Throwing Salves of Spears");
         // attack based on timer
         timer_lastAttack = 0f;
         timestamp_lastAttack = Time.deltaTime;
@@ -317,12 +311,14 @@ public class UnitController : MonoBehaviour
             {
                 Vector3 soldierPos = corner + new Vector3(i, 0, j);
                 GameObject soldier = Instantiate(unitPrefab, soldierPos, transform.rotation);
+                
                 soldier.transform.SetParent(this.transform);
                 soldiers.Add(soldier);
                 formationGrid[i, j] = soldier;
-                soldierInFormation[i, j] = true;
+                soldiersInFormation[i, j] = true;
             }
         }
+        soldierSpeed = soldiers[0].GetComponent<NavMeshAgent>().speed;
         formationStep = CalculateFormationStep();
     }
 
@@ -331,13 +327,16 @@ public class UnitController : MonoBehaviour
         Vector3 total = Vector3.zero;
         foreach (GameObject s in soldiers)
         {
-            total +=  s.transform.position;
+            if (s != null)
+            {
+                total += s.transform.position;
+            }
         }
-
         return total/soldiers.Count;
     }
 
     internal Vector3 CalculateFormationStep() { 
+
         Vector3 destination = Vector3.MoveTowards(soldiers[0].transform.position, targetPosition, StepSizeFormation);
         NavMeshHit hit;
         NavMesh.SamplePosition(destination, out hit, 100f, NavMesh.AllAreas);
@@ -350,26 +349,29 @@ public class UnitController : MonoBehaviour
         {
             for (int j = 0; j < soldiersPerRow; j++)
             {
-                GameObject soldier = formationGrid[i, j];
-
-                Vector3 gridOffset = new Vector3(i, 0, j);
-
-                Vector3 nextSoldierPos = formationStep + gridOffset;
-
-                Vector3 nextSoldierPosNoHeight = new Vector3(nextSoldierPos.x, 0, nextSoldierPos.z);
-
-                Vector3 soldierPos = new Vector3(soldier.transform.position.x, 0 , soldier.transform.position.z);
-
-                Debug.DrawLine(soldier.transform.position, nextSoldierPos, Color.blue);
-                          
-                if (Vector3.Distance(soldierPos, nextSoldierPosNoHeight) > marginFormation)
+                if (formationGrid[i,j] != null)
                 {
-                    soldierInFormation[i, j] = false;
-                } else
-                {
-                    soldier.GetComponent<AgentMovement>().StopAgent();
-                    soldierInFormation[i, j] = true;
+                    GameObject soldier = formationGrid[i, j];  // you maniac create a new list every update ???????????????????
+
+                    Vector3 gridOffset = new Vector3(i, 0, j);
+
+                    Vector3 nextSoldierPos = formationStep + gridOffset;
+
+                    Vector3 nextSoldierPosNoHeight = new Vector3(nextSoldierPos.x, 0, nextSoldierPos.z);
+
+                    Vector3 soldierPos = new Vector3(soldier.transform.position.x, 0, soldier.transform.position.z);
+
+                    if (Vector3.Distance(soldierPos, nextSoldierPosNoHeight) > marginFormation)
+                    {
+                        soldiersInFormation[i, j] = false;
+                    }
+                    else
+                    {
+                        soldier.GetComponent<AgentMovement>().StopAgent();
+                        soldiersInFormation[i, j] = true;
+                    }
                 }
+
             }
         }
     }
@@ -380,13 +382,16 @@ public class UnitController : MonoBehaviour
         {
             for (int j = 0; j < soldiersPerRow; j++)
             {
-                if (soldierInFormation[i, j] == false)
+                if(formationGrid[i,j] != null)
                 {
-                    return false;
+                    if (soldiersInFormation[i, j] == false)
+                    {
+                        return false;
+                    }
                 }
+
             }
         }
-        Debug.Log("All soldiers in formation: "+ STATE_FORMATION);
         return true;
     }
 
@@ -398,7 +403,6 @@ public class UnitController : MonoBehaviour
         
         if (AllSoldiersInFormation() || timer_Formation - timestamp_Formation >= waitInFormationIntervall)
         {
-            Debug.Log("Recalculating Formation Step and start moving again");
             formationStep = CalculateFormationStep();
             timer_Formation = 0f;
             timestamp_Formation = Time.deltaTime;
@@ -416,8 +420,11 @@ public class UnitController : MonoBehaviour
         {
             for (int j = 0; j < soldiersPerRow; j++)
             {
-                AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
-                soldier.StopAgent();
+                if (formationGrid[i,j] != null)
+                {
+                    AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
+                    soldier.StopAgent();
+                }
             }
         }
     }
@@ -428,8 +435,12 @@ public class UnitController : MonoBehaviour
         {
             for (int j = 0; j < soldiersPerRow; j++)
             {
-                AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
-                soldier.StartAgent();
+                if (formationGrid[i, j] != null)
+                {
+                    AgentMovement soldier = formationGrid[i, j].GetComponent<AgentMovement>();
+                    soldier.StartAgent();
+                }
+
             }
         }
     }
@@ -445,7 +456,6 @@ public class UnitController : MonoBehaviour
                 MoveInGridFormation();
                 break;
         }
-
     }
 
     void MoveInGridFormation()
@@ -454,8 +464,11 @@ public class UnitController : MonoBehaviour
         {
             for (int j = 0; j < soldiersPerRow; j++)
             {
-                Vector3 nextSoldierPos = formationStep + new Vector3(i, 0, j);
-                formationGrid[i, j].GetComponent<AgentMovement>().SetTargetDestination(nextSoldierPos);
+                if (formationGrid[i, j] != null)
+                {
+                    Vector3 nextSoldierPos = formationStep + new Vector3(i, 0, j);
+                    formationGrid[i, j].GetComponent<AgentMovement>().SetTargetDestination(nextSoldierPos);
+                }
             }
         }
     }
@@ -464,18 +477,22 @@ public class UnitController : MonoBehaviour
     {
         for (int i = 0; i < soldiersAmount; i++)
         {
-            Vector3 relativeToCenter = soldiers[i].GetComponent<AgentMovement>().GetCurrentPosition() - formationCenter;
-            Vector3 agentDirection = targetPosition + relativeToCenter;
-            Debug.DrawLine(soldiers[i].transform.position, agentDirection);
-            soldiers[i].GetComponent<AgentMovement>().SetTargetDestination(agentDirection);
+            if (soldiers[i] != null)
+            {
+                Vector3 relativeToCenter = soldiers[i].GetComponent<AgentMovement>().GetCurrentPosition() - formationCenter;
+                Vector3 agentDirection = targetPosition + relativeToCenter;
+                Debug.DrawLine(soldiers[i].transform.position, agentDirection);
+                soldiers[i].GetComponent<AgentMovement>().SetTargetDestination(agentDirection);
+            }
         }
-
     }
 
     internal void SetTarget(Vector3 _targetPosition)
     {
         targetPosition = _targetPosition;
     }
+
+    // Event Handlers
 
     internal void OnChildTriggerEnter(Damageable other)
     {
@@ -491,6 +508,30 @@ public class UnitController : MonoBehaviour
     internal void OnChildTriggerExit(Damageable other)
     {
         targetsInRange.Remove(other);
+    }
+
+    internal void OnSoldierDying(GameObject dyingSoldier)
+    {
+        --soldiersAmount;
+        soldiers.Remove(dyingSoldier);
+
+        if (soldiers.Count == 0)
+        {
+            Destroy(this.gameObject); // TODO, use Object Pooling to handle units and soldier instantiation!
+        }
+
+    }
+
+    // Getter and Setter
+
+    public float GetSoldierSpeed()
+    {
+        return soldierSpeed;
+    }
+
+    public List<GameObject> GetSoldiers()
+    {
+        return soldiers;
     }
 
 }
