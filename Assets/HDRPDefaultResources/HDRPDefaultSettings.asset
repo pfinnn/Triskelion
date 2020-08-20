@@ -130,7 +130,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59b6606ef2548734bb6d11b9d160bc7e, type: 3}
   m_Name: HDRISky
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   rotation:
     m_OverrideState: 1
@@ -142,7 +142,7 @@ MonoBehaviour:
     m_Value: 0
   exposure:
     m_OverrideState: 1
-    m_Value: 10
+    m_Value: 1
   multiplier:
     m_OverrideState: 0
     m_Value: 1
@@ -237,21 +237,21 @@ MonoBehaviour:
     m_OverrideState: 1
     m_Value: 1
   threshold:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
     min: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.2
+    m_Value: 0.25
     min: 0
     max: 1
   scatter:
-    m_OverrideState: 0
-    m_Value: 0.7
+    m_OverrideState: 1
+    m_Value: 0.67
     min: 0
     max: 1
   tint:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: {r: 1, g: 1, b: 1, a: 1}
     hdr: 0
     showAlpha: 0
@@ -260,7 +260,7 @@ MonoBehaviour:
     m_OverrideState: 0
     m_Value: {fileID: 0}
   dirtIntensity:
-    m_OverrideState: 0
+    m_OverrideState: 1
     m_Value: 0
     min: 0
   anamorphic:
@@ -284,7 +284,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d7593b3a9277ac4696b20006c21dde2, type: 3}
   m_Name: VisualEnvironment
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   m_AdvancedMode: 0
   skyType:
     m_OverrideState: 1
@@ -382,24 +382,24 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   quality:
-    m_OverrideState: 0
-    m_Value: 1
+    m_OverrideState: 1
+    m_Value: 3
   rayTracing:
     m_OverrideState: 0
     m_Value: 0
   intensity:
     m_OverrideState: 1
-    m_Value: 0.5
+    m_Value: 0.646
     min: 0
     max: 4
   directLightingStrength:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 0.263
     min: 0
     max: 1
   radius:
     m_OverrideState: 1
-    m_Value: 1.5
+    m_Value: 3.42
     min: 0.25
     max: 5
   temporalAccumulation:
@@ -444,11 +444,11 @@ MonoBehaviour:
     min: 2
     max: 32
   m_FullResolution:
-    m_OverrideState: 0
-    m_Value: 0
+    m_OverrideState: 1
+    m_Value: 1
   m_MaximumRadiusInPixels:
-    m_OverrideState: 0
-    m_Value: 40
+    m_OverrideState: 1
+    m_Value: 58
     min: 16
     max: 256
   m_BilateralUpsample:
@@ -474,8 +474,8 @@ MonoBehaviour:
   active: 1
   m_AdvancedMode: 0
   mode:
-    m_OverrideState: 1
-    m_Value: 1
+    m_OverrideState: 0
+    m_Value: 3
   toeStrength:
     m_OverrideState: 0
     m_Value: 0

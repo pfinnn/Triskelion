@@ -49,15 +49,18 @@ public class WorkerManager : MonoBehaviour
         }
     }
 
+    public void RemoveWorkerFromFarmingStation(GameObject worker)
+    {
+        Worker workerComponent = worker.GetComponent<Worker>();
+        workerComponent.setWorkingPlace(null);
+    }
+
     public void AssignWorkerToFarmingStation(GameObject worker, GameObject station)
     {
         Worker workerComponent = worker.GetComponent<Worker>();
-        workerComponent.setProfession(null == station ? Warehouse.resourceType.NONE : station.GetComponentInChildren<FarmingStation>().GetResource());
+        //workerComponent.setProfession(null == station ? Warehouse.resourceType.NONE : station.GetComponentInChildren<FarmingStation>().GetResource());
+        workerComponent.setProfession(Warehouse.resourceType.FOOD);
         workerComponent.setWorkingPlace(station);
-        if (station == null)
-        {
-            Debug.Log("What the fuck ");
-        }
         workerComponent.getAgent().SetTargetDestination(station == null ? spawnPoint.position : station.transform.position);
         workerComponent.setState(station == null ? Worker.State.WAITING : Worker.State.MOVING);
         workers[worker] = station;
@@ -81,6 +84,7 @@ public class WorkerManager : MonoBehaviour
         }
         return null;
     }
+
     internal GameObject getOneWoodcutterWorker()
     {
         foreach  (GameObject worker in workers.Keys)
@@ -90,6 +94,7 @@ public class WorkerManager : MonoBehaviour
         }
         return null;
     }
+
     internal GameObject getOneDruidWorker()
     {
         foreach  (GameObject worker in workers.Keys)
@@ -141,13 +146,14 @@ public class WorkerManager : MonoBehaviour
 
     public GameObject getField()
     {
-        return fields[UnityEngine.Random.Range(0, fields.Count)];
+        return fields[UnityEngine.Random.Range(0, fields.Count-1)];
     }
 
     public GameObject getWoodCutterHut()
     {
         return woodcutterHuts[UnityEngine.Random.Range(0, woodcutterHuts.Count)];
     }
+
     public GameObject getDruidWorkplaces()
     {
         return druidWorkplaces[UnityEngine.Random.Range(0, druidWorkplaces.Count)];

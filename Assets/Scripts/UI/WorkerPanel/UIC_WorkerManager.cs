@@ -16,6 +16,8 @@ public class UIC_WorkerManager : MonoBehaviour
 
     private WorkerManager workerManager;
 
+    List<Worker> workingAtFarms = new List<Worker>();
+
     private int inactiveWorkers;
     private int farmerWorkers;
     private int woodcutterWorkers;
@@ -24,14 +26,6 @@ public class UIC_WorkerManager : MonoBehaviour
     void Start()
     {
         workerManager = GetComponentInParent<WorkerManager>();
-        /**
-        addFarmerButton.onClick.AddListener(AddFarmer);
-        removeFarmerButton.onClick.AddListener(RemoveFarmer);
-        addWoodcutterButton.onClick.AddListener(AddWoodcutter);
-        removeWoodcutterButton.onClick.AddListener(RemoveWoodcutter);
-        addDroidButton.onClick.AddListener(AddDroid);
-        removeDroidButton.onClick.AddListener(RemoveDroid);
-    */
     }
 
     // Update is called once per frame
