@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 1.1983222, g: 1.1793622, b: 1.1447327, a: 1}
+  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -21424,8 +21424,8 @@ MonoBehaviour:
     type: 3}
   worldCenter: {fileID: 189609459}
   radius: 200
-  baseWaveInterval: 1
-  waveCounter: 100
+  baseWaveInterval: 4
+  waveCounter: 10
   terrainTransform: {fileID: 525637255}
   heightDifferenceSpawning: 10
   distanceBetweenAgents: 10
