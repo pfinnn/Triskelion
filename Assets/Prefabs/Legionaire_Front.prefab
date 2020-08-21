@@ -465,6 +465,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: RomanSoldiernocapemix@Sword And Shield Idle
       objectReference: {fileID: 0}
+    - target: {fileID: 7185404509158625800, guid: 87400a1d9598d9441af8d4e99057a668,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bb70b3791b73a11458d9ae974e140e5f, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 87400a1d9598d9441af8d4e99057a668, type: 3}
 --- !u!1 &2440759675314006242 stripped
