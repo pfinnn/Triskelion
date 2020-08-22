@@ -14,7 +14,7 @@ public class Soldier : Damageable
 
     void HandleDeath()
     {
-        Debug.Log(this.name + "dying");
+        //Debug.Log(this.name + "dying");
         this.GetComponentInParent<UnitController>().OnSoldierDying(this.gameObject);
         Destroy(this.gameObject);
     }
