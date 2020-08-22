@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditorInternal;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -12,6 +13,11 @@ public class Tower : Damageable
     private float reloadTimer = 0.0f;
     private float _health = 3000;
 
+    [SerializeField]
+    public GameObject destroyed_Particle;
+
+    private Vector3 shootingPoint;
+
     private GameObject currentTarget;
 
     public enum State
@@ -19,7 +25,8 @@ public class Tower : Damageable
         Idle,
         Attacking,
         Upgrading,
-        Reloading
+        Reloading,
+        Destroyed,
     }
 
     public State currentState = State.Idle;
@@ -29,6 +36,7 @@ public class Tower : Damageable
     {
         base.Start();
         shootingSystem = GetComponent<ShootingSystem>();
+        shootingPoint = shootingSystem.GetShootingPoint();
         this.gameObject.tag = "damageable";
         this.gameObject.tag = "defenders";
         SetMaxHealth(_health);
@@ -38,6 +46,16 @@ public class Tower : Damageable
     // Update is called once per frame
     void FixedUpdate()
     {
+        if (GetHealth() < 1)
+        {
+            if (currentState != State.Destroyed )
+            {
+                Instantiate(destroyed_Particle, shootingPoint, Quaternion.identity );
+                currentState = State.Destroyed;
+            }
+            return;
+        }
+
         if (TargetsInRage())
         {
             UpdateTargets();
@@ -116,14 +134,10 @@ public class Tower : Damageable
         {
             if (other.GetComponentInParent<UnitController>())
             {
-                Debug.Log(other.name + " with attackers-tag has been added to targets in range of tower");
+                //Debug.Log(other.name + " with attackers-tag has been added to targets in range of tower");
                 enemiesInRange.Add(other.gameObject);
             }
-
-
         }
-    
-            
     }
 
 

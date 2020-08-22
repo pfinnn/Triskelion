@@ -9,7 +9,6 @@ public abstract class Damageable : MonoBehaviour
     private float maxHealth = 100;
     [SerializeField]
     private float health;
-    
 
     // Start is called before the first frame update
     public virtual void Start()
