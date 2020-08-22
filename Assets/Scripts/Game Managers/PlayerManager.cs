@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerManager : MonoBehaviour
 {
@@ -36,19 +37,13 @@ public class PlayerManager : MonoBehaviour
             case State_Player.CastingSpell:
                 if (Input.GetMouseButtonDown(0))
                 {
-                    //int layerMask = 5;
+                    if (EventSystem.current.IsPointerOverGameObject()) return;
                     RaycastHit hit;
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                    if (Physics.Raycast(ray, out hit, 1000))
+                    if (Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask("Terrain")))
                     {
                         spm.CastSpellOnPosition(hit.point);
                     }
-                    if (Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask("UI")))
-                    {
-                        
-                    }
-
-
                 }
                 break;
         }

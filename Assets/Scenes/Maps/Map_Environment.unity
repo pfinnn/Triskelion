@@ -7325,7 +7325,7 @@ GameObject:
   - component: {fileID: 525637255}
   - component: {fileID: 525637254}
   - component: {fileID: 525637253}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -27499,7 +27499,7 @@ MonoBehaviour:
   m_BlockingObjects: 0
   m_BlockingMask:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 32
 --- !u!114 &2034357138
 MonoBehaviour:
   m_ObjectHideFlags: 0
