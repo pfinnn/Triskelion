@@ -51,7 +51,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   maxHealth: 100
   health: 0
-  destroyed_Particle: {fileID: 1956197547661106, guid: ad1b733f58b0419479a1816081334968,
+  destroyed_Particle: {fileID: 1956197547661106, guid: f3388a42cf526d94cbcf5b07e4c4da50,
     type: 3}
   currentState: 0
 --- !u!114 &-9084741234631231626
