@@ -10,9 +10,6 @@ public class Worker : Damageable
     private ResourceManager.Resource profession = ResourceManager.Resource.NONE;
 
     [SerializeField]
-    private Transform warehouse;
-
-    [SerializeField]
     private Transform workingPlace;
 
     [SerializeField]
@@ -23,37 +20,18 @@ public class Worker : Damageable
     private float timeToAddResInSeconds = 3.0f;
     private float collectingTimer = 0f;
 
-    private AgentMovement agent;
-
-    public Vector3 target;
-
     public enum State
     {
         WAITING,
         COLLECTING_RESOURCE,
-        MOVING_WAREHOUSE,
-        MOVING_WORKPLACE,
-        MOVING_START,
     }
     
     [SerializeField]
     private State currentState = State.WAITING;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        base.Start();
-        agent = GetComponent<AgentMovement>();
-    }
-
     // Update is called once per frame
     void Update()
     {
-        agent.SetTargetDestination(workingPlace.position);
-        //target = agent.GetCurrentDestination();
-        //agent.StartAgent();
-        //agent.SetTargetDestination(Vector3.zero);
-
         //switch (currentState)
         //{
             //case State.COLLECTING_RESOURCE:
@@ -83,11 +61,6 @@ public class Worker : Damageable
                 //        agent.StopAgent();
                 //    break;
         //}
-    }
-
-    public void SetCurrentTarget(Transform _target)
-    {
-        target = _target.position;
     }
 
     public ResourceManager.Resource GetProfession()
@@ -135,16 +108,6 @@ public class Worker : Damageable
         workingPlace = _workingPlace;
     }
 
-    internal void SetWarehouse(Transform _warehouse)
-    {
-        warehouse = _warehouse;
-    }
-
-    public AgentMovement GetAgent()
-    {
-        return agent;
-    }
-
     private void CollectResource()
     {
         collectingTimer += Time.deltaTime;
@@ -153,7 +116,7 @@ public class Worker : Damageable
             currentStorage++;
             if (currentStorage >= maxStorage)
             {
-                currentState = State.MOVING_WAREHOUSE;
+                currentState = State.COLLECTING_RESOURCE;
                 collectingTimer = 0f;
             }
             else

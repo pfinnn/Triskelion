@@ -9,37 +9,21 @@ using Random = UnityEngine.Random;
 public class WorkerManager : MonoBehaviour
 {
     [SerializeField]
-    private int amountOfSpawningWorkers = 10;
-
-    [SerializeField]
     private GameObject workerPrefab;
 
     [SerializeField]
-    private Transform warehouse;
-
-    [SerializeField]
-    private Transform spawnPoint;
+    private Transform triskelion; // triskelion
 
     [SerializeField]
     private List<Transform> fields = new List<Transform>();
 
     [SerializeField]
-    private List<Transform> woodcutterHuts = new List<Transform>();
+    private List<Transform> lumberCamps = new List<Transform>();
 
-    [SerializeField]
-    private Transform druidWorkplaces; // triskelion
-
-    private int inactiveWorkers = 10;
-    private List<GameObject> activeFarmers = new List<GameObject>();
-    private List<GameObject> activeWoodcutters = new List<GameObject>();
-    private List<GameObject> activeDruids = new List<GameObject>();
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    private int inactiveWorkers = 25;
+    private List<Worker> activeFarmers = new List<Worker>();
+    private List<Worker> activeWoodcutters = new List<Worker>();
+    private List<Worker> activeDruids = new List<Worker>();
 
     // Update is called once per frame
     void Update()
@@ -47,25 +31,54 @@ public class WorkerManager : MonoBehaviour
 
     }
 
-    private void SpawnWorkers(int amount)
+    private void SpawnWorkers(int amount, Vector3 spawnPoint)
     {
         for (int i = 0; i < amount; i++)
         {
             NavMeshHit hit;
-            NavMesh.SamplePosition(spawnPoint.position, out hit, 10f, NavMesh.AllAreas);
+            NavMesh.SamplePosition(spawnPoint, out hit, 10f, NavMesh.AllAreas);
             GameObject worker = Instantiate(workerPrefab, hit.position, Quaternion.identity);
             worker.transform.SetParent(this.transform);
             ++inactiveWorkers;
         }
     }
 
-    private GameObject SpawnWorker()
+    private GameObject SpawnWorker(Vector3 spawnPoint)
     {
-        NavMeshHit hit;
-        NavMesh.SamplePosition(spawnPoint.position, out hit, 10f, NavMesh.AllAreas);
-        GameObject worker = Instantiate(workerPrefab, hit.position, Quaternion.identity);
+        GameObject worker = Instantiate(workerPrefab, spawnPoint, Quaternion.identity);
         worker.transform.SetParent(this.transform);
-        --inactiveWorkers;
+        //--inactiveWorkers;
+        return worker;
+    }
+
+    private GameObject ArrangeWorkers(ResourceManager.Resource profession, Vector3 workingPlacePos)
+    {
+        GameObject worker = null;
+        Vector3 spawnPoint;
+        switch (profession)
+        {
+            case ResourceManager.Resource.FOOD:
+                spawnPoint = new Vector3(
+                    workingPlacePos.x+Random.Range(-10 ,10), 
+                    workingPlacePos.y, 
+                    workingPlacePos.z + Random.Range(-10, 10));
+                worker = SpawnWorker(spawnPoint);
+                return worker;
+            case ResourceManager.Resource.WOOD:
+                spawnPoint = new Vector3(
+                    workingPlacePos.x + Random.Range(-6, 6),
+                    workingPlacePos.y,
+                    workingPlacePos.z + Random.Range(-6, 6));
+                worker = SpawnWorker(spawnPoint);
+                return worker;
+            case ResourceManager.Resource.FEIDH:
+                float radius = 16;
+                spawnPoint = new Vector3(triskelion.position.x + Random.Range(-radius, radius),
+                    triskelion.position.y, triskelion.position.z +
+                    Random.Range(-radius, radius));
+                worker = SpawnWorker(spawnPoint);
+                return worker;
+        }
         return worker;
     }
 
@@ -76,13 +89,32 @@ public class WorkerManager : MonoBehaviour
 
     private Worker InstantiateFarmer()
     {
-        GameObject workerGO = SpawnWorker();
-        Worker worker = workerGO.GetComponent<Worker>();
         Transform field = fields[Random.Range(0, fields.Count - 1)];
+        GameObject workerGO = ArrangeWorkers(ResourceManager.Resource.FOOD, field.position);
+        Worker worker = workerGO.GetComponent<Worker>();
+
         worker.SetWorkingPlace(field);
-        worker.SetCurrentTarget(field);
-        worker.SetWarehouse(warehouse);
-        worker.SetState(Worker.State.MOVING_START);
+        worker.SetState(Worker.State.COLLECTING_RESOURCE);
+        return worker;
+    }
+
+    private Worker InstantiateWoodcutter()
+    {
+        Transform camp = lumberCamps[Random.Range(0, lumberCamps.Count - 1)];
+        GameObject workerGO = ArrangeWorkers(ResourceManager.Resource.WOOD, camp.position);
+        Worker worker = workerGO.GetComponent<Worker>();
+
+        worker.SetWorkingPlace(camp);
+        worker.SetState(Worker.State.COLLECTING_RESOURCE);
+        return worker;
+    }
+
+    private Worker InstantiateDruid()
+    {
+        GameObject workerGO = ArrangeWorkers(ResourceManager.Resource.FEIDH, triskelion.position);
+        Worker worker = workerGO.GetComponent<Worker>();
+        worker.SetWorkingPlace(triskelion);
+        worker.SetState(Worker.State.COLLECTING_RESOURCE);
         return worker;
     }
 
@@ -90,8 +122,8 @@ public class WorkerManager : MonoBehaviour
     {
         if (HasFreeWorkers())
         {
+            activeFarmers.Add(InstantiateFarmer());
             --inactiveWorkers;
-            InstantiateFarmer();
         }
     }
 
@@ -99,34 +131,67 @@ public class WorkerManager : MonoBehaviour
     {
         if (activeFarmers.Count > 0)
         {
+            Destroy(activeFarmers[0].gameObject);
             activeFarmers.RemoveAt(0);
+            ++inactiveWorkers;
         }
     }
 
-    //internal void AddWoodcutter()
-    //{
-    //    throw new NotImplementedException();
-    //}
+    internal void AddWoodcutter()
+    {
+        if (HasFreeWorkers())
+        {
+            activeWoodcutters.Add(InstantiateWoodcutter());
+            --inactiveWorkers;
+        }
+    }
 
-    //internal void RemoveWoodcutter()
-    //{
-    //    throw new NotImplementedException();
-    //}
+    internal void RemoveWoodcutter()
+    {
+        if (activeWoodcutters.Count > 0)
+        {
+            Destroy(activeWoodcutters[0].gameObject);
+            activeWoodcutters.RemoveAt(0);
+            ++inactiveWorkers;
+        }
+    }
 
-    //internal void RemoveDruid()
-    //{
-    //    throw new NotImplementedException();
-    //}
+    internal void AddDruid()
+    {
+        if (HasFreeWorkers())
+        {
+            activeDruids.Add(InstantiateDruid());
+            --inactiveWorkers;
+        }
+    }
 
-    //internal void AddDruid()
-    //{
-    //    throw new NotImplementedException();
-    //}
+    internal void RemoveDruid()
+    {
+        if (activeDruids.Count > 0)
+        {
+            Destroy(activeDruids[0].gameObject);
+            activeDruids.RemoveAt(0);
+            ++inactiveWorkers;
+        }
+    }
 
+    internal int GetInactiveWorkerCount()
+    {
+        return inactiveWorkers;
+    }
 
+    internal int GetFarmersCount()
+    {
+        return activeFarmers.Count;
+    }
 
+    internal int GetWoodcutterCount()
+    {
+        return activeWoodcutters.Count;
+    }
 
-
-
-
+    internal int GetDruidsCount()
+    {
+        return activeDruids.Count;
+    }
 }
