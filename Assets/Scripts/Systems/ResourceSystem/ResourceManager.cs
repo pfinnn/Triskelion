@@ -82,19 +82,6 @@ public class ResourceManager : MonoBehaviour
         return -1;
     }
 
-    //private void OnTriggerEnter(Collider other)
-    //{
-    //    Worker worker = other.GetComponent<Worker>();
-    //    if (worker != null)
-    //    {
-    //        worker.SetState(Worker.State.WAITING);
-    //        AddResource(worker.GetProfession(), worker.GetCurrentStorage());
-    //        worker.SetCurrentStorage(0);
-    //        //worker.GetAgent().SetTargetDestination(worker.GetWorkingPlace().gameObject.transform.position);
-    //        worker.SetState(Worker.State.MOVING_WORKPLACE);
-    //    }
-    //}
-
     public int getFoodAmount()
     {
         return foodAmount;
