@@ -6,7 +6,7 @@ using UnityEngine.EventSystems;
 public class PlayerManager : MonoBehaviour
 {
 
-    SpellManager spm;
+    SpellManager spellManager;
 
     public enum State_Player
     {
@@ -18,7 +18,7 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        spm = GetComponentInParent<SpellManager>();
+        spellManager = GetComponentInParent<SpellManager>();
     }
 
     // Update is called once per frame
@@ -42,7 +42,7 @@ public class PlayerManager : MonoBehaviour
                     Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
                     if (Physics.Raycast(ray, out hit, 1000, LayerMask.GetMask("Terrain")))
                     {
-                        spm.CastSpellOnPosition(hit.point);
+                        spellManager.CastSpellOnPosition(hit.point);
                     }
                 }
                 break;

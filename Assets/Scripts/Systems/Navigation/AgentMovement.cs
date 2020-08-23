@@ -20,7 +20,6 @@ public class AgentMovement : MonoBehaviour
     private void Start()
     {
         // set layer cost for water and ground
-
         nma.SetDestination(targetPosition);
     }
 
@@ -30,7 +29,7 @@ public class AgentMovement : MonoBehaviour
         {
             nma.isStopped = false;
         }
-
+        targetPosition = _destination;
         nma.SetDestination(_destination);
     }
 
@@ -69,5 +68,10 @@ public class AgentMovement : MonoBehaviour
     internal Quaternion GetCurrentRotation()
     {
         return transform.rotation;
+    }
+
+    internal Vector3 GetCurrentDestination()
+    {
+        return nma.destination;
     }
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Upgradeable : MonoBehaviour
 {
     [SerializeField]
-    private Warehouse inventory;
+    private ResourceManager inventory;
     private Damageable dmg;
 
     public enum items
@@ -24,7 +24,7 @@ public class Upgradeable : MonoBehaviour
         
     }
 
-    public void Upgrade(items upgradeType, int addAmount, Warehouse.resourceType resourceType , int price)
+    public void Upgrade(items upgradeType, int addAmount, ResourceManager.Resource resourceType , int price)
     {
         switch(upgradeType)
         {

@@ -2,20 +2,18 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
-public class Warehouse : MonoBehaviour
+using System;
+
+public class ResourceManager : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI foodUI;
-    [SerializeField]
-    private TextMeshProUGUI woodUI;
-    [SerializeField]
-    private TextMeshProUGUI feidhUI;
+    private WorkerManager workerManager;
 
     private int foodAmount = 0;
     private int woodAmount = 0;
     private int feidhAmount = 0;
 
-    public enum resourceType
+    public enum Resource
     {
         FOOD, WOOD, FEIDH, NONE
     }
@@ -31,14 +29,17 @@ public class Warehouse : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        foodUI.text = foodAmount.ToString();
-        woodUI.text = woodAmount.ToString();
-        feidhUI.text = feidhAmount.ToString();
+        UpdateResourceValues();
     }
 
-    public bool Buy(resourceType type, int price)
+    private void UpdateResourceValues()
     {
-        bool ableToBuy = type != resourceType.NONE && price <= Get(type);
+        //throw new NotImplementedException();
+    }
+
+    public bool Buy(Resource type, int price)
+    {
+        bool ableToBuy = type != Resource.NONE && price <= Get(type);
         if(ableToBuy)
         {
             Set(type, Get(type) - price);
@@ -46,36 +47,36 @@ public class Warehouse : MonoBehaviour
         return ableToBuy;
     }
 
-    public void AddResource(resourceType type, int amount)
+    public void AddResource(Resource type, int amount)
     {
         Set(type, Get(type) + amount);
     }
 
-    private void Set(resourceType type, int amount)
+    private void Set(Resource type, int amount)
     {
         switch(type)
         {
-            case resourceType.FOOD:
+            case Resource.FOOD:
                 setFoodAmount(amount);
                 break;
-            case resourceType.WOOD:
+            case Resource.WOOD:
                 setWoodAmount(amount);
                 break;
-            case resourceType.FEIDH:
+            case Resource.FEIDH:
                 setFeidhAmount(amount);
                 break;
         }
     }
 
-    private int Get(resourceType type)
+    private int Get(Resource type)
     {
         switch(type)
         {
-            case resourceType.FOOD:
+            case Resource.FOOD:
                 return getFoodAmount();
-            case resourceType.WOOD:
+            case Resource.WOOD:
                 return getWoodAmount();
-            case resourceType.FEIDH:
+            case Resource.FEIDH:
                 return getFeidhAmount();
         }
         return -1;
@@ -86,11 +87,11 @@ public class Warehouse : MonoBehaviour
         Worker worker = other.GetComponent<Worker>();
         if (worker != null)
         {
-            worker.setState(Worker.State.WAITING);
-            AddResource(worker.getProfession(), worker.getCurrentStorage());
-            worker.setCurrentStorage(0);
-            worker.getAgent().SetTargetDestination(worker.getWorkingPlace().gameObject.transform.position);
-            worker.setState(Worker.State.MOVING);
+            worker.SetState(Worker.State.WAITING);
+            AddResource(worker.GetProfession(), worker.GetCurrentStorage());
+            worker.SetCurrentStorage(0);
+            worker.GetAgent().SetTargetDestination(worker.GetWorkingPlace().gameObject.transform.position);
+            worker.SetState(Worker.State.MOVING_WORKPLACE);
         }
     }
 

@@ -7,11 +7,13 @@ using UnityEngine.AI;
 public class Worker : Damageable
 {
     [SerializeField]
-    private Warehouse.resourceType profession = Warehouse.resourceType.NONE;
+    private ResourceManager.Resource profession = ResourceManager.Resource.NONE;
+
     [SerializeField]
-    private Transform warehouseTransform;
+    private Transform warehouse;
+
     [SerializeField]
-    private GameObject workingPlace;
+    private Transform workingPlace;
 
     [SerializeField]
     private int maxStorage = 10;
@@ -23,13 +25,17 @@ public class Worker : Damageable
 
     private AgentMovement agent;
 
+    public Vector3 target;
+
     public enum State
     {
         WAITING,
         COLLECTING_RESOURCE,
-        MOVING
+        MOVING_WAREHOUSE,
+        MOVING_WORKPLACE,
+        MOVING_START,
     }
-
+    
     [SerializeField]
     private State currentState = State.WAITING;
 
@@ -38,80 +44,103 @@ public class Worker : Damageable
     {
         base.Start();
         agent = GetComponent<AgentMovement>();
-        warehouseTransform = GetComponentInParent<WorkerManager>().getWarehouseTransform();
     }
 
     // Update is called once per frame
     void Update()
     {
-        switch(currentState)
-        {
-            case State.COLLECTING_RESOURCE:
-                CollectResource();
-                break;
+        agent.SetTargetDestination(workingPlace.position);
+        //target = agent.GetCurrentDestination();
+        //agent.StartAgent();
+        //agent.SetTargetDestination(Vector3.zero);
 
-            case State.MOVING:
-                //Do something
-                break;
+        //switch (currentState)
+        //{
+            //case State.COLLECTING_RESOURCE:
+            //    CollectResource();
+            //    break;
 
-            case State.WAITING:
-                if (agent.IsMoving())
-                    agent.StopAgent();
-                break;
-        }
+            //case State.MOVING_WORKPLACE:
+            //    //agent.SetTargetDestination(workingPlace.position);
+            //    if (agent.ReachedDestination(workingPlace.position))
+            //    {
+            //        currentState = State.COLLECTING_RESOURCE;
+            //    }
+            //    break;
+            //case State.MOVING_START:
+            //    agent.SetTargetDestination(workingPlace.position);
+            //    currentState = State.MOVING_WORKPLACE;
+            //    break;
+                //case State.MOVING_WAREHOUSE:
+                //    if (agent.ReachedDestination(warehouse.position))
+                //    {
+                //        currentState = State.WAITING;
+                //    }
+                //    break;
+
+                //case State.WAITING:
+                //    if (agent.IsMoving())
+                //        agent.StopAgent();
+                //    break;
+        //}
     }
 
-    public Warehouse.resourceType getProfession()
+    public void SetCurrentTarget(Transform _target)
+    {
+        target = _target.position;
+    }
+
+    public ResourceManager.Resource GetProfession()
     {
         return profession;
     }
 
-    public void setProfession(Warehouse.resourceType profession)
-    {
-        this.profession = profession;
-    }
-
-    public int getMaxStorage()
+    public int GetMaxStorage()
     {
         return maxStorage;
     }
 
-    public void setMaxStorage(int amount)
+    public void SetMaxStorage(int amount)
     {
         maxStorage = amount;
     }
 
-    public int getCurrentStorage()
+    public int GetCurrentStorage()
     {
         return currentStorage;
     }
 
-    public void setCurrentStorage(int amount)
+    public void SetCurrentStorage(int amount)
     {
         currentStorage = amount;
     }
 
-    public State getState()
+    public State GetState()
     {
         return currentState;
     }
 
-    public void setState(State state)
+    public void SetState(State state)
     {
         currentState = state;
     }
 
-    public GameObject getWorkingPlace()
+    public Transform GetWorkingPlace()
     {
         return workingPlace;
     }
 
-    public void setWorkingPlace(GameObject workingPlace)
+    internal void SetWorkingPlace(Transform _workingPlace)
     {
-        this.workingPlace = workingPlace;
+        workingPlace = _workingPlace;
     }
 
-    public AgentMovement getAgent()
+    internal void SetWarehouse(Transform _warehouse)
+    {
+        warehouse = _warehouse;
+    }
+
+    public AgentMovement GetAgent()
     {
         return agent;
     }
@@ -124,9 +153,7 @@ public class Worker : Damageable
             currentStorage++;
             if (currentStorage >= maxStorage)
             {
-                agent.SetTargetDestination(warehouseTransform.position);
-                agent.StartAgent();
-                currentState = State.MOVING;
+                currentState = State.MOVING_WAREHOUSE;
                 collectingTimer = 0f;
             }
             else

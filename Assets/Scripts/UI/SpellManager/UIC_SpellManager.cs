@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class UIC_SpellPanel : MonoBehaviour
+public class UIC_SpellManager : MonoBehaviour
 {
     [SerializeField]
     private TextMeshProUGUI timer_01_TextField;
@@ -13,9 +13,6 @@ public class UIC_SpellPanel : MonoBehaviour
     private TextMeshProUGUI timer_03_TextField;
 
     private SpellManager spellManager;
-
-    //[SerializeField]
-    //private TextMeshPro inactiveTextField;
 
     // Start is called before the first frame update
     void Awake()
