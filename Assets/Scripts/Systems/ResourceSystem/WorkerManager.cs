@@ -84,7 +84,12 @@ public class WorkerManager : MonoBehaviour
 
     private bool HasFreeWorkers()
     {
-        return inactiveWorkers > 0;
+        Worker workerComponent = worker.GetComponent<Worker>();
+        workerComponent.setProfession(null == station ? Warehouse.resourceType.NONE : station.GetComponent<FarmingStation>().GetResource());
+        workerComponent.setWorkingPlace(station);
+        workerComponent.getAgent().SetTargetDestination(station == null ? spawnPoint.position : station.transform.position);
+        workerComponent.setState(station == null ? Worker.State.WAITING : Worker.State.MOVING);
+        workers[worker] = station;
     }
 
     private Worker InstantiateFarmer()
