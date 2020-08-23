@@ -32,5 +32,15 @@ public class TargetDetectionChild : MonoBehaviour
 
     }
 
-
+    private void OnTriggerStay(Collider other)
+    {
+        Damageable damageable;
+        if (other.gameObject.TryGetComponent<Damageable>(out damageable))
+        {
+            if (damageable.gameObject.CompareTag("destroyed"))
+            {
+                parent.OnChildTriggerExit(damageable);
+            }
+        }
+    }
 }

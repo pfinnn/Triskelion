@@ -37,7 +37,6 @@ public class Tower : Damageable
         base.Start();
         shootingSystem = GetComponent<ShootingSystem>();
         shootingPoint = shootingSystem.GetShootingPoint();
-        this.gameObject.tag = "damageable";
         this.gameObject.tag = "defenders";
         SetMaxHealth(_health);
         SetHealth(_health);
@@ -52,6 +51,7 @@ public class Tower : Damageable
             {
                 Instantiate(destroyed_Particle, shootingPoint, Quaternion.identity );
                 currentState = State.Destroyed;
+                this.gameObject.tag = "destroyed";
             }
             return;
         }
@@ -130,7 +130,7 @@ public class Tower : Damageable
 
     void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "attackers")
+        if (other.gameObject.CompareTag("attackers"))
         {
             if (other.GetComponentInParent<UnitController>())
             {
@@ -144,7 +144,7 @@ public class Tower : Damageable
 
     void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "attackers")
+        if (other.gameObject.CompareTag("attackers"))
         {
             if (other.GetComponentInParent<UnitController>())
             {

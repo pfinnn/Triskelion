@@ -496,9 +496,7 @@ public class UnitController : MonoBehaviour
 
     internal void OnChildTriggerEnter(Damageable other)
     {
-        String tag = other.gameObject.tag;
-        
-        if (tag == "defenders")
+        if (other.gameObject.CompareTag("defenders"))
         {
             targetsInRange.Add(other);
         }
