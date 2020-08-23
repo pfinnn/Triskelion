@@ -66,15 +66,15 @@ public class WorkerManager : MonoBehaviour
                 return worker;
             case ResourceManager.Resource.WOOD:
                 spawnPoint = new Vector3(
-                    workingPlacePos.x + Random.Range(-6, 6),
+                    workingPlacePos.x + Random.Range(-16, 16),
                     workingPlacePos.y,
-                    workingPlacePos.z + Random.Range(-6, 6));
+                    workingPlacePos.z + Random.Range(-16, 16));
                 worker = SpawnWorker(spawnPoint);
                 return worker;
             case ResourceManager.Resource.FEIDH:
                 float radius = 16;
                 spawnPoint = new Vector3(triskelion.position.x + Random.Range(-radius, radius),
-                    triskelion.position.y, triskelion.position.z +
+                    triskelion.position.y-6f, triskelion.position.z +
                     Random.Range(-radius, radius));
                 worker = SpawnWorker(spawnPoint);
                 return worker;
