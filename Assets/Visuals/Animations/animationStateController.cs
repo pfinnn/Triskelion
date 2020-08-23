@@ -14,9 +14,13 @@ public class animationStateController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKey("w"))
+        bool isIdle = animator.GetBool("isIdle");
+        bool startIdle = Input.GetKey("w");
+
+        if(!isIdle && startIdle)
         {
             animator.SetBool("isIdle", true);
         }
+
     }
 }

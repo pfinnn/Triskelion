@@ -5,9 +5,9 @@ using UnityEngine;
 public class FarmingStation : MonoBehaviour
 {
     [SerializeField]
-    private Warehouse.resourceType resourceType;
+    private ResourceManager.Resource resourceType;
     [SerializeField]
-    private Warehouse resourceSystem;
+    private ResourceManager resourceSystem;
 
     // Start is called before the first frame update
     void Start()
@@ -26,11 +26,11 @@ public class FarmingStation : MonoBehaviour
         Worker worker = other.GetComponentInParent<Worker>();
         if (worker != null)
         {
-            worker.setState(Worker.State.COLLECTING_RESOURCE);
+            worker.SetState(Worker.State.COLLECTING_RESOURCE);
         }
     }
 
-    public Warehouse.resourceType GetResource()
+    public ResourceManager.Resource GetResource()
     {
         return resourceType;
     }

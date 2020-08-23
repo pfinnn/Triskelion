@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ShootingSystem : MonoBehaviour
 {
@@ -33,6 +34,11 @@ public class ShootingSystem : MonoBehaviour
     {
         //return Vector3.MoveTowards(targetPosition.position, targetPosition.position, 10f);
         return target.position + (target.forward.normalized * targetSpeed);
+    }
+
+    internal Vector3 GetShootingPoint()
+    {
+        return shootingPoint;
     }
 
     internal void ShootArcMovingTarget(Transform target, float targetSpeed)
