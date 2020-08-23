@@ -21,7 +21,7 @@ public class UIC_WorkerManager : MonoBehaviour
     {
         inactiveTextField.text = workerManager.GetInactiveWorkerCount().ToString();
         farmerTextField.text = workerManager.GetFarmersCount().ToString();
-        woodcutterTextField.text = workerManager.GetWoodcutterCount().ToString();
+        woodcutterTextField.text = workerManager.GetWoodcuttersCount().ToString();
         druidsTextField.text = workerManager.GetDruidsCount().ToString();
     }
 
@@ -41,13 +41,13 @@ public class UIC_WorkerManager : MonoBehaviour
     {
         workerManager.AddWoodcutter();
         inactiveTextField.text = workerManager.GetInactiveWorkerCount().ToString();
-        woodcutterTextField.text = workerManager.GetWoodcutterCount().ToString();
+        woodcutterTextField.text = workerManager.GetWoodcuttersCount().ToString();
     }
     public void RemoveWoodcutter()
     {
         workerManager.RemoveWoodcutter();
         inactiveTextField.text = workerManager.GetInactiveWorkerCount().ToString();
-        woodcutterTextField.text = workerManager.GetWoodcutterCount().ToString();
+        woodcutterTextField.text = workerManager.GetWoodcuttersCount().ToString();
     }
     public void AddDruid()
     {

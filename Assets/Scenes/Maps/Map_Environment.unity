@@ -9157,7 +9157,6 @@ GameObject:
   m_Component:
   - component: {fileID: 849114862}
   - component: {fileID: 849114861}
-  - component: {fileID: 849114863}
   m_Layer: 0
   m_Name: ResourceManager
   m_TagString: Untagged
@@ -9178,6 +9177,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   workerManager: {fileID: 66446142}
+  uic: {fileID: 1008684969}
 --- !u!4 &849114862
 Transform:
   m_ObjectHideFlags: 0
@@ -9188,25 +9188,11 @@ Transform:
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 46.417614, y: 53.163506, z: 35.443127}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 1008684970}
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &849114863
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 849114860}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7195bf5507d69b54d960c03d1fbb9355, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  foodUI: {fileID: 470223528}
-  woodUI: {fileID: 531934808}
-  feidhUI: {fileID: 304019189}
 --- !u!4 &854805591 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 6b32b4f96eec63f4d9f15b61813d0e20,
@@ -11427,6 +11413,52 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b32b4f96eec63f4d9f15b61813d0e20, type: 3}
+--- !u!1 &1008684968
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1008684970}
+  - component: {fileID: 1008684969}
+  m_Layer: 0
+  m_Name: UIC_ResourceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1008684969
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008684968}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7195bf5507d69b54d960c03d1fbb9355, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  foodUI: {fileID: 470223528}
+  woodUI: {fileID: 531934808}
+  feidhUI: {fileID: 304019189}
+--- !u!4 &1008684970
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008684968}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 849114862}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1017191933
 GameObject:
   m_ObjectHideFlags: 0
@@ -22301,6 +22333,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc3b731e8cca8fe4496be68ed012ee34, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  resourceManager: {fileID: 849114861}
   particle_attack_01: {fileID: 7609421362749961614, guid: b402abbef7c65194b93a6d786086fe09,
     type: 3}
   particle_attack_02: {fileID: 7609421362749961614, guid: e387638d0ed071d4c8f5410da35baa46,

@@ -6,6 +6,7 @@ public class SpellManager : MonoBehaviour
 {
     PlayerManager playerManager;
 
+    [SerializeField]
     ResourceManager resourceManager;
 
     [SerializeField]
@@ -36,7 +37,6 @@ public class SpellManager : MonoBehaviour
     void Awake()
     {
         playerManager = GetComponentInParent<PlayerManager>();
-        resourceManager = GetComponentInParent<ResourceManager>();
     }
 
     // Update is called once per frame
@@ -63,14 +63,14 @@ public class SpellManager : MonoBehaviour
 
     public void CastSpellOnPosition(Vector3 targetPosition)
     {
-        int feidhAmount = resourceManager.getFeidhAmount();
+        int feidhAmount = resourceManager.GetFeidhAmount();
         switch (currentSpell)
         {
             case Spell.Attack_01:
                 if (feidhAmount > spellCost_Attack_01)
                 {
                     Instantiate(particle_attack_01, targetPosition, Quaternion.identity);
-                    resourceManager.setFeidhAmount(feidhAmount - spellCost_Attack_01);
+                    resourceManager.SetFeidhAmount(feidhAmount - spellCost_Attack_01);
                 }
                 break;
 
@@ -78,7 +78,7 @@ public class SpellManager : MonoBehaviour
                 if (feidhAmount > spellCost_Attack_02)
                 {
                     Instantiate(particle_attack_02, targetPosition, Quaternion.identity);
-                    resourceManager.setFeidhAmount(feidhAmount - spellCost_Attack_02);
+                    resourceManager.SetFeidhAmount(feidhAmount - spellCost_Attack_02);
                 }
                 break;
 
@@ -87,7 +87,7 @@ public class SpellManager : MonoBehaviour
                 if (feidhAmount > spellCost_Buff_01)
                 {
                     Instantiate(particle_buff_01, targetPosition, Quaternion.identity);
-                    resourceManager.setFeidhAmount(feidhAmount-spellCost_Buff_01);
+                    resourceManager.SetFeidhAmount(feidhAmount-spellCost_Buff_01);
                 }
                 break;
         }

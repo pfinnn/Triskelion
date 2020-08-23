@@ -185,7 +185,7 @@ public class WorkerManager : MonoBehaviour
         return activeFarmers.Count;
     }
 
-    internal int GetWoodcutterCount()
+    internal int GetWoodcuttersCount()
     {
         return activeWoodcutters.Count;
     }

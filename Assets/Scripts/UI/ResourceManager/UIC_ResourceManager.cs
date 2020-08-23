@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class UIC_ResourceManager : MonoBehaviour
 {
-
     [SerializeField]
     private TextMeshProUGUI foodUI;
     [SerializeField]
@@ -16,12 +15,20 @@ public class UIC_ResourceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    internal void OnFoodAmountChanged(int _amount)
     {
-        
+        foodUI.text = _amount.ToString();
+    }
+
+    internal void OnWoodAmountChanged(int _amount)
+    {
+        woodUI.text = _amount.ToString();
+    }
+
+    internal void OnFeidhAmountChanged(int _amount)
+    {
+        feidhUI.text = _amount.ToString();
     }
 }

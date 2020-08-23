@@ -9,9 +9,19 @@ public class ResourceManager : MonoBehaviour
     [SerializeField]
     private WorkerManager workerManager;
 
+    [SerializeField]
+    private UIC_ResourceManager uic;
+
     private int foodAmount = 0;
     private int woodAmount = 0;
     private int feidhAmount = 0;
+
+    private int foodPerWorker = 3;
+    private int woodPerWorker = 2;
+    private int feidhPerWorker = 1;
+
+    private float timer = 0f;
+    private float timer_intervall_update = 6.5f;
 
     public enum Resource
     {
@@ -24,17 +34,33 @@ public class ResourceManager : MonoBehaviour
         foodAmount = 0;
         woodAmount = 0;
         feidhAmount = 0;
+        Notify_UIC();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        UpdateResourceValues();
+        timer += Time.deltaTime;
+        if (timer >= timer_intervall_update)
+        {
+            UpdateResourceValues();
+            Notify_UIC();
+            timer = 0f;
+        }
     }
 
     private void UpdateResourceValues()
     {
-        //throw new NotImplementedException();
+        foodAmount += workerManager.GetFarmersCount() * foodPerWorker;
+        woodAmount += workerManager.GetWoodcuttersCount() * woodPerWorker;
+        feidhAmount += workerManager.GetDruidsCount() * feidhPerWorker;
+    }
+
+    private void Notify_UIC()
+    {
+        uic.OnFoodAmountChanged(foodAmount);
+        uic.OnWoodAmountChanged(woodAmount);
+        uic.OnFeidhAmountChanged(feidhAmount);
     }
 
     public bool Buy(Resource type, int price)
@@ -57,13 +83,13 @@ public class ResourceManager : MonoBehaviour
         switch(type)
         {
             case Resource.FOOD:
-                setFoodAmount(amount);
+                SetFoodAmount(amount);
                 break;
             case Resource.WOOD:
-                setWoodAmount(amount);
+                SetWoodAmount(amount);
                 break;
             case Resource.FEIDH:
-                setFeidhAmount(amount);
+                SetFeidhAmount(amount);
                 break;
         }
     }
@@ -73,42 +99,45 @@ public class ResourceManager : MonoBehaviour
         switch(type)
         {
             case Resource.FOOD:
-                return getFoodAmount();
+                return GetFoodAmount();
             case Resource.WOOD:
-                return getWoodAmount();
+                return GetWoodAmount();
             case Resource.FEIDH:
-                return getFeidhAmount();
+                return GetFeidhAmount();
         }
         return -1;
     }
 
-    public int getFoodAmount()
+    public int GetFoodAmount()
     {
         return foodAmount;
     }
 
-    public void setFoodAmount(int foodAmount)
+    public void SetFoodAmount(int foodAmount)
     {
         this.foodAmount = foodAmount;
+        Notify_UIC();
     }
 
-    public int getWoodAmount()
+    public int GetWoodAmount()
     {
         return woodAmount;
     }
 
-    public void setWoodAmount(int woodAmount)
+    public void SetWoodAmount(int woodAmount)
     {
         this.woodAmount = woodAmount;
+        Notify_UIC();
     }
 
-    public int getFeidhAmount()
+    public int GetFeidhAmount()
     {
         return feidhAmount;
     }
 
-    public void setFeidhAmount(int feidhAmount)
+    public void SetFeidhAmount(int feidhAmount)
     {
         this.feidhAmount = feidhAmount;
+        Notify_UIC();
     }
 }
