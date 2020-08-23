@@ -58,8 +58,7 @@ public class WorkerManager : MonoBehaviour
     public void AssignWorkerToFarmingStation(GameObject worker, GameObject station)
     {
         Worker workerComponent = worker.GetComponent<Worker>();
-        //workerComponent.setProfession(null == station ? Warehouse.resourceType.NONE : station.GetComponentInChildren<FarmingStation>().GetResource());
-        workerComponent.setProfession(Warehouse.resourceType.FOOD);
+        workerComponent.setProfession(null == station ? Warehouse.resourceType.NONE : station.GetComponent<FarmingStation>().GetResource());
         workerComponent.setWorkingPlace(station);
         workerComponent.getAgent().SetTargetDestination(station == null ? spawnPoint.position : station.transform.position);
         workerComponent.setState(station == null ? Worker.State.WAITING : Worker.State.MOVING);

@@ -84,7 +84,7 @@ public class Warehouse : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Worker worker = other.GetComponent<Worker>();
-        if (worker != null)
+        if (worker != null && null != worker.getWorkingPlace())
         {
             worker.setState(Worker.State.WAITING);
             AddResource(worker.getProfession(), worker.getCurrentStorage());
