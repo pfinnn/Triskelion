@@ -20,6 +20,9 @@ public class WorkerManager : MonoBehaviour
     [SerializeField]
     private List<Transform> lumberCamps = new List<Transform>();
 
+    [SerializeField]
+    private ResourceManager resourceManager;
+
     private int inactiveWorkers = 25;
     private List<Worker> activeFarmers = new List<Worker>();
     private List<Worker> activeWoodcutters = new List<Worker>();
@@ -47,7 +50,6 @@ public class WorkerManager : MonoBehaviour
     {
         GameObject worker = Instantiate(workerPrefab, spawnPoint, Quaternion.identity);
         worker.transform.SetParent(this.transform);
-        //--inactiveWorkers;
         return worker;
     }
 
@@ -116,6 +118,14 @@ public class WorkerManager : MonoBehaviour
         worker.SetWorkingPlace(triskelion);
         worker.SetState(Worker.State.COLLECTING_RESOURCE);
         return worker;
+    }
+
+    internal void AddNewWorker()
+    {
+        if (resourceManager.Buy(ResourceManager.Resource.FOOD, 500))
+        {
+            inactiveWorkers++;
+        }
     }
 
     internal void AddFarmer()

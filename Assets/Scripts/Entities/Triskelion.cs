@@ -11,7 +11,7 @@ public class Triskelion : Damageable
     public override void Start()
     {
         base.Start();
-        mat = GetComponent<MeshRenderer>().material;
+        //mat = GetComponent<MeshRenderer>().material;
     }
 
     // Update is called once per frame
@@ -24,7 +24,7 @@ public class Triskelion : Damageable
             Debug.Log("Health: " + GetHealth());
             if (GetHealth() <= GetMaxHealth()/2)
             {
-                mat.SetColor("_EmissionColor", Color.red);
+                //mat.SetColor("_EmissionColor", Color.red);
             }
             // play "damage taken animation"
 

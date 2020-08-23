@@ -92,6 +92,7 @@ public class ResourceManager : MonoBehaviour
                 SetFeidhAmount(amount);
                 break;
         }
+        Notify_UIC();
     }
 
     private int Get(Resource type)

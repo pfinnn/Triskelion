@@ -61,4 +61,10 @@ public class UIC_WorkerManager : MonoBehaviour
         inactiveTextField.text = workerManager.GetInactiveWorkerCount().ToString();
         druidsTextField.text = workerManager.GetDruidsCount().ToString();
     }
+
+    public void AddNewWorker()
+    {
+        workerManager.AddNewWorker();
+        inactiveTextField.text = workerManager.GetInactiveWorkerCount().ToString();
+    }
 }
