@@ -69,16 +69,18 @@ public class SpellManager : MonoBehaviour
             case Spell.Attack_01:
                 if (feidhAmount > spellCost_Attack_01)
                 {
-                    Instantiate(particle_attack_01, targetPosition, Quaternion.identity);
+                    GameObject particle = Instantiate(particle_attack_01, targetPosition, Quaternion.identity);
                     resourceManager.SetFeidhAmount(feidhAmount - spellCost_Attack_01);
+                    Destroy(particle, 5);
                 }
                 break;
 
             case Spell.Attack_02:
                 if (feidhAmount > spellCost_Attack_02)
                 {
-                    Instantiate(particle_attack_02, targetPosition, Quaternion.identity);
+                    GameObject particle = Instantiate(particle_attack_02, targetPosition, Quaternion.identity);
                     resourceManager.SetFeidhAmount(feidhAmount - spellCost_Attack_02);
+                    Destroy(particle, 5);
                 }
                 break;
 
@@ -86,8 +88,9 @@ public class SpellManager : MonoBehaviour
 
                 if (feidhAmount > spellCost_Buff_01)
                 {
-                    Instantiate(particle_buff_01, targetPosition, Quaternion.identity);
+                    GameObject particle = Instantiate(particle_buff_01, targetPosition, Quaternion.identity);
                     resourceManager.SetFeidhAmount(feidhAmount-spellCost_Buff_01);
+                    Destroy(particle, 5);
                 }
                 break;
         }
