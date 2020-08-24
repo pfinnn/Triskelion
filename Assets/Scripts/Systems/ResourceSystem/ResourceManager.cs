@@ -22,6 +22,8 @@ public class ResourceManager : MonoBehaviour
 
     private float timer = 0f;
     private float timer_intervall_update = 6.5f;
+    private float timer_population_eats = 0f;
+    private float timer_population_eats_intervall = 20f;
 
     public enum Resource
     {
@@ -34,6 +36,7 @@ public class ResourceManager : MonoBehaviour
         foodAmount = 0;
         woodAmount = 0;
         feidhAmount = 0;
+        uic.SetMaxValueForSlider(timer_population_eats_intervall);
         Notify_UIC();
     }
 
@@ -41,12 +44,24 @@ public class ResourceManager : MonoBehaviour
     void FixedUpdate()
     {
         timer += Time.deltaTime;
+        timer_population_eats += Time.deltaTime;
         if (timer >= timer_intervall_update)
         {
             UpdateResourceValues();
             Notify_UIC();
             timer = 0f;
         }
+        if (timer_population_eats >= timer_population_eats_intervall)
+        {
+            PopulationEats();
+            Notify_UIC();
+            timer_population_eats = 0f;
+            if (foodAmount < 0)
+            {
+                //Do something
+            }
+        }
+        uic.OnPopulationEatsTimerChanged(timer_population_eats);
     }
 
     private void UpdateResourceValues()
@@ -54,6 +69,17 @@ public class ResourceManager : MonoBehaviour
         foodAmount += workerManager.GetFarmersCount() * foodPerWorker;
         woodAmount += workerManager.GetWoodcuttersCount() * woodPerWorker;
         feidhAmount += workerManager.GetDruidsCount() * feidhPerWorker;
+    }
+
+    private void PopulationEats()
+    {
+        //In Future more units can be added
+        int population = workerManager.GetInactiveWorkerCount() + workerManager.GetFarmersCount() + workerManager.GetWoodcuttersCount() + workerManager.GetDruidsCount();
+        for (int i = 0; i < population; i++)
+        {
+            int random = UnityEngine.Random.Range(1, 3);
+            foodAmount -= random;
+        }
     }
 
     private void Notify_UIC()
