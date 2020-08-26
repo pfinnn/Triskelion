@@ -23,6 +23,9 @@ public class WorkerManager : MonoBehaviour
     [SerializeField]
     private ResourceManager resourceManager;
 
+    [SerializeField]
+    private UIC_WorkerManager uic;
+
     private int inactiveWorkers = 25;
     private List<Worker> activeFarmers = new List<Worker>();
     private List<Worker> activeWoodcutters = new List<Worker>();
@@ -183,6 +186,52 @@ public class WorkerManager : MonoBehaviour
             activeDruids.RemoveAt(0);
             ++inactiveWorkers;
         }
+    }
+
+    internal void Starve()
+    {
+        if (GetInactiveWorkerCount() <= 0)
+        {
+            int random = Random.Range(1, 4);
+            Debug.Log("Random Value: " + random);
+            switch (random)
+            {
+                case 1:
+                    if (GetFarmersCount() <= 0)
+                    {
+                        Starve();
+                    } else
+                    {
+                        RemoveFarmer();
+                        inactiveWorkers--;
+                    }
+                    break;
+                case 2:
+                    if (GetWoodcuttersCount() <= 0)
+                    {
+                        Starve();
+                    } else
+                    {
+                        RemoveWoodcutter();
+                        inactiveWorkers--;
+                    }
+                    break;
+                case 3:
+                    if (GetDruidsCount() <= 0)
+                    {
+                        Starve();
+                    } else
+                    {
+                        RemoveDruid();
+                        inactiveWorkers--;
+                    }
+                    break;
+            }
+        } else
+        {
+            inactiveWorkers--;
+        }
+        uic.Refresh();
     }
 
     internal int GetInactiveWorkerCount()
