@@ -24,6 +24,8 @@ public class ResourceManager : MonoBehaviour
     private float timer_intervall_update = 6.5f;
     private float timer_population_eats = 0f;
     private float timer_population_eats_intervall = 20f;
+    private int timer_starving = 0;
+    private int timer_starving_intervall = 3;
 
     public enum Resource
     {
@@ -58,7 +60,12 @@ public class ResourceManager : MonoBehaviour
             timer_population_eats = 0f;
             if (foodAmount < 0)
             {
-                //Do something
+                timer_starving += 1;
+                if (timer_starving >= timer_starving_intervall)
+                {
+                    workerManager.Starve();
+                    timer_starving = 0;
+                }
             }
         }
         uic.OnPopulationEatsTimerChanged(timer_population_eats);

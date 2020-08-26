@@ -1099,6 +1099,7 @@ MonoBehaviour:
   - {fileID: 1766564505}
   - {fileID: 379391368}
   resourceManager: {fileID: 849114861}
+  uic: {fileID: 66446144}
 --- !u!4 &66446143
 Transform:
   m_ObjectHideFlags: 0
