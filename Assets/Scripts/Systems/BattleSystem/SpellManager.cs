@@ -67,9 +67,11 @@ public class SpellManager : MonoBehaviour
         switch (currentSpell)
         {
             case Spell.Attack_01:
+                //Kills all soliders in range instantly
                 if (feidhAmount > spellCost_Attack_01)
                 {
                     GameObject particle = Instantiate(particle_attack_01, targetPosition, Quaternion.identity);
+                    particle.GetComponent<Spell_Attack_1>().DoSpell(targetPosition);
                     resourceManager.SetFeidhAmount(feidhAmount - spellCost_Attack_01);
                     Destroy(particle, 5);
                 }
