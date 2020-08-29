@@ -25,7 +25,7 @@ public class WorkerManager : MonoBehaviour
 
     [SerializeField]
     private UIC_WorkerManager uic;
-
+    private int costNewWorker = 200;
     private int inactiveWorkers = 25;
     private List<Worker> activeFarmers = new List<Worker>();
     private List<Worker> activeWoodcutters = new List<Worker>();
@@ -130,7 +130,7 @@ public class WorkerManager : MonoBehaviour
 
     internal void AddNewWorker()
     {
-        if (resourceManager.Buy(ResourceManager.Resource.FOOD, 500))
+        if (resourceManager.Buy(ResourceManager.Resource.FOOD, costNewWorker))
         {
             inactiveWorkers++;
         }
@@ -257,5 +257,10 @@ public class WorkerManager : MonoBehaviour
     internal int GetDruidsCount()
     {
         return activeDruids.Count;
+    }
+
+    internal int GetCostWorker()
+    {
+        return costNewWorker;
     }
 }

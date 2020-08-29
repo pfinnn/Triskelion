@@ -21,9 +21,6 @@ public class UIC_ResourceManager : MonoBehaviour
     private TextMeshProUGUI feidhConsumption;
 
     [SerializeField]
-    private Slider consumptionSlider;
-
-    [SerializeField]
     private TextMeshProUGUI foodProduction;
     [SerializeField]
     private TextMeshProUGUI woodProduction;
@@ -31,21 +28,17 @@ public class UIC_ResourceManager : MonoBehaviour
     private TextMeshProUGUI feidhProduction;
 
     [SerializeField]
-    private Slider productionSlider;
+    private Slider timeSlider;
 
     // Start is called before the first frame update
     void Start()
     {
     }
-    internal void OnConsumptionTimerChanged(float value)
+
+    internal void OnTimerSliderChanged(float value)
     {
-        float maxValue = consumptionSlider.maxValue;
-        consumptionSlider.value = maxValue - value;
-    }
-    internal void OnProductionTimerChanged(float value)
-    {
-        float maxValue = productionSlider.maxValue;
-        productionSlider.value = maxValue - value;
+        float maxValue = timeSlider.maxValue;
+        timeSlider.value = maxValue - value;
     }
     internal void OnFoodAmountChanged(int _amount)
     {
@@ -62,13 +55,9 @@ public class UIC_ResourceManager : MonoBehaviour
         feidhAmount.text = _amount.ToString();
     }
 
-    internal void SetMaxValueConsumptionSlider(float maxValue)
+    internal void SetMaxValueTimeSlider(float maxValue)
     {
-        consumptionSlider.maxValue = maxValue;
-    }
-    internal void SetMaxValueProductionSlider(float maxValue)
-    {
-        productionSlider.maxValue = maxValue;
+        timeSlider.maxValue = maxValue;
     }
 
     internal void OnFoodConsumptionAmountChanged(int _amount)

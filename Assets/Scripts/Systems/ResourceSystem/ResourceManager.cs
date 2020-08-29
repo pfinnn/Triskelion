@@ -34,14 +34,10 @@ public class ResourceManager : MonoBehaviour
     private int currentProductionWood = 0;
     private int currentProductionFeidh = 0;
 
-    private float timer = 0f;
-    private float timer_intervall_update = 6.5f;
-    private float timer_consumption = 0f;
-    private float timer_consumption_intervall = 6.5f;
-    private float timer_production = 0f;
-    private float timer_production_intervall = 6.5f;
+    private float timer_update = 0f;
+    private float timer_update_interval = 6.5f;
     private int timer_starving = 0;
-    private int timer_starving_intervall = 3;
+    private int timer_starving_interval = 3;
 
     public enum Resource
     {
@@ -54,8 +50,7 @@ public class ResourceManager : MonoBehaviour
         foodAmount = 100;
         woodAmount = 50;
         feidhAmount = 25;
-        uic.SetMaxValueConsumptionSlider(timer_consumption_intervall);
-        uic.SetMaxValueProductionSlider(timer_production_intervall);
+        uic.SetMaxValueTimeSlider(timer_update_interval);
         UpdateConsumptionValues();
         Notify_UIC();
     }
@@ -63,21 +58,16 @@ public class ResourceManager : MonoBehaviour
     // Update is called once per frame
     void FixedUpdate()
     {
-        timer_production += Time.deltaTime;
-        if (timer_production >= timer_production_intervall)
+        timer_update += Time.deltaTime;
+        if (timer_update >= timer_update_interval)
         {
             PopulationProduces();
-            timer_production = 0f;
-        }
-        timer_consumption += Time.deltaTime;
-        if (timer_consumption >= timer_consumption_intervall)
-        {
             PopulationConsumes();
-            timer_consumption = 0f;
+            timer_update = 0f;
             if (foodAmount == 0)
             {
                 timer_starving += 1;
-                if (timer_starving >= timer_starving_intervall)
+                if (timer_starving >= timer_starving_interval)
                 {
                     workerManager.Starve();
                     timer_starving = 0;
@@ -144,8 +134,7 @@ public class ResourceManager : MonoBehaviour
         uic.OnFoodProductionAmountChanged(currentProductionFood);
         uic.OnWoodProductionAmountChanged(currentProductionWood);
         uic.OnFeidhProductionAmountChanged(currentProductionFeidh);
-        uic.OnConsumptionTimerChanged(timer_consumption);
-        uic.OnProductionTimerChanged(timer_production);
+        uic.OnTimerSliderChanged(timer_update);
     }
 
     public bool Buy(Resource type, int price)

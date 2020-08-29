@@ -15,10 +15,14 @@ public class UIC_WorkerManager : MonoBehaviour
     private TextMeshProUGUI druidsTextField;
 
     [SerializeField]
+    private TextMeshProUGUI costNewWorker;
+
+    [SerializeField]
     WorkerManager workerManager;
 
     private void Start()
     {
+        costNewWorker.text = workerManager.GetCostWorker().ToString();
         Refresh();
     }
 
