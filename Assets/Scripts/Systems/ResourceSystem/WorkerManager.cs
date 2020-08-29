@@ -37,6 +37,11 @@ public class WorkerManager : MonoBehaviour
 
     }
 
+    internal int GetCurrentPopulation()
+    {
+        return GetInactiveWorkerCount() + GetFarmersCount() + GetWoodcuttersCount() + GetDruidsCount();
+    }
+
     private void SpawnWorkers(int amount, Vector3 spawnPoint)
     {
         for (int i = 0; i < amount; i++)

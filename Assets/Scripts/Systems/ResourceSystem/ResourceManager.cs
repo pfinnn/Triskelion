@@ -16,14 +16,30 @@ public class ResourceManager : MonoBehaviour
     private int woodAmount = 0;
     private int feidhAmount = 0;
 
-    private int foodPerWorker = 3;
-    private int woodPerWorker = 2;
-    private int feidhPerWorker = 1;
+    private int foodProdPerWorker = 3;
+    private int woodProdPerWorker = 2;
+    private int feidhProdPerWorker = 1;
+
+    private float foodConsPerWorker = 1.5f;
+    private float woodConsPerWorker = 2.5f;
+    private float feidhConsPerWorker = 3.0f;
+
+    float consumptionModifier = 1f;
+
+    private int currentConsumptionFood = 0;
+    private int currentConsumptionWood = 0;
+    private int currentConsumptionFeidh = 0;
+
+    private int currentProductionFood = 0;
+    private int currentProductionWood = 0;
+    private int currentProductionFeidh = 0;
 
     private float timer = 0f;
     private float timer_intervall_update = 6.5f;
-    private float timer_population_eats = 0f;
-    private float timer_population_eats_intervall = 20f;
+    private float timer_consumption = 0f;
+    private float timer_consumption_intervall = 6.5f;
+    private float timer_production = 0f;
+    private float timer_production_intervall = 6.5f;
     private int timer_starving = 0;
     private int timer_starving_intervall = 3;
 
@@ -35,30 +51,30 @@ public class ResourceManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foodAmount = 0;
-        woodAmount = 0;
-        feidhAmount = 0;
-        uic.SetMaxValueForSlider(timer_population_eats_intervall);
+        foodAmount = 100;
+        woodAmount = 50;
+        feidhAmount = 25;
+        uic.SetMaxValueConsumptionSlider(timer_consumption_intervall);
+        uic.SetMaxValueProductionSlider(timer_production_intervall);
+        UpdateConsumptionValues();
         Notify_UIC();
     }
 
     // Update is called once per frame
     void FixedUpdate()
     {
-        timer += Time.deltaTime;
-        timer_population_eats += Time.deltaTime;
-        if (timer >= timer_intervall_update)
+        timer_production += Time.deltaTime;
+        if (timer_production >= timer_production_intervall)
         {
-            UpdateResourceValues();
-            Notify_UIC();
-            timer = 0f;
+            PopulationProduces();
+            timer_production = 0f;
         }
-        if (timer_population_eats >= timer_population_eats_intervall)
+        timer_consumption += Time.deltaTime;
+        if (timer_consumption >= timer_consumption_intervall)
         {
-            PopulationEats();
-            Notify_UIC();
-            timer_population_eats = 0f;
-            if (foodAmount < 0)
+            PopulationConsumes();
+            timer_consumption = 0f;
+            if (foodAmount == 0)
             {
                 timer_starving += 1;
                 if (timer_starving >= timer_starving_intervall)
@@ -68,32 +84,68 @@ public class ResourceManager : MonoBehaviour
                 }
             }
         }
-        uic.OnPopulationEatsTimerChanged(timer_population_eats);
+        Notify_UIC();
+        UpdateProductionValues();
+        UpdateConsumptionValues();
     }
 
-    private void UpdateResourceValues()
+    private void UpdateConsumptionValues()
     {
-        foodAmount += workerManager.GetFarmersCount() * foodPerWorker;
-        woodAmount += workerManager.GetWoodcuttersCount() * woodPerWorker;
-        feidhAmount += workerManager.GetDruidsCount() * feidhPerWorker;
+        int population = workerManager.GetCurrentPopulation();
+        currentConsumptionFood = Mathf.RoundToInt(population / foodConsPerWorker * consumptionModifier);
+        currentConsumptionWood = Mathf.RoundToInt(population / woodConsPerWorker * consumptionModifier);
+        currentConsumptionFeidh = Mathf.RoundToInt(population / feidhConsPerWorker * consumptionModifier);
     }
 
-    private void PopulationEats()
+    private void UpdateProductionValues()
     {
-        //In Future more units can be added
-        int population = workerManager.GetInactiveWorkerCount() + workerManager.GetFarmersCount() + workerManager.GetWoodcuttersCount() + workerManager.GetDruidsCount();
-        for (int i = 0; i < population; i++)
+        int population = workerManager.GetCurrentPopulation();
+        currentProductionFood = workerManager.GetFarmersCount() * foodProdPerWorker;
+        currentProductionWood = workerManager.GetWoodcuttersCount() * woodProdPerWorker;
+        currentProductionFeidh = workerManager.GetDruidsCount() * feidhProdPerWorker;
+    }
+
+    private void PopulationProduces()
+    {
+        foodAmount += currentProductionFood;
+        woodAmount += currentProductionWood;
+        feidhAmount += currentProductionFeidh;
+    }
+
+    private void PopulationConsumes()
+    {
+        UpdateConsumptionValues();
+        foodAmount -= currentConsumptionFood;
+        if (foodAmount < 0)
         {
-            int random = UnityEngine.Random.Range(1, 3);
-            foodAmount -= random;
+            foodAmount = 0;
+        }
+        woodAmount -= currentConsumptionWood;
+        if (woodAmount < 0)
+        {
+            woodAmount = 0;
+        }
+        feidhAmount -= currentConsumptionFeidh;
+        if (feidhAmount < 0)
+        {
+            feidhAmount = 0;
         }
     }
 
+    // THIS IS VERYYY BAD PRACTICE
     private void Notify_UIC()
     {
         uic.OnFoodAmountChanged(foodAmount);
         uic.OnWoodAmountChanged(woodAmount);
         uic.OnFeidhAmountChanged(feidhAmount);
+        uic.OnFoodConsumptionAmountChanged(currentConsumptionFood);
+        uic.OnWoodConsumptionAmountChanged(currentConsumptionWood);
+        uic.OnFeidhConsumptionAmountChanged(currentConsumptionFeidh);
+        uic.OnFoodProductionAmountChanged(currentProductionFood);
+        uic.OnWoodProductionAmountChanged(currentProductionWood);
+        uic.OnFeidhProductionAmountChanged(currentProductionFeidh);
+        uic.OnConsumptionTimerChanged(timer_consumption);
+        uic.OnProductionTimerChanged(timer_production);
     }
 
     public bool Buy(Resource type, int price)
