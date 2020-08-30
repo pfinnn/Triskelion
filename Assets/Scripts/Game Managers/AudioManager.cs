@@ -5,10 +5,14 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
-    public Sound[] music;
-    public Sound[] UI;
-    public Sound[] effects;
-    public Sound[] ambient;
+    public Sound[] clips_music;
+    public Sound[] clips_UI;
+    public Sound[] clips_effects;
+    public Sound[] clips_ambient;
+
+    public AudioSource ambient_City;
+    public AudioSource ambient_Field;
+    public AudioSource music;
 
     public static AudioManager instance;
 
@@ -28,85 +32,12 @@ public class AudioManager : MonoBehaviour
 
         DontDestroyOnLoad(gameObject);
 
-        AddSoundsToSources();
-
     }
 
-    private void Start()
+    public void Start()
     {
-        PlayMusic("Wanderer");
+        music.clip = clips_music[0].clip;
     }
 
-    private void AddSoundsToSources()
-    {
-        foreach (Sound s in music)
-        {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-            s.source.volume = s.volume;
-            s.source.loop = s.loop;
-        }
-        foreach (Sound s in UI)
-        {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-            s.source.volume = s.volume;
-            s.source.loop = s.loop;
-        }
-        foreach (Sound s in effects)
-        {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-            s.source.volume = s.volume;
-            s.source.loop = s.loop;
-        }
-        foreach (Sound s in ambient)
-        {
-            s.source = gameObject.AddComponent<AudioSource>();
-            s.source.clip = s.clip;
-            s.source.volume = s.volume;
-            s.source.loop = s.loop;
-        }
-    }
-
-    public void PlayMusic (string name)
-    {
-        Sound s = Array.Find(music, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogWarning("Sound with name: "+name+ " was not found!");
-        }
-        s.source.Play();
-    }
-
-    public void PlayAmbient(string name)
-    {
-        Sound s = Array.Find(ambient, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogWarning("Sound with name: " + name + " was not found!");
-        }
-        s.source.Play();
-    }
-
-    public void PlayUIEffect(string name)
-    {
-        Sound s = Array.Find(UI, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogWarning("Sound with name: " + name + " was not found!");
-        }
-        s.source.Play();
-    }
-
-    public void PlayEffect(string name)
-    {
-        Sound s = Array.Find(effects, sound => sound.name == name);
-        if (s == null)
-        {
-            Debug.LogWarning("Sound with name: " + name + " was not found!");
-        }
-        s.source.Play();
-    }
 
 }
