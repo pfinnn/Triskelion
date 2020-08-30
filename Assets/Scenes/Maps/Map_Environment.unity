@@ -31485,6 +31485,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5100bbb7f1851ce4ba5f19d580eda874, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  spellCastingCursor: {fileID: 2800000, guid: eccbdc13e3d543b4aa43a33d87dc448c, type: 3}
   currentState: 0
 --- !u!1 &2034357136
 GameObject:

@@ -5,7 +5,8 @@ using UnityEngine.EventSystems;
 
 public class PlayerManager : MonoBehaviour
 {
-
+    [SerializeField]
+    Texture2D spellCastingCursor;
     SpellManager spellManager;
 
     public enum State_Player
@@ -26,7 +27,7 @@ public class PlayerManager : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(1))
         {
-            currentState = State_Player.Default;
+            ChangeState(State_Player.Default);
         }
 
         switch (currentState)
@@ -56,9 +57,11 @@ public class PlayerManager : MonoBehaviour
         {
             case State_Player.Default:
                 currentState = State_Player.Default;
+                Cursor.SetCursor(null, Vector2.zero, CursorMode.Auto);
                 break;
             case State_Player.CastingSpell:
                 currentState = State_Player.CastingSpell;
+                Cursor.SetCursor(spellCastingCursor, Vector2.zero, CursorMode.Auto);
                 break;
         }
     }

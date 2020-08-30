@@ -98,6 +98,7 @@ public class SpellManager : MonoBehaviour
                 }
                 break;
         }
+        playerManager.ChangeState(PlayerManager.State_Player.Default);
 
 
         // if spell is available (timer)
