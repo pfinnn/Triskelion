@@ -49,7 +49,7 @@ public class ResourceManager : MonoBehaviour
     {
         foodAmount = 100;
         woodAmount = 50;
-        feidhAmount = 25;
+        feidhAmount = 25000;
         uic.SetMaxValueTimeSlider(timer_update_interval);
         UpdateConsumptionValues();
         Notify_UIC();
