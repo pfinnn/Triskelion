@@ -14,6 +14,9 @@ public class UIC_SpellManager : MonoBehaviour
 
     private SpellManager spellManager;
 
+    [SerializeField]
+    AudioManager audioManager;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -29,6 +32,7 @@ public class UIC_SpellManager : MonoBehaviour
     public void OnSpellButtonClicked(int spellNumber)
     {
         spellManager.ChangeCurrentSpell(spellNumber);
+        audioManager.PlayUISound(AudioManager.UISoundTypes.ButtonClicked);
     }
 
 }

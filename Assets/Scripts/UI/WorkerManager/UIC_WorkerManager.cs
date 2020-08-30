@@ -20,10 +20,18 @@ public class UIC_WorkerManager : MonoBehaviour
     [SerializeField]
     WorkerManager workerManager;
 
+    [SerializeField]
+    AudioManager audioManager;
+
     private void Start()
     {
         costNewWorker.text = workerManager.GetCostWorker().ToString();
         Refresh();
+    }
+
+    public void NotifyAudioManagerButtonClicked()
+    {
+        audioManager.PlayUISound(AudioManager.UISoundTypes.ButtonClicked);
     }
 
     public void AddFarmer()

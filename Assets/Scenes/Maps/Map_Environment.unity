@@ -1317,6 +1317,7 @@ MonoBehaviour:
   druidsTextField: {fileID: 1994962113}
   costNewWorker: {fileID: 1560596260}
   workerManager: {fileID: 66446142}
+  audioManager: {fileID: 710762427}
 --- !u!4 &77183059 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2095964436264134846, guid: f99ef0a81e316784893d9e6b294f7733,
@@ -4617,7 +4618,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.027
+  m_Volume: 0.047
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -4911,6 +4912,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 66446144}
         m_MethodName: AddDruid
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 66446144}
+        m_MethodName: NotifyAudioManagerButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6889,6 +6901,133 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6b32b4f96eec63f4d9f15b61813d0e20, type: 3}
+--- !u!1 &430865053
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 430865055}
+  - component: {fileID: 430865054}
+  m_Layer: 0
+  m_Name: UI Sound Source
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!82 &430865054
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430865053}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 0.015
+  m_Pitch: 0.83
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+--- !u!4 &430865055
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 430865053}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2030243986}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &433882874
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7960,7 +8099,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.615
+  m_Volume: 0.3
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -11050,35 +11189,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   clips_music:
-  - name: Wanderer
-    clip: {fileID: 8300000, guid: 1e18f62d12311ad42bb06ebc6af0851c, type: 3}
-    loop: 0
-    volume: 0.073
-    source: {fileID: 0}
-  - name: Fehu
-    clip: {fileID: 8300000, guid: 0ae73f70b2299e744b5c5d65f0be59ae, type: 3}
-    loop: 0
-    volume: 0.073
-    source: {fileID: 0}
-  clips_UI: []
+  - {fileID: 8300000, guid: 1e18f62d12311ad42bb06ebc6af0851c, type: 3}
+  - {fileID: 8300000, guid: 0ae73f70b2299e744b5c5d65f0be59ae, type: 3}
+  clips_UI:
+  - {fileID: 8300000, guid: e370c5faa03d6b6448866beeb2fd81a9, type: 3}
   clips_effects: []
   clips_ambient_fields:
-  - name: Farnyard 1
-    clip: {fileID: 8300000, guid: f5630160fb0d03443af910ec724f4324, type: 3}
-    loop: 1
-    volume: 0.046
-    source: {fileID: 0}
+  - {fileID: 8300000, guid: f5630160fb0d03443af910ec724f4324, type: 3}
   clips_ambient_city:
-  - name: 
-    clip: {fileID: 8300000, guid: 0a6de005f410231468990f1eb7c55161, type: 3}
-    loop: 1
-    volume: 0.064
-    source: {fileID: 0}
-  - name: 
-    clip: {fileID: 8300000, guid: 50cff7c822dad4a429313606a7996f56, type: 3}
-    loop: 1
-    volume: 0.073
-    source: {fileID: 0}
+  - {fileID: 8300000, guid: 49f3b1c6f13e07543a09e2c36c45f5f7, type: 3}
+  - {fileID: 8300000, guid: 9f7a895251aadfd46b6e5449db1ebf2d, type: 3}
+  UI_source: {fileID: 430865054}
   ambient_City: {fileID: 284863832}
   ambient_Field: {fileID: 500490803}
   music: {fileID: 906980889}
@@ -13813,6 +13934,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 66446144}
+        m_MethodName: NotifyAudioManagerButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &909184155
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14627,6 +14759,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 66446144}
         m_MethodName: RemoveWoodcutter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 66446144}
+        m_MethodName: NotifyAudioManagerButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -24493,6 +24636,41 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1604377040}
   m_CullTransparentMesh: 0
+--- !u!1 &1607159199
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1607159200}
+  m_Layer: 5
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &1607159200
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1607159199}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 2034357140}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1001 &1609504461
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -26151,6 +26329,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 66446144}
         m_MethodName: AddWoodcutter
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 66446144}
+        m_MethodName: NotifyAudioManagerButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -29430,6 +29619,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 66446144}
+        m_MethodName: NotifyAudioManagerButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1950168496
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -29631,6 +29831,17 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 66446144}
         m_MethodName: RemoveDruid
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 66446144}
+        m_MethodName: NotifyAudioManagerButtonClicked
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -31253,6 +31464,17 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 66446144}
+        m_MethodName: NotifyAudioManagerButtonClicked
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &2005296055
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31633,6 +31855,7 @@ MonoBehaviour:
   timer_01_TextField: {fileID: 696809524}
   timer_02_TextField: {fileID: 1219435945}
   timer_03_TextField: {fileID: 1288934899}
+  audioManager: {fileID: 710762427}
 --- !u!114 &2030243985
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31653,6 +31876,12 @@ MonoBehaviour:
   particle_buff_01: {fileID: 7609421362749961614, guid: 10c20baad86d1b043b2493117d6f4b9d,
     type: 3}
   currentSpell: 2
+--- !u!4 &2030243986 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 10565294553922108, guid: dbecfdc821813164eb9bf6880de6246e,
+    type: 3}
+  m_PrefabInstance: {fileID: 10565294716461759}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &2030243988
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -31761,6 +31990,7 @@ RectTransform:
   - {fileID: 1943461422}
   - {fileID: 238175220}
   - {fileID: 1158977821}
+  - {fileID: 1607159200}
   m_Father: {fileID: 0}
   m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
