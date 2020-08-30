@@ -71,16 +71,18 @@ public class SpellManager : MonoBehaviour
                 if (feidhAmount > spellCost_Attack_01)
                 {
                     GameObject particle = Instantiate(particle_attack_01, targetPosition, Quaternion.identity);
-                    particle.GetComponent<Spell_Attack_1>().DoSpell(targetPosition);
+                    particle.GetComponent<KillAllEnemies>().DoSpell();
                     resourceManager.SetFeidhAmount(feidhAmount - spellCost_Attack_01);
                     Destroy(particle, 5);
                 }
                 break;
 
             case Spell.Attack_02:
+                //Freezes Enemies around
                 if (feidhAmount > spellCost_Attack_02)
                 {
                     GameObject particle = Instantiate(particle_attack_02, targetPosition, Quaternion.identity);
+                    particle.GetComponent<FreezeEnemies>().DoSpell();
                     resourceManager.SetFeidhAmount(feidhAmount - spellCost_Attack_02);
                     Destroy(particle, 5);
                 }
@@ -96,6 +98,7 @@ public class SpellManager : MonoBehaviour
                 }
                 break;
         }
+        playerManager.ChangeState(PlayerManager.State_Player.Default);
 
 
         // if spell is available (timer)
