@@ -20,7 +20,9 @@ public class FreezeEnemies : Spell
         yield return new WaitForSecondsRealtime(5f);
         foreach (GameObject soldier in soldiers)
         {
-            soldier.GetComponent <NavMeshAgent>().enabled = true;
+            NavMeshAgent agent = soldier.GetComponent<NavMeshAgent>();
+            agent.enabled = true;
+            agent.isStopped = false;
         }
     }
 

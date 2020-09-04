@@ -11,7 +11,6 @@ public class Tower : Damageable
 
     private List<GameObject> enemiesInRange = new List<GameObject>();
     private float reloadTimer = 0.0f;
-    private float _health = 3000;
 
     [SerializeField]
     public GameObject destroyed_Particle;
@@ -38,8 +37,6 @@ public class Tower : Damageable
         shootingSystem = GetComponent<ShootingSystem>();
         shootingPoint = shootingSystem.GetShootingPoint();
         this.gameObject.tag = "defenders";
-        SetMaxHealth(_health);
-        SetHealth(_health);
     }
 
     // Update is called once per frame
