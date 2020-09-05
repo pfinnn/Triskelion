@@ -42,6 +42,16 @@ public abstract class Damageable : MonoBehaviour
             health = maxHealth;
     }
 
+    public void CompleteRepair()
+    {
+        float price = (maxHealth - health) / 15;
+        ResourceManager resourceManager = Camera.main.GetComponentInParent<ResourceManager>();
+        if (resourceManager.Buy(ResourceManager.Resource.WOOD, (int) price))
+        {
+            health = maxHealth;
+        }
+    }
+
     public bool IsDead()
     {
         return (health <= 0);

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEditorInternal;
 using UnityEngine;
+using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class Tower : Damageable
@@ -18,6 +19,8 @@ public class Tower : Damageable
     private Vector3 shootingPoint;
 
     private GameObject currentTarget;
+
+    private GameObject repairButton;
 
     public enum State
     {
@@ -36,6 +39,7 @@ public class Tower : Damageable
         base.Start();
         shootingSystem = GetComponent<ShootingSystem>();
         shootingPoint = shootingSystem.GetShootingPoint();
+        repairButton = GetComponentInChildren<Button>().gameObject;
         this.gameObject.tag = "defenders";
     }
 
@@ -51,6 +55,12 @@ public class Tower : Damageable
                 this.gameObject.tag = "destroyed";
             }
             return;
+        } else if (GetHealth() == GetMaxHealth())
+        {
+            repairButton.SetActive(false);
+        } else
+        {
+            repairButton.SetActive(true);
         }
 
         if (TargetsInRage())

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class TurnObjectToCamera : MonoBehaviour
+public class HealthBar : MonoBehaviour
 {
     [SerializeField]
     private Slider slider;
@@ -12,9 +12,9 @@ public class TurnObjectToCamera : MonoBehaviour
     {
         slider.maxValue = GetComponentInParent<Tower>().GetMaxHealth();
     }
+
     private void FixedUpdate()
     {
-        transform.LookAt(Camera.main.transform.position);
         slider.value = GetComponentInParent<Tower>().GetHealth();
     }
 }
