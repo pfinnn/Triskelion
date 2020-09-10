@@ -37,7 +37,7 @@ public class TargetDetectionChild : MonoBehaviour
         Damageable damageable;
         if (other.gameObject.TryGetComponent<Damageable>(out damageable))
         {
-            if (damageable.gameObject.CompareTag("destroyed"))
+            if (damageable.GetHealth() < 1)
             {
                 parent.OnChildTriggerExit(damageable);
             }

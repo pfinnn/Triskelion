@@ -20,6 +20,8 @@ public class Tower : Damageable
 
     private GameObject currentTarget;
 
+    private bool needsRepair;
+
     private GameObject repairButton;
 
     public enum State
@@ -52,16 +54,12 @@ public class Tower : Damageable
             {
                 Instantiate(destroyed_Particle, shootingPoint, Quaternion.identity );
                 currentState = State.Destroyed;
-                this.gameObject.tag = "destroyed";
             }
             return;
-        } else if (GetHealth() == GetMaxHealth())
-        {
-            repairButton.SetActive(false);
-        } else
-        {
-            repairButton.SetActive(true);
-        }
+        } else if (currentState == State.Destroyed)
+            {
+                currentState = State.Idle;
+            }
 
         if (TargetsInRage())
         {
@@ -88,7 +86,6 @@ public class Tower : Damageable
     {
         Transform randomSoldier = GetRandomSoldierPosition();
         float soldierSpeed = 10f;
-        //soldierSpeed = currentTarget.GetComponent<UnitController>().GetSoldierSpeed();
         shootingSystem.ShootSoldierInUnit(randomSoldier, soldierSpeed);
     }
 
