@@ -8,6 +8,9 @@ using Random = UnityEngine.Random;
 
 public class Tower : Damageable
 {
+    [SerializeField]
+    ResourceManager resourceManager;
+
     private ShootingSystem shootingSystem;
 
     private List<GameObject> enemiesInRange = new List<GameObject>();
@@ -20,9 +23,9 @@ public class Tower : Damageable
 
     private GameObject currentTarget;
 
-    private bool needsRepair;
+    int repairCost = 20;
 
-    private GameObject repairButton;
+    internal bool needsRepair = false;
 
     public enum State
     {
@@ -41,13 +44,22 @@ public class Tower : Damageable
         base.Start();
         shootingSystem = GetComponent<ShootingSystem>();
         shootingPoint = shootingSystem.GetShootingPoint();
-        repairButton = GetComponentInChildren<Button>().gameObject;
         this.gameObject.tag = "defenders";
     }
 
-    // Update is called once per frame
     void FixedUpdate()
     {
+        if (!needsRepair)
+        {
+            if (GetHealth() < GetMaxHealth())
+            {
+                needsRepair = true;
+            }
+        } else if (needsRepair && GetHealth() > GetMaxHealth())
+        {
+            needsRepair = false;
+        }
+
         if (GetHealth() < 1)
         {
             if (currentState != State.Destroyed )
@@ -132,6 +144,16 @@ public class Tower : Damageable
         return enemiesInRange;
     }
 
+
+    public void Repair()
+    {
+        if (resourceManager.GetWoodAmount() < repairCost)
+        {
+            base.Repair(repairCost);
+        }
+        
+    }
+
     void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("attackers"))
@@ -160,3 +182,4 @@ public class Tower : Damageable
     }
     
 }
+
