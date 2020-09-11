@@ -14,10 +14,13 @@ public class UIC_Tower : MonoBehaviour
     [SerializeField]
     AudioManager audioManager;
 
+    [SerializeField]
+    Canvas canvas;
+
     // Start is called before the first frame update
     void Start()
     {
-        repairButton.gameObject.SetActive(false);
+        //repairButton.gameObject.SetActive(false);
     }
 
     // Update is called once per frame
@@ -25,16 +28,25 @@ public class UIC_Tower : MonoBehaviour
     {
         if (tower.IsDamaged())
         {
-            if (!repairButton.IsActive())
+            if (!canvas.enabled)
             {
-                repairButton.gameObject.SetActive(true);
+                canvas.enabled = true;
             }
+
+            //if (!repairButton.IsActive())
+            //{
+            //    repairButton.gameObject.SetActive(true);
+            //}
         } else
         {
-            if (repairButton.IsActive())
+            if (canvas.enabled)
             {
-                repairButton.gameObject.SetActive(false);
+                canvas.enabled = false;
             }
+            //if (repairButton.IsActive())
+            //{
+            //    repairButton.gameObject.SetActive(false);
+            //}
         }
     }
 

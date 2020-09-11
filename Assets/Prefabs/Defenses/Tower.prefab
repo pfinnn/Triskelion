@@ -221,6 +221,7 @@ MonoBehaviour:
   tower: {fileID: -8465262976245785718}
   repairButton: {fileID: 5227596074415182518}
   audioManager: {fileID: 0}
+  canvas: {fileID: 3607694513502681542}
 --- !u!1 &2321679524836125444
 GameObject:
   m_ObjectHideFlags: 0
