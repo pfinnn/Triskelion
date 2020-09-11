@@ -11,6 +11,9 @@ public class UIC_Tower : MonoBehaviour
     [SerializeField]
     Button repairButton;
 
+    [SerializeField]
+    AudioManager audioManager;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,22 +23,29 @@ public class UIC_Tower : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (tower.needsRepair && !repairButton.IsActive())
+        if (tower.IsDamaged())
         {
-            repairButton.gameObject.SetActive(true);
-            return;
-        }
-        else if (!tower.needsRepair && repairButton.IsActive())
+            if (!repairButton.IsActive())
+            {
+                repairButton.gameObject.SetActive(true);
+            }
+        } else
         {
-            repairButton.gameObject.SetActive(false);
-            return;
+            if (repairButton.IsActive())
+            {
+                repairButton.gameObject.SetActive(false);
+            }
         }
     }
 
     public void OnRepairButtonClicked()
     {
-        Debug.Log("Clicked");
-        tower.Repair();
+        if (tower.IsDamaged())
+        {
+            Debug.Log("Repair");
+            tower.Repair();
+        }
+        audioManager.PlayUISound(AudioManager.UISoundTypes.ButtonClicked);
     }
 
 

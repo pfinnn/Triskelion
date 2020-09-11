@@ -24,6 +24,8 @@ public class Tower : Damageable
     private GameObject currentTarget;
 
     int repairCost = 20;
+    float repairAmount;
+    int repairRatio = 10;
 
     internal bool needsRepair = false;
 
@@ -45,20 +47,12 @@ public class Tower : Damageable
         shootingSystem = GetComponent<ShootingSystem>();
         shootingPoint = shootingSystem.GetShootingPoint();
         this.gameObject.tag = "defenders";
+        repairAmount = GetMaxHealth() / repairRatio;
     }
 
     void FixedUpdate()
     {
-        if (!needsRepair)
-        {
-            if (GetHealth() < GetMaxHealth())
-            {
-                needsRepair = true;
-            }
-        } else if (needsRepair && GetHealth() > GetMaxHealth())
-        {
-            needsRepair = false;
-        }
+
 
         if (GetHealth() < 1)
         {
@@ -112,8 +106,6 @@ public class Tower : Damageable
         return currentTarget.transform;
     }
 
- 
-
     private bool TargetsInRage()
     {
         return enemiesInRange.Count > 0;
@@ -134,7 +126,7 @@ public class Tower : Damageable
             // is this loop redundant ??
             foreach (GameObject deadEnemy in deadEnemies)
             {
-                    enemiesInRange.Remove(deadEnemy);
+                enemiesInRange.Remove(deadEnemy);
             }
         }
     }
@@ -147,9 +139,10 @@ public class Tower : Damageable
 
     public void Repair()
     {
-        if (resourceManager.GetWoodAmount() < repairCost)
+        if (resourceManager.GetWoodAmount() >= repairCost)
         {
-            base.Repair(repairCost);
+            base.Repair(repairAmount);
+            resourceManager.Buy(ResourceManager.Resource.WOOD, repairCost);
         }
         
     }
@@ -160,7 +153,6 @@ public class Tower : Damageable
         {
             if (other.GetComponentInParent<UnitController>())
             {
-                //Debug.Log(other.name + " with attackers-tag has been added to targets in range of tower");
                 enemiesInRange.Add(other.gameObject);
             }
         }

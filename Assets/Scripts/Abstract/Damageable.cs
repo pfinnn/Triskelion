@@ -82,4 +82,9 @@ public abstract class Damageable : MonoBehaviour
     {
         this.maxHealth = maxHealth;
     }
+
+    public bool IsDamaged()
+    {
+        return health < maxHealth;
+    }
 }
