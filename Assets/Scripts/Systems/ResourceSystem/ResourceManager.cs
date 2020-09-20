@@ -20,6 +20,10 @@ public class ResourceManager : MonoBehaviour
     private int woodProdPerWorker = 2;
     private int feidhProdPerWorker = 1;
 
+    private float foodProdModifier = 0;
+    private float woodProdModifier = 0;
+    private float feidhProdModifier = 0;
+
     private float foodConsPerWorker = 1.5f;
     private float woodConsPerWorker = 2.5f;
     private float feidhConsPerWorker = 3.0f;
@@ -90,9 +94,9 @@ public class ResourceManager : MonoBehaviour
     private void UpdateProductionValues()
     {
         int population = workerManager.GetCurrentPopulation();
-        currentProductionFood = workerManager.GetFarmersCount() * foodProdPerWorker;
-        currentProductionWood = workerManager.GetWoodcuttersCount() * woodProdPerWorker;
-        currentProductionFeidh = workerManager.GetDruidsCount() * feidhProdPerWorker;
+        currentProductionFood = workerManager.GetFarmersCount() * Mathf.RoundToInt(foodProdPerWorker + foodProdModifier);
+        currentProductionWood = workerManager.GetWoodcuttersCount() * Mathf.RoundToInt(woodProdPerWorker + woodProdModifier);
+        currentProductionFeidh = workerManager.GetDruidsCount() * Mathf.RoundToInt(feidhProdPerWorker + feidhProdModifier);
     }
 
     private void PopulationProduces()
@@ -214,5 +218,21 @@ public class ResourceManager : MonoBehaviour
     {
         this.feidhAmount = feidhAmount;
         Notify_UIC();
+    }
+
+    internal void SetProductionModifier(Resource res, float _modifierValue)
+    {
+        switch (res)
+        {
+            case Resource.FOOD:
+                foodProdModifier = _modifierValue;
+                break;
+            case Resource.WOOD:
+                woodProdModifier = _modifierValue;
+                break;
+            case Resource.FEIDH:
+                feidhProdModifier = _modifierValue;
+                break;
+        }
     }
 }
